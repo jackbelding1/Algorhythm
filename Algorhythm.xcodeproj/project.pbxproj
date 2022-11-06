@@ -1,0 +1,514 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		771D46CB291337BF005F7781 /* SpotifyAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */; };
+		771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CC29133B85005F7781 /* ApolloNetwork.swift */; };
+		771D46CF29133BBA005F7781 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CE29133BBA005F7781 /* API.swift */; };
+		771D46D2291463B3005F7781 /* SpotifyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 771D46D1291463B3005F7781 /* SpotifyAPI */; };
+		771D46D42914657E005F7781 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46D32914657E005F7781 /* Spotify.swift */; };
+		776DB7D829148B2C0055424F /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 776DB7D729148B2C0055424F /* KeychainAccess */; };
+		776DB7DA29148D7F0055424F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7D929148D7F0055424F /* LoginView.swift */; };
+		776DB7E129148E630055424F /* MiscellaneousUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */; };
+		776DB7E329148E630055424F /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7DF29148E620055424F /* AlertItem.swift */; };
+		776DB7E429148E630055424F /* ImageNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E029148E620055424F /* ImageNames.swift */; };
+		776DB7E629148EC10055424F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E529148EC10055424F /* RootView.swift */; };
+		776DB7E829148FB30055424F /* ExamplesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E729148FB30055424F /* ExamplesListView.swift */; };
+		77CE43292913299C000019A8 /* AlgorhythmApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CE43282913299C000019A8 /* AlgorhythmApp.swift */; };
+		77CE432D2913299D000019A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77CE432C2913299D000019A8 /* Assets.xcassets */; };
+		77CE43302913299D000019A8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77CE432F2913299D000019A8 /* Preview Assets.xcassets */; };
+		77CE43322913299D000019A8 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CE43312913299D000019A8 /* Persistence.swift */; };
+		77CE43352913299D000019A8 /* Algorhythm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 77CE43332913299D000019A8 /* Algorhythm.xcdatamodeld */; };
+		77CE433D29132B3A000019A8 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE433C29132B3A000019A8 /* Apollo */; };
+		77CE433F29132B3A000019A8 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE433E29132B3A000019A8 /* ApolloAPI */; };
+		77CE434129132B3A000019A8 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE434029132B3A000019A8 /* ApolloSQLite */; };
+		77CE434429132BBB000019A8 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434329132BBB000019A8 /* schema.json */; };
+		77CE434C291333CB000019A8 /* GraphQL in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434B291333CA000019A8 /* GraphQL */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisViewModel.swift; sourceTree = "<group>"; };
+		771D46CC29133B85005F7781 /* ApolloNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApolloNetwork.swift; sourceTree = "<group>"; };
+		771D46CE29133BBA005F7781 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		771D46D32914657E005F7781 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		776DB7D529147F8E0055424F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		776DB7D929148D7F0055424F /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MiscellaneousUtilities.swift; path = "Project Utilities/MiscellaneousUtilities.swift"; sourceTree = "<group>"; };
+		776DB7DF29148E620055424F /* AlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertItem.swift; path = "Project Utilities/AlertItem.swift"; sourceTree = "<group>"; };
+		776DB7E029148E620055424F /* ImageNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageNames.swift; path = "Project Utilities/ImageNames.swift"; sourceTree = "<group>"; };
+		776DB7E529148EC10055424F /* RootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		776DB7E729148FB30055424F /* ExamplesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamplesListView.swift; sourceTree = "<group>"; };
+		77CE43252913299C000019A8 /* Algorhythm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Algorhythm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		77CE43282913299C000019A8 /* AlgorhythmApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorhythmApp.swift; sourceTree = "<group>"; };
+		77CE432C2913299D000019A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		77CE432F2913299D000019A8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		77CE43312913299D000019A8 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		77CE43342913299D000019A8 /* Algorhythm.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Algorhythm.xcdatamodel; sourceTree = "<group>"; };
+		77CE434329132BBB000019A8 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
+		77CE434B291333CA000019A8 /* GraphQL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GraphQL; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		77CE43222913299C000019A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77CE433F29132B3A000019A8 /* ApolloAPI in Frameworks */,
+				77CE433D29132B3A000019A8 /* Apollo in Frameworks */,
+				771D46D2291463B3005F7781 /* SpotifyAPI in Frameworks */,
+				77CE434129132B3A000019A8 /* ApolloSQLite in Frameworks */,
+				776DB7D829148B2C0055424F /* KeychainAccess in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		77CE431C2913299C000019A8 = {
+			isa = PBXGroup;
+			children = (
+				77CE43272913299C000019A8 /* Algorhythm */,
+				77CE43262913299C000019A8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		77CE43262913299C000019A8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				77CE43252913299C000019A8 /* Algorhythm.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		77CE43272913299C000019A8 /* Algorhythm */ = {
+			isa = PBXGroup;
+			children = (
+				776DB7E729148FB30055424F /* ExamplesListView.swift */,
+				776DB7E529148EC10055424F /* RootView.swift */,
+				776DB7DF29148E620055424F /* AlertItem.swift */,
+				776DB7E029148E620055424F /* ImageNames.swift */,
+				776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */,
+				776DB7D929148D7F0055424F /* LoginView.swift */,
+				776DB7D529147F8E0055424F /* Info.plist */,
+				771D46CE29133BBA005F7781 /* API.swift */,
+				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
+				771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */,
+				77CE434B291333CA000019A8 /* GraphQL */,
+				77CE434329132BBB000019A8 /* schema.json */,
+				77CE43282913299C000019A8 /* AlgorhythmApp.swift */,
+				77CE432C2913299D000019A8 /* Assets.xcassets */,
+				77CE43312913299D000019A8 /* Persistence.swift */,
+				77CE43332913299D000019A8 /* Algorhythm.xcdatamodeld */,
+				77CE432E2913299D000019A8 /* Preview Content */,
+				771D46D32914657E005F7781 /* Spotify.swift */,
+			);
+			path = Algorhythm;
+			sourceTree = "<group>";
+		};
+		77CE432E2913299D000019A8 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				77CE432F2913299D000019A8 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		77CE43242913299C000019A8 /* Algorhythm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 77CE43382913299D000019A8 /* Build configuration list for PBXNativeTarget "Algorhythm" */;
+			buildPhases = (
+				77CE434529132C8C000019A8 /* Generate Apollo GraphQL API */,
+				77CE43212913299C000019A8 /* Sources */,
+				77CE43222913299C000019A8 /* Frameworks */,
+				77CE43232913299C000019A8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Algorhythm;
+			packageProductDependencies = (
+				77CE433C29132B3A000019A8 /* Apollo */,
+				77CE433E29132B3A000019A8 /* ApolloAPI */,
+				77CE434029132B3A000019A8 /* ApolloSQLite */,
+				771D46D1291463B3005F7781 /* SpotifyAPI */,
+				776DB7D729148B2C0055424F /* KeychainAccess */,
+			);
+			productName = Algorhythm;
+			productReference = 77CE43252913299C000019A8 /* Algorhythm.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		77CE431D2913299C000019A8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1400;
+				TargetAttributes = {
+					77CE43242913299C000019A8 = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 77CE43202913299C000019A8 /* Build configuration list for PBXProject "Algorhythm" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 77CE431C2913299C000019A8;
+			packageReferences = (
+				77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				771D46D0291463B3005F7781 /* XCRemoteSwiftPackageReference "SpotifyAPI" */,
+				776DB7D629148B2B0055424F /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+			);
+			productRefGroup = 77CE43262913299C000019A8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				77CE43242913299C000019A8 /* Algorhythm */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		77CE43232913299C000019A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77CE43302913299D000019A8 /* Preview Assets.xcassets in Resources */,
+				77CE434C291333CB000019A8 /* GraphQL in Resources */,
+				77CE434429132BBB000019A8 /* schema.json in Resources */,
+				77CE432D2913299D000019A8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		77CE434529132C8C000019A8 /* Generate Apollo GraphQL API */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Apollo GraphQL API";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"schema.json\" ./GraphQL/API.swift\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		77CE43212913299C000019A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77CE43322913299D000019A8 /* Persistence.swift in Sources */,
+				776DB7E129148E630055424F /* MiscellaneousUtilities.swift in Sources */,
+				77CE43352913299D000019A8 /* Algorhythm.xcdatamodeld in Sources */,
+				776DB7E429148E630055424F /* ImageNames.swift in Sources */,
+				771D46D42914657E005F7781 /* Spotify.swift in Sources */,
+				776DB7E829148FB30055424F /* ExamplesListView.swift in Sources */,
+				771D46CB291337BF005F7781 /* SpotifyAnalysisViewModel.swift in Sources */,
+				771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */,
+				77CE43292913299C000019A8 /* AlgorhythmApp.swift in Sources */,
+				771D46CF29133BBA005F7781 /* API.swift in Sources */,
+				776DB7DA29148D7F0055424F /* LoginView.swift in Sources */,
+				776DB7E329148E630055424F /* AlertItem.swift in Sources */,
+				776DB7E629148EC10055424F /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		77CE43362913299D000019A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		77CE43372913299D000019A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		77CE43392913299D000019A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Algorhythm/Preview Content\"";
+				DEVELOPMENT_TEAM = 4QY57KKASP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Algorhythm/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.belding-apps.Algorhythm";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		77CE433A2913299D000019A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Algorhythm/Preview Content\"";
+				DEVELOPMENT_TEAM = 4QY57KKASP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Algorhythm/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.belding-apps.Algorhythm";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		77CE43202913299C000019A8 /* Build configuration list for PBXProject "Algorhythm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77CE43362913299D000019A8 /* Debug */,
+				77CE43372913299D000019A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		77CE43382913299D000019A8 /* Build configuration list for PBXNativeTarget "Algorhythm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77CE43392913299D000019A8 /* Debug */,
+				77CE433A2913299D000019A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		771D46D0291463B3005F7781 /* XCRemoteSwiftPackageReference "SpotifyAPI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Peter-Schorn/SpotifyAPI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		776DB7D629148B2B0055424F /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.2.2;
+			};
+		};
+		77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.46.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		771D46D1291463B3005F7781 /* SpotifyAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 771D46D0291463B3005F7781 /* XCRemoteSwiftPackageReference "SpotifyAPI" */;
+			productName = SpotifyAPI;
+		};
+		776DB7D729148B2C0055424F /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 776DB7D629148B2B0055424F /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+		77CE433C29132B3A000019A8 /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+		77CE433E29132B3A000019A8 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
+		};
+		77CE434029132B3A000019A8 /* ApolloSQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloSQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		77CE43332913299D000019A8 /* Algorhythm.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				77CE43342913299D000019A8 /* Algorhythm.xcdatamodel */,
+			);
+			currentVersion = 77CE43342913299D000019A8 /* Algorhythm.xcdatamodel */;
+			path = Algorhythm.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 77CE431D2913299C000019A8 /* Project object */;
+}

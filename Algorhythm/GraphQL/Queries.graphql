@@ -1,0 +1,39 @@
+mutation SpotifyTrackEnqueueMutation($input: SpotifyTrackEnqueueInput!) {
+  spotifyTrackEnqueue(input: $input) {
+    __typename
+    ... on SpotifyTrackEnqueueSuccess {
+      enqueuedSpotifyTrack {
+        id
+      }
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+
+
+query SpotifyTrackQuery {
+  spotifyTrack(id: "2j2OqEZ4EPOXGpF4QYzU7q") {
+    __typename
+    ... on SpotifyTrackError {
+          message
+  }
+    ... on SpotifyTrack{
+        id
+        audioAnalysisV6 {
+         ... on AudioAnalysisV6Finished {
+         result {
+         mood {
+            aggressive
+            energetic
+            uplifting
+            sad
+            chilled
+            }
+          }
+        }
+      }
+    }
+  }
+}
