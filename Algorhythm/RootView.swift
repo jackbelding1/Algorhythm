@@ -13,7 +13,6 @@ struct RootView: View {
     var body: some View {
         NavigationView {
             ExamplesListView()
-                .navigationBarTitle("Algorhythm")
                 .navigationBarItems(trailing: logoutButton)
                 .disabled(!spotify.isAuthorized)
         }
