@@ -3,7 +3,12 @@ import SwiftUI
 struct ExamplesListView: View {
     
     var body: some View {
-        Text("Welcome to Algorhythm!!")
+        NavigationView{
+            List{
+                NavigationLink("Create a new playlist", destination: MoodScreen())
+            }
+
+        }
         
     }
 }
