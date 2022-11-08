@@ -273,8 +273,8 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query SpotifyTrackQuery {
-      spotifyTrack(id: "2j2OqEZ4EPOXGpF4QYzU7q") {
+    query SpotifyTrackQuery($id: ID!) {
+      spotifyTrack(id: $id) {
         __typename
         ... on SpotifyTrackError {
           __typename
@@ -307,7 +307,14 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
 
   public let operationName: String = "SpotifyTrackQuery"
 
-  public init() {
+  public var id: GraphQLID
+
+  public init(id: GraphQLID) {
+    self.id = id
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -315,7 +322,7 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("spotifyTrack", arguments: ["id": "2j2OqEZ4EPOXGpF4QYzU7q"], type: .nonNull(.object(SpotifyTrack.selections))),
+        GraphQLField("spotifyTrack", arguments: ["id": GraphQLVariable("id")], type: .nonNull(.object(SpotifyTrack.selections))),
       ]
     }
 

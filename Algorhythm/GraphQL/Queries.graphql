@@ -13,8 +13,8 @@ mutation SpotifyTrackEnqueueMutation($input: SpotifyTrackEnqueueInput!) {
 }
 
 
-query SpotifyTrackQuery {
-  spotifyTrack(id: "2j2OqEZ4EPOXGpF4QYzU7q") {
+query SpotifyTrackQuery($id: ID!) {
+  spotifyTrack(id: $id) {
     __typename
     ... on SpotifyTrackError {
           message
