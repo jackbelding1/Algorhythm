@@ -10,7 +10,7 @@ import Apollo
 
 class SpotifyAnalysisListViewModel: ObservableObject {
     @Published var analyzedSongs: [SpotifyAnalysisViewModel] = []
-    let songIds = ["2j2OqEZ4EPOXGpF4QYzU7q"]
+    let songIds = ["5uu28fUesZMl89lf9CLrgN"]
     func populateRecentlyPlayedSongAnalysis() {
         // get track analysis
         Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery()){ [weak self] result in
