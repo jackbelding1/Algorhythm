@@ -10,21 +10,27 @@ import Apollo
 
 class SpotifyAnalysisListViewModel: ObservableObject {
     @Published var analyzedSongs: [SpotifyAnalysisViewModel] = []
-    let songIds = ["5uu28fUesZMl89lf9CLrgN"]
+    let songIds = ["5uu28fUesZMl89lf9CLrgN", "7nwGvxqSrgAuty1tlPGCFz", "7iQM9DQUFKUSNjVt8GQZV2",
+    "4YHkUrSYE0xzUqp7noMUWD", "7KT7VGnPU5QVXN3q1BOeqb"]
     func populateRecentlyPlayedSongAnalysis() {
         // get track analysis
-        Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery()){ [weak self] result in
-            switch result {
-            case .success(let graphQLResult):
-               if let analyzedSongs = graphQLResult.data?.spotifyTrack {
-                    DispatchQueue.main.async {
-                        self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedSongs))
+        for id in songIds{
+            Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id	)){ [weak self] result in
+                switch result {
+                case .success(let graphQLResult):
+                   if let analyzedSongs = graphQLResult.data?.spotifyTrack {
+                        DispatchQueue.main.async {
+                            self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedSongs))
+                        }
                     }
+                case .failure(let error):
+                    print("error")
                 }
-            case .failure(let error):
-                print("error")
             }
         }
+            
+        
+
     }
 }
 
