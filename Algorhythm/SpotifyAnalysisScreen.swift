@@ -20,10 +20,17 @@ struct SpotifyAnalysisScreen: View{
 //            Text("Hello, world!")
 //        }
         NavigationView{
-            List(analyzedSongListVM.analyzedSongs, id: \.id){song in
-                Text(song.id)
-//                Button("Stats")
+            VStack{
+                List(analyzedSongListVM.analyzedSongs, id: \.id){song in
+                    Text(song.id)
+    //                Button("Stats")
+                }
+                Spacer()
+                Button(action: {analyzedSongListVM.printNetworkCalls()}){
+                    Text("Print network calls")
+                }
             }
+
         }
         .onAppear(perform: {
             analyzedSongListVM.populateRecentlyPlayedSongAnalysis()
