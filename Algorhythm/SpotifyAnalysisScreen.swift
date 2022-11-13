@@ -42,8 +42,43 @@ struct SpotifyAnalysisScreen: View{
     var body: some View {
         NavigationView{
             VStack{
-                List(analyzedSongListVM.analyzedSongs, id: \.id){song in
-                    Text(song.id)
+                Group{
+                    if userTopTracks.isEmpty {
+                        if isLoadingPage {
+                            HStack {
+                                ProgressView()
+                                    .padding()
+                                Text("Loading Tracks")
+                                    .font(.title)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        else {
+                            Text("No Recommended Tracks")
+                                .font(.title)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    else {
+                        ForEach(
+                            Array(userTopTracks.enumerated()),
+                            id: \.offset
+                        ){item in
+                            TrackView(track: item.element)
+                                // Each track in the list will be loaded lazily. We
+                                // take advantage of this feature in order to detect
+                                // when the user has scrolled to *near* the bottom
+                                // of the list based on the offset of this item.
+                            }
+                    }
+                }
+                List(analyzedSongListVM.analyzedSongs, id: \.id ){song in
+                    if let energy = song.energetic {
+                        Text("\(song.name) | \(energy)")
+                    }
+                    else {
+                        Text("n/a")
+                    }
                 }
                 Spacer()
                 Button(action: {analyzedSongListVM.printNetworkCalls()}){
@@ -52,11 +87,10 @@ struct SpotifyAnalysisScreen: View{
             }
 
         }
-        .onAppear(perform: {
-            getTopTracks(trackLimit: 25)
-//            analyzedSongListVM.populateRecentlyPlayedSongAnalysis()
-        })
-        .navigationTitle("Recently played songs")
+        .onAppear{
+            getTopTracks(trackLimit: 10)
+        }
+        .navigationTitle("User top tracks")
         .padding()
     }
     /**
@@ -65,6 +99,7 @@ struct SpotifyAnalysisScreen: View{
     func getTopTracks(trackLimit:Int?) {
         self.isLoadingPage = true
         self.userTopTracks = []
+        var songIds:[String:String] = [:]
         
         self.getUserTopTracksCancellable = self.spotify.api
             .currentUserTopTracks(limit:trackLimit)
@@ -73,10 +108,15 @@ struct SpotifyAnalysisScreen: View{
                 receiveCompletion: self.getTopTracksCompletion(_:),
                 receiveValue: {
                     response in self.userTopTracks = response.items
+                    for song in response.items{
+                        songIds[song.id!] = song.name
+                    }
                     print(
                         "received first page with \(userTopTracks.count) items"
                     )
+                    analyzedSongListVM.setSongIds(songIds: songIds)
                     analyzedSongListVM.networkCalls.spotify += 1
+                    analyzedSongListVM.populateRecentlyPlayedSongAnalysis()
                 })
     }
     

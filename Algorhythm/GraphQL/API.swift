@@ -293,9 +293,12 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   __typename
                   aggressive
                   energetic
-                  uplifting
+                  dark
                   sad
-                  chilled
+                  happy
+                  romantic
+                  sad
+                  sexy
                 }
               }
             }
@@ -642,9 +645,12 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                     GraphQLField("aggressive", type: .nonNull(.scalar(Double.self))),
                     GraphQLField("energetic", type: .nonNull(.scalar(Double.self))),
-                    GraphQLField("uplifting", type: .nonNull(.scalar(Double.self))),
+                    GraphQLField("dark", type: .nonNull(.scalar(Double.self))),
                     GraphQLField("sad", type: .nonNull(.scalar(Double.self))),
-                    GraphQLField("chilled", type: .nonNull(.scalar(Double.self))),
+                    GraphQLField("happy", type: .nonNull(.scalar(Double.self))),
+                    GraphQLField("romantic", type: .nonNull(.scalar(Double.self))),
+                    GraphQLField("sad", type: .nonNull(.scalar(Double.self))),
+                    GraphQLField("sexy", type: .nonNull(.scalar(Double.self))),
                   ]
                 }
 
@@ -654,8 +660,8 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   self.resultMap = unsafeResultMap
                 }
 
-                public init(aggressive: Double, energetic: Double, uplifting: Double, sad: Double, chilled: Double) {
-                  self.init(unsafeResultMap: ["__typename": "AudioAnalysisV6Mood", "aggressive": aggressive, "energetic": energetic, "uplifting": uplifting, "sad": sad, "chilled": chilled])
+                public init(aggressive: Double, energetic: Double, dark: Double, sad: Double, happy: Double, romantic: Double, sexy: Double) {
+                  self.init(unsafeResultMap: ["__typename": "AudioAnalysisV6Mood", "aggressive": aggressive, "energetic": energetic, "dark": dark, "sad": sad, "happy": happy, "romantic": romantic, "sexy": sexy])
                 }
 
                 public var __typename: String {
@@ -687,13 +693,13 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   }
                 }
 
-                /// Mean prediction value for the "uplifting" mood.
-                public var uplifting: Double {
+                /// Mean prediction value for the "dark" mood.
+                public var dark: Double {
                   get {
-                    return resultMap["uplifting"]! as! Double
+                    return resultMap["dark"]! as! Double
                   }
                   set {
-                    resultMap.updateValue(newValue, forKey: "uplifting")
+                    resultMap.updateValue(newValue, forKey: "dark")
                   }
                 }
 
@@ -707,13 +713,33 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   }
                 }
 
-                /// Mean prediction value for the "chilled" mood.
-                public var chilled: Double {
+                /// Mean prediction value for the "happy" mood.
+                public var happy: Double {
                   get {
-                    return resultMap["chilled"]! as! Double
+                    return resultMap["happy"]! as! Double
                   }
                   set {
-                    resultMap.updateValue(newValue, forKey: "chilled")
+                    resultMap.updateValue(newValue, forKey: "happy")
+                  }
+                }
+
+                /// Mean prediction value for the "romantic" mood.
+                public var romantic: Double {
+                  get {
+                    return resultMap["romantic"]! as! Double
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "romantic")
+                  }
+                }
+
+                /// Mean prediction value for the "sexy" mood.
+                public var sexy: Double {
+                  get {
+                    return resultMap["sexy"]! as! Double
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "sexy")
                   }
                 }
               }

@@ -15,7 +15,9 @@ import SpotifyExampleContent
 struct NetworkCalls{
     var spotify:Int = 0
     var cyanite:Int = 0
-    var total = 0
+    var total:Int {
+        return self.spotify + self.cyanite
+    }
 }
 
 /**
@@ -30,8 +32,7 @@ class SpotifyAnalysisListViewModel: ObservableObject {
     @Published var analyzedSongs: [SpotifyAnalysisViewModel] = []
     
     // songs to analyze
-    let songIds = ["5uu28fUesZMl89lf9CLrgN", "7nwGvxqSrgAuty1tlPGCFz", "7iQM9DQUFKUSNjVt8GQZV2",
-    "4YHkUrSYE0xzUqp7noMUWD", "7KT7VGnPU5QVXN3q1BOeqb"]
+    private var songIds:[String:String] = [:]
 }
 
 /**
@@ -49,6 +50,8 @@ extension SpotifyAnalysisListViewModel {
               ###########################################\n
               """)
     }
+    
+    func setSongIds(songIds Ids:[String:String]) { songIds = Ids }
 }
 /**
  * Filter seeds by mood
@@ -59,15 +62,15 @@ extension SpotifyAnalysisListViewModel{
     //
     func populateRecentlyPlayedSongAnalysis() {
         // get track analysis
-        for id in songIds{
+        for (id, name) in songIds{
             Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id    )){ [weak self] result in
                 switch result {
                 case .success(let graphQLResult):
                     if let analyzedSongs = graphQLResult.data?.spotifyTrack {
                         DispatchQueue.main.async {
-                            self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedSongs))
+                            self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedSongs, name: name))
                             self?.networkCalls.cyanite += 1
-                            self?.networkCalls.total += 1
+//                            print("###########################\nsongsanalyzed\n################################")
                         }
                     }
                 case .failure(let error):
@@ -90,12 +93,38 @@ class SpotifyAnalysisViewModel {
         analyzedSpotifyTrack.asSpotifyTrack!.id
     }
     
-//    var audioAnalysis: [] {
-//        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result
-//    }
+    var energetic:Double? {
+        analyzedSpotifyTrack.asSpotifyTrack?.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.energetic
+    }
+
+    var dark:Double {
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.dark
+    }
+
+    var happy:Double {
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.happy
+    }
+
+    var romantic:Double {
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.romantic
+    }
+
+    var sad:Double {
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.sad
+    }
+
+    var sexy:Double {
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.sexy
+    }
     
-    init(analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack) {
+    var aggressive:Double  {
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.aggressive
+    }
+    let name:String
+    
+    init(analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack, name:String) {
         self.analyzedSpotifyTrack = analyzedSpotifyTrack
+        self.name = name
     }
     
 }
