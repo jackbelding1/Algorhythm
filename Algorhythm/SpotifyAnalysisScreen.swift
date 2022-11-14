@@ -60,24 +60,22 @@ struct SpotifyAnalysisScreen: View{
                         }
                     }
                     else {
-                        ForEach(
-                            Array(userTopTracks.enumerated()),
-                            id: \.offset
-                        ){item in
-                            TrackView(track: item.element)
-                                // Each track in the list will be loaded lazily. We
-                                // take advantage of this feature in order to detect
-                                // when the user has scrolled to *near* the bottom
-                                // of the list based on the offset of this item.
-                            }
+//                        // show user top tracks
+//                        ForEach(
+//                            Array(userTopTracks.enumerated()),
+//                            id: \.offset
+//                        ){item in
+//                            TrackView(track: item.element)
+//                            }
                     }
                 }
+                // show spotify analysis
                 List(analyzedSongListVM.analyzedSongs, id: \.id ){song in
-                    if let energy = song.energetic {
-                        Text("\(song.name) | \(energy)")
+                    if let energy = song.energetic, let maxVal = song.getMaxValue() {
+                        Text("\(song.name) | \(song.maxMood)")
                     }
                     else {
-                        Text("n/a")
+                        Text("\(song.name) | n/a | \(song.id)")
                     }
                 }
                 Spacer()

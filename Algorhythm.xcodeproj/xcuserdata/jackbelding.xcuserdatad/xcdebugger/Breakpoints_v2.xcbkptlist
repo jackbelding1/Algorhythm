@@ -93,8 +93,8 @@
             filePath = "Algorhythm/SpotifyAnalysisScreen.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "getTopTracks(trackLimit:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -125,8 +125,8 @@
             filePath = "Algorhythm/SpotifyAnalysisScreen.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "getTopTracks(trackLimit:)"
             landmarkType = "7">
          </BreakpointContent>

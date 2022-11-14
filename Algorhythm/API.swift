@@ -294,7 +294,7 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   aggressive
                   energetic
                   dark
-                  sad
+                  calm
                   happy
                   romantic
                   sad
@@ -646,7 +646,7 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                     GraphQLField("aggressive", type: .nonNull(.scalar(Double.self))),
                     GraphQLField("energetic", type: .nonNull(.scalar(Double.self))),
                     GraphQLField("dark", type: .nonNull(.scalar(Double.self))),
-                    GraphQLField("sad", type: .nonNull(.scalar(Double.self))),
+                    GraphQLField("calm", type: .nonNull(.scalar(Double.self))),
                     GraphQLField("happy", type: .nonNull(.scalar(Double.self))),
                     GraphQLField("romantic", type: .nonNull(.scalar(Double.self))),
                     GraphQLField("sad", type: .nonNull(.scalar(Double.self))),
@@ -660,8 +660,8 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   self.resultMap = unsafeResultMap
                 }
 
-                public init(aggressive: Double, energetic: Double, dark: Double, sad: Double, happy: Double, romantic: Double, sexy: Double) {
-                  self.init(unsafeResultMap: ["__typename": "AudioAnalysisV6Mood", "aggressive": aggressive, "energetic": energetic, "dark": dark, "sad": sad, "happy": happy, "romantic": romantic, "sexy": sexy])
+                public init(aggressive: Double, energetic: Double, dark: Double, calm: Double, happy: Double, romantic: Double, sad: Double, sexy: Double) {
+                  self.init(unsafeResultMap: ["__typename": "AudioAnalysisV6Mood", "aggressive": aggressive, "energetic": energetic, "dark": dark, "calm": calm, "happy": happy, "romantic": romantic, "sad": sad, "sexy": sexy])
                 }
 
                 public var __typename: String {
@@ -703,13 +703,13 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   }
                 }
 
-                /// Mean prediction value for the "sad" mood.
-                public var sad: Double {
+                /// Mean prediction value for the "calm" mood.
+                public var calm: Double {
                   get {
-                    return resultMap["sad"]! as! Double
+                    return resultMap["calm"]! as! Double
                   }
                   set {
-                    resultMap.updateValue(newValue, forKey: "sad")
+                    resultMap.updateValue(newValue, forKey: "calm")
                   }
                 }
 
@@ -730,6 +730,16 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   }
                   set {
                     resultMap.updateValue(newValue, forKey: "romantic")
+                  }
+                }
+
+                /// Mean prediction value for the "sad" mood.
+                public var sad: Double {
+                  get {
+                    return resultMap["sad"]! as! Double
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "sad")
                   }
                 }
 

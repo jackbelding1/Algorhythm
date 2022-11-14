@@ -28,7 +28,7 @@ query SpotifyTrackQuery($id: ID!) {
             aggressive
             energetic
             dark
-            sad
+            calm
             happy
             romantic
             sad

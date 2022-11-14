@@ -21,6 +21,8 @@
 		776DB7E629148EC10055424F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E529148EC10055424F /* RootView.swift */; };
 		776DB7E829148FB30055424F /* ExamplesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E729148FB30055424F /* ExamplesListView.swift */; };
 		77B75DCA291B08E00014CEF8 /* SpotifyAnalysisScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B75DC9291B08E00014CEF8 /* SpotifyAnalysisScreen.swift */; };
+		77BB442529200E3D00EF8E90 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BB442429200E3D00EF8E90 /* TrackView.swift */; };
+		77BB442729200EE900EF8E90 /* SpotifyAPIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */; };
 		77CE43292913299C000019A8 /* AlgorhythmApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CE43282913299C000019A8 /* AlgorhythmApp.swift */; };
 		77CE432D2913299D000019A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77CE432C2913299D000019A8 /* Assets.xcassets */; };
 		77CE43302913299D000019A8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77CE432F2913299D000019A8 /* Preview Assets.xcassets */; };
@@ -47,6 +49,8 @@
 		776DB7E529148EC10055424F /* RootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		776DB7E729148FB30055424F /* ExamplesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamplesListView.swift; sourceTree = "<group>"; };
 		77B75DC9291B08E00014CEF8 /* SpotifyAnalysisScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisScreen.swift; sourceTree = "<group>"; };
+		77BB442429200E3D00EF8E90 /* TrackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
+		77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAPIExtensions.swift; sourceTree = "<group>"; };
 		77CE43252913299C000019A8 /* Algorhythm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Algorhythm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77CE43282913299C000019A8 /* AlgorhythmApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorhythmApp.swift; sourceTree = "<group>"; };
 		77CE432C2913299D000019A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,6 +96,8 @@
 		77CE43272913299C000019A8 /* Algorhythm */ = {
 			isa = PBXGroup;
 			children = (
+				77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */,
+				77BB442429200E3D00EF8E90 /* TrackView.swift */,
 				77B75DC9291B08E00014CEF8 /* SpotifyAnalysisScreen.swift */,
 				776DB7E729148FB30055424F /* ExamplesListView.swift */,
 				776DB7E529148EC10055424F /* RootView.swift */,
@@ -240,7 +246,9 @@
 				771D46CB291337BF005F7781 /* SpotifyAnalysisViewModel.swift in Sources */,
 				771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */,
 				77CE43292913299C000019A8 /* AlgorhythmApp.swift in Sources */,
+				77BB442529200E3D00EF8E90 /* TrackView.swift in Sources */,
 				771D46CF29133BBA005F7781 /* API.swift in Sources */,
+				77BB442729200EE900EF8E90 /* SpotifyAPIExtensions.swift in Sources */,
 				776DB7DA29148D7F0055424F /* LoginView.swift in Sources */,
 				776DB7E329148E630055424F /* AlertItem.swift in Sources */,
 				776DB7E629148EC10055424F /* RootView.swift in Sources */,
