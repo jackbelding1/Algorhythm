@@ -52,6 +52,21 @@ extension SpotifyAnalysisListViewModel {
     }
     
     func setSongIds(songIds Ids:[String:String]) { songIds = Ids }
+    
+    func getAnalyzedMoodSeeds(bymood mood:SpotifyAnalysisViewModel.Moods) -> [String] {
+        var filteredTracks: [SpotifyAnalysisViewModel] = []
+        for track in analyzedSongs {
+            if track.maxMood == mood {
+                filteredTracks.append(track)
+            }
+        }
+        let filteredTrackIds = filteredTracks.map { $0.id }
+        print("Found \(filteredTrackIds.count) items with the selected mood")
+        for trackid in filteredTrackIds{
+            print("id: \(trackid)")
+        }
+        return filteredTrackIds
+    }
 }
 /**
  * Filter seeds by mood
@@ -94,12 +109,13 @@ class SpotifyAnalysisViewModel {
     
     let name:String
     
-    var maxMood:String
+    var maxMood:Moods
     
     init(analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack, name:String) {
         self.analyzedSpotifyTrack = analyzedSpotifyTrack
         self.name = name
-        self.maxMood = ""
+        self.maxMood = Moods.Energetic
+        getMaxValue()
     }
     
 }
@@ -111,31 +127,31 @@ extension SpotifyAnalysisViewModel {
     }
 
     var dark:Double? {
-        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.dark
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.dark
     }
 
     var happy:Double? {
-        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.happy
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.happy
     }
 
     var romantic:Double? {
-        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.romantic
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.romantic
     }
     
     var calm:Double? {
-        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.calm
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.calm
     }
 
     var sad:Double? {
-        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.sad
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.sad
     }
 
     var sexy:Double? {
-        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.sexy
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.sexy
     }
     
     var aggressive:Double?  {
-        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished!.result.mood.aggressive
+        analyzedSpotifyTrack.asSpotifyTrack!.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.aggressive
     }
     
     enum Moods: CaseIterable {
@@ -158,56 +174,56 @@ extension SpotifyAnalysisViewModel {
                 if let val = energetic {
                     if max! < val {
                         max! = val
-                        maxMood = "energetic"
+                        maxMood = mood
                     }
                 }
             case .Aggressive:
                 if let val = aggressive {
                     if max! < val {
                         max! = val
-                        maxMood = "aggressive"
+                        maxMood = Moods.Aggressive
                     }
                 }
             case .Calm:
                 if let val = calm {
                     if max! < val {
                         max! = val
-                        maxMood = "calm"
+                        maxMood = Moods.Calm
                     }
                 }
             case .Romantic:
                 if let val = romantic {
                     if max! < val {
                         max! = val
-                        maxMood = "romantic"
+                        maxMood = Moods.Romantic
                     }
                 }
             case .Dark:
                 if let val = dark {
                     if max! < val {
                         max! = val
-                        maxMood = "dark"
+                        maxMood = Moods.Dark
                     }
                 }
             case .Happy:
                 if let val = happy {
                     if max! < val {
                         max! = val
-                        maxMood = "happy"
+                        maxMood = Moods.Happy
                     }
                 }
             case .Sad:
                 if let val = sad {
                     if max! < val {
                         max! = val
-                        maxMood = "sad"
+                        maxMood = Moods.Sad
                     }
                 }
             case .Sexy:
                 if let val = sexy {
                     if max! < val {
                         max! = val
-                        maxMood = "sexy"
+                        maxMood = Moods.Sexy
                     }
                 }
             }

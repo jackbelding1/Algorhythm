@@ -22,21 +22,28 @@ struct SpotifyAnalysisScreen: View{
     
     // the array of user top tracks to be filtered for moods
     @State private var userTopTracks: [Track]
+    
+    // the array recommended tracks generated
+    @State private var recommendedTracks: [Track]
 
-    // cancellable for api
+    // cancellable for top items api
     @State private var getUserTopTracksCancellable: AnyCancellable? = nil
+    
+    // cancellable for track recommendation api
+    @State private var getRecommendationsCancellable: AnyCancellable? = nil
 
     // store an alert
     @State private var alert: AlertItem? = nil
 
-    
     // initializer
     init() {
         self._userTopTracks = State(initialValue: [])
+        self._recommendedTracks = State(initialValue: [])
     }
     // preview initializer
-    fileprivate init(topTracks: [Track]) {
+    fileprivate init(topTracks: [Track], recommendedTracks: [Track]) {
         self._userTopTracks = State(initialValue: topTracks)
+        self._recommendedTracks = State(initialValue: recommendedTracks)
     }
     
     var body: some View {
@@ -60,22 +67,17 @@ struct SpotifyAnalysisScreen: View{
                         }
                     }
                     else {
-//                        // show user top tracks
-//                        ForEach(
-//                            Array(userTopTracks.enumerated()),
-//                            id: \.offset
-//                        ){item in
-//                            TrackView(track: item.element)
-//                            }
-                    }
-                }
-                // show spotify analysis
-                List(analyzedSongListVM.analyzedSongs, id: \.id ){song in
-                    if let energy = song.energetic, let maxVal = song.getMaxValue() {
-                        Text("\(song.name) | \(song.maxMood)")
-                    }
-                    else {
-                        Text("\(song.name) | n/a | \(song.id)")
+                        // show user top tracks
+                        ForEach(
+                            Array(recommendedTracks.enumerated()),
+                            id: \.offset
+                        ){item in
+                            TrackView(track: item.element)
+                        }
+                        Spacer()
+                        Button(action: {
+                            getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: SpotifyAnalysisViewModel.Moods.Energetic))
+                        }){Text("Get Recommendations")}
                     }
                 }
                 Spacer()
@@ -83,7 +85,6 @@ struct SpotifyAnalysisScreen: View{
                     Text("Print network calls")
                 }
             }
-
         }
         .onAppear{
             getTopTracks(trackLimit: 10)
@@ -91,6 +92,9 @@ struct SpotifyAnalysisScreen: View{
         .navigationTitle("User top tracks")
         .padding()
     }
+}
+
+extension SpotifyAnalysisScreen {
     /**
      * function returns user top tracks
      */
@@ -118,6 +122,40 @@ struct SpotifyAnalysisScreen: View{
                 })
     }
     
+    func getRecommendationsWithMoodSeeds(trackLimit:Int?, seedTracks:[String]){
+        
+        let trackIds = seedTracks.map { "spotify:track:" + $0 }
+        let trackAttributes = TrackAttributes(seedTracks: trackIds)
+        self.getRecommendationsCancellable = self.spotify.api
+            .recommendations(trackAttributes, limit: trackLimit)
+            .receive(on: RunLoop.main)
+            .sink(
+            receiveCompletion: self.getRecommendationsCompletion(_:),
+            receiveValue: {
+                response in
+                self.recommendedTracks = response.tracks
+                print(
+                    "received first page with \(recommendedTracks.count) items"
+                )
+                analyzedSongListVM.networkCalls.spotify += 1
+            }
+        )
+    }
+    
+    func getRecommendationsCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        if case .failure(let error) = completion {
+            let title = "Couldn't retrieve recommendations"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+        self.isLoadingPage = false
+    }
+    
     func getTopTracksCompletion(
         _ completion: Subscribers.Completion<Error>
     ) {
@@ -143,7 +181,7 @@ struct SpotifyAnalysisScreen_Previews: PreviewProvider {
     static var previews: some View {
         ForEach([tracks], id: \.self) { tracks in
             NavigationView {
-                SpotifyAnalysisScreen(topTracks: tracks)
+                SpotifyAnalysisScreen(topTracks: tracks, recommendedTracks: tracks)
                     .listStyle(PlainListStyle())
             }
         }
