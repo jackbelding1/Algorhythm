@@ -9,35 +9,68 @@ import SwiftUI
 
 struct MoodScreen: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    // emojis for mood options
+    private let symbols = ["🔥", "🤠", "🌴", "💗", "😈", "😪", "⚡️", "💦"]
+    // colors for mood options
+    private let colors: [Color] = [.red, .yellow, .green, .pink, .gray,
+                                   .blue, .orange, .purple]
+    // captions for mood options
+    private let captions:[String] = ["Aggressive", "Happy", "Calm", "Romantic", "Dark",
+                                     "Sad", "Energetic", "Sexy"]
+    // grid options
+    private var twoColumnGrid = [GridItem(.flexible(), spacing: 50), GridItem(.flexible(), spacing: 50)]
     
-    private var symbols = ["keyboard", "hifispeaker.fill", "printer.fill", "tv.fill", "desktopcomputer", "headphones", "tv.music.note", "mic", "plus.bubble", "video"]
+    // selected mood
+    @State private var selectedMood:String = ""
     
-    private var colors: [Color] = [.yellow, .purple, .green]
-    
-    private var threeColumnGrid = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+    // handle tapping of mood option
+    private func onTapped(mood:String) {
+        selectedMood = mood == selectedMood ?
+        "" : mood
+        print("selected \(mood)")
+    }
     
     var body: some View {
         VStack(spacing: 20.0){
-            Text("How do you want to feel?")
+            Text("How are you feeling?")
                 .font(.largeTitle)
-                .frame(width: 400)
+                .frame(width: 370)
                 .foregroundColor(.accentColor)
+                .padding(20)
             Divider()
-            Text("Select up to two moods...")
+                .frame(width: 300, height: 5)
+                .overlay(.gray)
+            Text("Select a mood...")
                 .font(.title2)
                 .foregroundColor(.accentColor)
-            ScrollView(.horizontal) {
-                LazyHGrid(rows: threeColumnGrid) {
-                    ForEach((0...9999), id: \.self) {
-                        Image(systemName: symbols[$0 % symbols.count])
-                            .font(.system(size: 30))
-                            .frame(width: 50, height: 50)
-                            .background(colors[$0 % colors.count])
-                            .cornerRadius(10)
+                .padding(10)
+            LazyHGrid(rows: twoColumnGrid, spacing: 10) {
+                ForEach((0...7), id: \.self) {i in
+                    VStack {
+                        if selectedMood == captions[i] {
+                            Rectangle()
+                        }
+                        Button(action: {onTapped(mood: captions[i])}){
+                            Text(symbols[i])
+                                .font(.system(size: 50))
+                                .frame(width: 65, height: 85)
+                                .background(colors[i])
+                                .cornerRadius(40)
+                        }
+                        Text(captions[i])
+                        .font(.system(size: 10))
                     }
                 }
             }
+            .frame(height:300)
             Spacer()
+            if selectedMood != "" {
+                Button(action: {print("next tapped")}) {
+                    Image(systemName: "arrow.right.circle")
+                        .frame(height:200)
+                    Text("Continue")
+                }
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading:
@@ -56,6 +89,6 @@ struct MoodScreen: View {
 
 struct MoodScreen_Previews: PreviewProvider {
     static var previews: some View {
-        MoodScreen()
+        MoodScreen().preferredColorScheme(.dark)
     }
 }
