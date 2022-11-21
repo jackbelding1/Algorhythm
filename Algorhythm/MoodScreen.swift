@@ -47,9 +47,6 @@ struct MoodScreen: View {
             LazyHGrid(rows: twoColumnGrid, spacing: 10) {
                 ForEach((0...7), id: \.self) {i in
                     VStack {
-                        if selectedMood == captions[i] {
-                            Rectangle()
-                        }
                         Button(action: {onTapped(mood: captions[i])}){
                             Text(symbols[i])
                                 .font(.system(size: 50))
@@ -57,6 +54,9 @@ struct MoodScreen: View {
                                 .background(colors[i])
                                 .cornerRadius(40)
                         }
+                        .overlay(selectedMood == captions[i]
+                            ? RoundedRectangle(cornerRadius: 5)
+                            .stroke(.green) : nil)
                         Text(captions[i])
                         .font(.system(size: 10))
                     }
