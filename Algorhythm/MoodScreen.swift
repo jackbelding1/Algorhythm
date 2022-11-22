@@ -21,69 +21,76 @@ struct MoodScreen: View {
     private var twoColumnGrid = [GridItem(.flexible(), spacing: 50), GridItem(.flexible(), spacing: 50)]
     
     // selected mood
-    @State private var selectedMood:String = ""
+    @State private var selectedMood:SpotifyAnalysisViewModel.Moods? = nil
     
     // handle tapping of mood option
-    private func onTapped(mood:String) {
+    private func onTapped(mood:SpotifyAnalysisViewModel.Moods) {
         selectedMood = mood == selectedMood ?
-        "" : mood
+        nil : mood
         print("selected \(mood)")
     }
     
     var body: some View {
-        VStack(spacing: 20.0){
-            Text("How are you feeling?")
-                .font(.largeTitle)
-                .frame(width: 370)
-                .foregroundColor(.accentColor)
-                .padding(20)
-            Divider()
-                .frame(width: 300, height: 5)
-                .overlay(.gray)
-            Text("Select a mood...")
-                .font(.title2)
-                .foregroundColor(.accentColor)
-                .padding(10)
-            LazyHGrid(rows: twoColumnGrid, spacing: 10) {
-                ForEach((0...7), id: \.self) {i in
-                    VStack {
-                        Button(action: {onTapped(mood: captions[i])}){
-                            Text(symbols[i])
-                                .font(.system(size: 50))
-                                .frame(width: 65, height: 85)
-                                .background(colors[i])
-                                .cornerRadius(40)
+        NavigationView {
+            VStack(spacing: 20.0){
+                Text("How are you feeling?")
+                    .font(.largeTitle)
+                    .frame(width: 370)
+                    .foregroundColor(.accentColor)
+                    .padding(20)
+                Divider()
+                    .frame(width: 300, height: 5)
+                    .overlay(.gray)
+                Text("Select a mood...")
+                    .font(.title2)
+                    .foregroundColor(.accentColor)
+                    .padding(10)
+                LazyHGrid(rows: twoColumnGrid, spacing: 10) {
+                    ForEach((0...7), id: \.self) {i in
+                        VStack {
+                            Button(action: {onTapped(mood: SpotifyAnalysisViewModel.Moods.allCases[i])}){
+                                Text(symbols[i])
+                                    .font(.system(size: 50))
+                                    .frame(width: 65, height: 85)
+                                    .background(colors[i])
+                                    .cornerRadius(40)
+                            }
+                            .overlay(selectedMood == SpotifyAnalysisViewModel.Moods.allCases[i]
+                                ? RoundedRectangle(cornerRadius: 5)
+                                .stroke(.green) : nil)
+                            Text(captions[i])
+                            .font(.system(size: 10))
                         }
-                        .overlay(selectedMood == captions[i]
-                            ? RoundedRectangle(cornerRadius: 5)
-                            .stroke(.green) : nil)
-                        Text(captions[i])
-                        .font(.system(size: 10))
                     }
                 }
-            }
-            .frame(height:300)
-            Spacer()
-            if selectedMood != "" {
-                Button(action: {print("next tapped")}) {
-                    Image(systemName: "arrow.right.circle")
+                .frame(height:300)
+                Spacer()
+                if selectedMood != nil {
+                    NavigationLink(destination: SpotifyAnalysisScreen(mood: selectedMood)){
+                        Image(systemName: "arrow.right.circle")
+                            .frame(height:200)
+                        Text("Continue")
+                    }
+                }
+                else {
+                    Spacer()
                         .frame(height:200)
-                    Text("Continue")
                 }
             }
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading:
+                                    Button(action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }) {
+                HStack {
+                    Image(systemName: "x.circle")
+                        .resizable()
+                        .frame(width: 45.0, height: 45.0)
+                        .foregroundColor(.accentColor)
+                }
+            })
         }
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading:
-                                Button(action: {
-            self.presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image(systemName: "x.circle")
-                    .resizable()
-                    .frame(width: 60.0, height: 60.0)
-                    .foregroundColor(.accentColor)
-            }
-        })
     }
 }
 

@@ -34,16 +34,21 @@ struct SpotifyAnalysisScreen: View{
 
     // store an alert
     @State private var alert: AlertItem? = nil
+    
+    // the mood to analyze
+    private var selectedMood:SpotifyAnalysisViewModel.Moods?
 
     // initializer
-    init() {
+    init(mood:SpotifyAnalysisViewModel.Moods?) {
         self._userTopTracks = State(initialValue: [])
         self._recommendedTracks = State(initialValue: [])
+        selectedMood = mood
     }
     // preview initializer
     fileprivate init(topTracks: [Track], recommendedTracks: [Track]) {
         self._userTopTracks = State(initialValue: topTracks)
         self._recommendedTracks = State(initialValue: recommendedTracks)
+        selectedMood = nil
     }
     
     var body: some View {
@@ -76,7 +81,7 @@ struct SpotifyAnalysisScreen: View{
                         }
                         Spacer()
                         Button(action: {
-                            getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: SpotifyAnalysisViewModel.Moods.Energetic))
+                            getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: selectedMood))
                         }){Text("Get Recommendations")}
                     }
                 }

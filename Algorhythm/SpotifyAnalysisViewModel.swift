@@ -53,11 +53,13 @@ extension SpotifyAnalysisListViewModel {
     
     func setSongIds(songIds Ids:[String:String]) { songIds = Ids }
     
-    func getAnalyzedMoodSeeds(bymood mood:SpotifyAnalysisViewModel.Moods) -> [String] {
+    func getAnalyzedMoodSeeds(bymood mood:SpotifyAnalysisViewModel.Moods?) -> [String] {
         var filteredTracks: [SpotifyAnalysisViewModel] = []
-        for track in analyzedSongs {
-            if track.maxMood == mood {
-                filteredTracks.append(track)
+        if mood != nil {
+            for track in analyzedSongs {
+                if track.maxMood == mood {
+                    filteredTracks.append(track)
+                }
             }
         }
         let filteredTrackIds = filteredTracks.map { $0.id }
@@ -155,14 +157,14 @@ extension SpotifyAnalysisViewModel {
     }
     
     enum Moods: CaseIterable {
-        case Energetic
-        case Dark
-        case Happy
-        case Romantic
-        case Sad
-        case Sexy
         case Aggressive
+        case Happy
         case Calm
+        case Romantic
+        case Dark
+        case Sad
+        case Energetic
+        case Sexy
     }
         
     func getMaxValue() -> Double? {
