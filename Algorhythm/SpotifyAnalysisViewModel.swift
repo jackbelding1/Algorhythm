@@ -33,6 +33,7 @@ class SpotifyAnalysisListViewModel: ObservableObject {
     
     // songs to analyze
     private var songIds:[String:String] = [:]
+    
 }
 
 /**

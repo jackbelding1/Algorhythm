@@ -8,7 +8,7 @@ struct ExamplesListView: View {
         NavigationView{
             List{
                 NavigationLink("Create a new playlist", destination: MoodScreen())
-                NavigationLink("test the algorithm", destination: SpotifyAnalysisScreen(mood: SpotifyAnalysisViewModel.Moods.Energetic)
+                NavigationLink("test the algorithm", destination: SpotifyAnalysisScreen(mood: nil)
                     .environmentObject(spotify)
 )
             }

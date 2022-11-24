@@ -80,8 +80,7 @@ struct SpotifyAnalysisScreen: View{
                             TrackView(track: item.element)
                         }
                         Spacer()
-                        Button(action: {
-                            getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: selectedMood))
+                        Button(action: { getRecommendations(genreIsSelected: false)
                         }){Text("Get Recommendations")}
                     }
                 }
@@ -100,6 +99,21 @@ struct SpotifyAnalysisScreen: View{
 }
 
 extension SpotifyAnalysisScreen {
+    
+    func getRecommendations(genreIsSelected:Bool) {
+        if !genreIsSelected {
+            //
+            // TODO: generate normalized genre
+            //
+        }
+        //
+        // TODO: check cache for genre mood seeds
+        //
+        // there are no genre mood seeds cached, make network calls, and
+        // retrieve the selected genre mood seed
+        getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: selectedMood))
+    }
+    
     /**
      * function returns user top tracks
      */
@@ -146,7 +160,9 @@ extension SpotifyAnalysisScreen {
             }
         )
     }
-    
+}
+
+extension SpotifyAnalysisScreen {
     func getRecommendationsCompletion(
         _ completion: Subscribers.Completion<Error>
     ) {
