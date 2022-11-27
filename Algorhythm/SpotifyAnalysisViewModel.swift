@@ -34,6 +34,9 @@ class SpotifyAnalysisListViewModel: ObservableObject {
     // songs to analyze
     private var songIds:[String:String] = [:]
     
+    // the cache manager for recommendation seeds
+    private let cache:RecommendationSeedCacheManager = RecommendationSeedCacheManager()
+    
 }
 
 /**
@@ -70,6 +73,10 @@ extension SpotifyAnalysisListViewModel {
         }
         return filteredTrackIds
     }
+    
+    func retrieveCachedMoodSeeds(genre:NSString, mood:SpotifyAnalysisViewModel.Moods) -> [String]? {
+        return cache.getFromCache(genre: genre, mood: mood)
+    }
 }
 /**
  * Filter seeds by mood
@@ -93,6 +100,25 @@ extension SpotifyAnalysisListViewModel{
                 case .failure(let error):
                     print("error")
                 }
+            }
+        }
+    }
+    
+    func findMoodGenreTrack(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+                            genre selectedGenre:String, tracks artistTracks:[Track]) {
+        for track in artistTracks {
+            if let id = track.id {
+                Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id)) { [weak self] result in
+                    switch result {
+                    case .success(let graphQLResult):
+                        self?.networkCalls.cyanite += 1
+                        print("result found!")
+                    case .failure(let error):
+                        print("error")
+                    }
+                    
+                }
+                
             }
         }
     }

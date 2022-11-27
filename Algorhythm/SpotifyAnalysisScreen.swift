@@ -11,6 +11,15 @@ import SpotifyWebAPI
 import SpotifyExampleContent
 
 struct SpotifyAnalysisScreen: View{
+    // the URI for artists
+    class artistURI: SpotifyURIConvertible {
+        public var uri:String
+        
+        init(URI artistUri:String){
+            self.uri = "spotify:artist:\(artistUri)"
+        }
+    }
+    
     // spotify object
     @EnvironmentObject var spotify: Spotify
 
@@ -25,18 +34,33 @@ struct SpotifyAnalysisScreen: View{
     
     // the array recommended tracks generated
     @State private var recommendedTracks: [Track]
+    
+    // the array of top artist
+    private var topArtists:[String] = []
 
-    // cancellable for top items api
+    // cancellable for top tracks api
     @State private var getUserTopTracksCancellable: AnyCancellable? = nil
     
     // cancellable for track recommendation api
     @State private var getRecommendationsCancellable: AnyCancellable? = nil
 
+    // cancellable for top artists api
+    @State private var getUserTopArtistsCancellable: AnyCancellable? = nil
+    
+    // cancellable for artist api
+    @State private var getArtistsCancellable: AnyCancellable? = nil
+    
+    // cancellable for artist top tracks
+    @State private var getArtistTopTracksCancellable: [AnyCancellable]? = []
+    
     // store an alert
     @State private var alert: AlertItem? = nil
     
     // the mood to analyze
     private var selectedMood:SpotifyAnalysisViewModel.Moods?
+    
+    // the genre to generate the playlist from
+    private var selectedGenre:NSString = "edm"
 
     // initializer
     init(mood:SpotifyAnalysisViewModel.Moods?) {
@@ -80,7 +104,7 @@ struct SpotifyAnalysisScreen: View{
                             TrackView(track: item.element)
                         }
                         Spacer()
-                        Button(action: { getRecommendations(genreIsSelected: false)
+                        Button(action: { getUserTopArtists()
                         }){Text("Get Recommendations")}
                     }
                 }
@@ -109,9 +133,16 @@ extension SpotifyAnalysisScreen {
         //
         // TODO: check cache for genre mood seeds
         //
+        if let cachedSeeds = analyzedSongListVM.retrieveCachedMoodSeeds(genre: selectedGenre, mood: selectedMood!){
+            print("found cached mood seeds")
+        }
+        else {
+            print("cached seeds not found")
+            getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: selectedMood))
+        }
         // there are no genre mood seeds cached, make network calls, and
         // retrieve the selected genre mood seed
-        getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: selectedMood))
+        
     }
     
     /**
@@ -138,7 +169,8 @@ extension SpotifyAnalysisScreen {
                     analyzedSongListVM.setSongIds(songIds: songIds)
                     analyzedSongListVM.networkCalls.spotify += 1
                     analyzedSongListVM.populateRecentlyPlayedSongAnalysis()
-                })
+                }
+            )
     }
     
     func getRecommendationsWithMoodSeeds(trackLimit:Int?, seedTracks:[String]){
@@ -162,6 +194,73 @@ extension SpotifyAnalysisScreen {
     }
 }
 
+// Generate the seeds for the cache
+extension SpotifyAnalysisScreen {
+    
+    func getUserTopArtists() {
+        var artistIds:[String] = []
+        self.getUserTopArtistsCancellable = self.spotify.api
+            .currentUserTopArtists(limit:10)
+            .receive(on: RunLoop.main)
+            .sink(
+                receiveCompletion: self.getTopArtistsCompletion(_:),
+                receiveValue: {
+                    response in
+                    for artist in response.items {
+                        artistIds.append(artist.id!)
+                    }
+                    findArtistWithSelectedGenre(withIds: artistIds)
+                })
+    }
+    
+    func findArtistWithSelectedGenre(withIds artistIds:[String]) {
+        let uris = artistIds.map {artistURI(URI: $0)}
+        var artists:[String] = []
+        self.getArtistsCancellable = self.spotify.api.artists(uris)
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion:
+                    self.getArtistsCompletion(_:),
+                  receiveValue: { response in
+                for artist in response {
+                    if let genres = artist?.genres {
+                        for genre in genres {
+                            if genre == selectedGenre as String {
+
+                                if let artistId = artist?.id {
+                                    artists.append(artistId)
+                                }
+                            }
+                        }
+                    }
+                }
+                //
+                // TODO: analyze artist top tracks
+                // TODO: If mood and genre found, cache the track id
+                //
+                getArtistTopTracks(withIds: artists)
+            }
+        )
+    }
+    func getArtistTopTracks(withIds Ids:[String]){
+        let myGroup = DispatchGroup()
+        for Id in Ids {
+            myGroup.enter()
+            self.getArtistTopTracksCancellable?.append(  self.spotify.api.artistTopTracks(artistURI(URI: Id), country: "US")
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: self.getArtistTopTracksCompletion(_:),
+                      receiveValue: { response in
+                    for item in response {
+                        print("Found track \(item.name)")
+                    }
+                    myGroup.leave()
+                }))
+        }
+        myGroup.notify(queue: .main) {
+            print("Finished all requests.")
+        }
+    }
+}
+
 extension SpotifyAnalysisScreen {
     func getRecommendationsCompletion(
         _ completion: Subscribers.Completion<Error>
@@ -182,6 +281,48 @@ extension SpotifyAnalysisScreen {
     ) {
         if case .failure(let error) = completion {
             let title = "Couldn't retrieve user top tracks"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+        self.isLoadingPage = false
+    }
+    
+    func getTopArtistsCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        if case .failure(let error) = completion {
+            let title = "Couldn't retrieve user top artists"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+        self.isLoadingPage = false
+    }
+    
+    func getArtistsCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        if case .failure(let error) = completion {
+            let title = "Couldn't retrieve artists"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+        self.isLoadingPage = false
+    }
+    
+    func getArtistTopTracksCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ){
+        if case .failure(let error) = completion {
+            let title = "Couldn't retrieve artist top tracks"
             print("\(title): \(error)")
             self.alert = AlertItem(
                 title: title,
