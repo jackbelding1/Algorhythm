@@ -6,7 +6,9 @@
 //
 
 import Foundation
-
+/**
+ * cache entry object
+ */
 final class genreMoods : NSObject {
     
     // each of the genres moods
@@ -29,11 +31,12 @@ final class genreMoods : NSObject {
     }
     
     init(mood: SpotifyAnalysisViewModel.Moods, Ids: [String]) {
-        self.tracksByMood = [:]
+        var dict = [mood:Ids]
+        self.tracksByMood = dict
     }
 }
 
-class RecommendationSeedCacheManager {
+final class RecommendationSeedCacheManager {
     // the cache manager
     private let cache = NSCache<NSString, genreMoods>()
     
@@ -43,9 +46,41 @@ class RecommendationSeedCacheManager {
     }
     
     func putIntoCache(genre:NSString, mood:SpotifyAnalysisViewModel.Moods, Ids:[String]) {
-        guard let moods = cache.object(forKey: genre) else { return }
-        for Id in Ids {
-            moods.putTrackId(intoMood: mood, id: Id)
+        // check if genre exists as a key
+        if let moods = cache.object(forKey: genre) {
+            for Id in Ids {
+                moods.putTrackId(intoMood: mood, id: Id)
+            }
+            cache.setObject(moods, forKey: genre)
         }
+        else {
+            var moods = genreMoods(mood: mood, Ids: Ids)
+            cache.setObject(moods, forKey: genre)
+        }
+    }
+    
+    // add the first matching track id to the cache
+    func filterForCaching(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+                          genre selectedGenre:String, analyzedTracks tracks:[SpotifyAnalysisViewModel]?) {
+        if let loc_tracks = tracks {
+            for track in loc_tracks {
+                if track.maxMood == selectedMood {
+                    putIntoCache(genre: selectedGenre as NSString, mood: selectedMood, Ids: [track.id])
+                    print("track cached!!")
+                    return
+                }
+            }
+        }
+    }
+    
+    // for testing
+    func printContent() {
+        guard let moods = cache.object(forKey: "edm") else { return }
+        if let Ids = moods.getTrackIds(byMood: SpotifyAnalysisViewModel.Moods.Energetic) {
+            for id in Ids {
+                print("Id: \(id)")
+            }
+        }
+            
     }
 }

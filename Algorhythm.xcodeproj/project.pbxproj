@@ -12,6 +12,7 @@
 		771D46CF29133BBA005F7781 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CE29133BBA005F7781 /* API.swift */; };
 		771D46D2291463B3005F7781 /* SpotifyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 771D46D1291463B3005F7781 /* SpotifyAPI */; };
 		771D46D42914657E005F7781 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46D32914657E005F7781 /* Spotify.swift */; };
+		773EFC98292FE6AA00F5ED82 /* SeedCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773EFC97292FE6AA00F5ED82 /* SeedCacheManager.swift */; };
 		7765B2D029186AC600DB67AC /* MoodScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7765B2CF29186AC600DB67AC /* MoodScreen.swift */; };
 		776DB7D829148B2C0055424F /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 776DB7D729148B2C0055424F /* KeychainAccess */; };
 		776DB7DA29148D7F0055424F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7D929148D7F0055424F /* LoginView.swift */; };
@@ -30,7 +31,6 @@
 		77CE43352913299D000019A8 /* Algorhythm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 77CE43332913299D000019A8 /* Algorhythm.xcdatamodeld */; };
 		77CE433D29132B3A000019A8 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE433C29132B3A000019A8 /* Apollo */; };
 		77CE433F29132B3A000019A8 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE433E29132B3A000019A8 /* ApolloAPI */; };
-		77CE434129132B3A000019A8 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE434029132B3A000019A8 /* ApolloSQLite */; };
 		77CE434429132BBB000019A8 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434329132BBB000019A8 /* schema.json */; };
 		77CE434C291333CB000019A8 /* GraphQL in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434B291333CA000019A8 /* GraphQL */; };
 /* End PBXBuildFile section */
@@ -40,6 +40,7 @@
 		771D46CC29133B85005F7781 /* ApolloNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApolloNetwork.swift; sourceTree = "<group>"; };
 		771D46CE29133BBA005F7781 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		771D46D32914657E005F7781 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		773EFC97292FE6AA00F5ED82 /* SeedCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedCacheManager.swift; sourceTree = "<group>"; };
 		7765B2CF29186AC600DB67AC /* MoodScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodScreen.swift; sourceTree = "<group>"; };
 		776DB7D529147F8E0055424F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		776DB7D929148D7F0055424F /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -69,7 +70,6 @@
 				77CE433F29132B3A000019A8 /* ApolloAPI in Frameworks */,
 				77CE433D29132B3A000019A8 /* Apollo in Frameworks */,
 				771D46D2291463B3005F7781 /* SpotifyAPI in Frameworks */,
-				77CE434129132B3A000019A8 /* ApolloSQLite in Frameworks */,
 				776DB7D829148B2C0055424F /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,6 +109,7 @@
 				771D46CE29133BBA005F7781 /* API.swift */,
 				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
 				771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */,
+				773EFC97292FE6AA00F5ED82 /* SeedCacheManager.swift */,
 				77CE434B291333CA000019A8 /* GraphQL */,
 				77CE434329132BBB000019A8 /* schema.json */,
 				77CE43282913299C000019A8 /* AlgorhythmApp.swift */,
@@ -150,7 +151,6 @@
 			packageProductDependencies = (
 				77CE433C29132B3A000019A8 /* Apollo */,
 				77CE433E29132B3A000019A8 /* ApolloAPI */,
-				77CE434029132B3A000019A8 /* ApolloSQLite */,
 				771D46D1291463B3005F7781 /* SpotifyAPI */,
 				776DB7D729148B2C0055424F /* KeychainAccess */,
 			);
@@ -239,6 +239,7 @@
 				7765B2D029186AC600DB67AC /* MoodScreen.swift in Sources */,
 				77CE43322913299D000019A8 /* Persistence.swift in Sources */,
 				776DB7E129148E630055424F /* MiscellaneousUtilities.swift in Sources */,
+				773EFC98292FE6AA00F5ED82 /* SeedCacheManager.swift in Sources */,
 				77CE43352913299D000019A8 /* Algorhythm.xcdatamodeld in Sources */,
 				776DB7E429148E630055424F /* ImageNames.swift in Sources */,
 				771D46D42914657E005F7781 /* Spotify.swift in Sources */,
@@ -505,11 +506,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloAPI;
-		};
-		77CE434029132B3A000019A8 /* ApolloSQLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = ApolloSQLite;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -44,6 +44,8 @@ class SpotifyAnalysisListViewModel: ObservableObject {
  */
 extension SpotifyAnalysisListViewModel {
     
+    func getAnalyzedSongsCount() -> Int { return analyzedSongs.count }
+    
     // print the contents of the network call logger
     func printNetworkCalls() -> Void {
         print("""
@@ -77,48 +79,37 @@ extension SpotifyAnalysisListViewModel {
     func retrieveCachedMoodSeeds(genre:NSString, mood:SpotifyAnalysisViewModel.Moods) -> [String]? {
         return cache.getFromCache(genre: genre, mood: mood)
     }
+    
+    func printCacheContents() {
+        cache.printContent()
+    }
 }
 /**
  * Filter seeds by mood
  */
-extension SpotifyAnalysisListViewModel{
-    //
-    // request to cyanite API to analyze a list of tracks
-    //
-    func populateRecentlyPlayedSongAnalysis() {
-        // get track analysis
-        for (id, name) in songIds{
-            Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id    )){ [weak self] result in
-                switch result {
-                case .success(let graphQLResult):
-                    if let analyzedSongs = graphQLResult.data?.spotifyTrack {
-                        DispatchQueue.main.async {
-                            self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedSongs, name: name))
-                            self?.networkCalls.cyanite += 1
-                        }
-                    }
-                case .failure(let error):
-                    print("error")
-                }
-            }
-        }
-    }
-    
+extension SpotifyAnalysisListViewModel{    
     func findMoodGenreTrack(mood selectedMood:SpotifyAnalysisViewModel.Moods,
                             genre selectedGenre:String, tracks artistTracks:[Track]) {
+        var count:Int = 0
         for track in artistTracks {
-            if let id = track.id {
+                if let id = track.id {
                 Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id)) { [weak self] result in
                     switch result {
                     case .success(let graphQLResult):
-                        self?.networkCalls.cyanite += 1
-                        print("result found!")
+                        if let analyzedTrack = graphQLResult.data?.spotifyTrack {
+                            DispatchQueue.main.async {
+                                self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedTrack))
+                            }
+                        }
+                        count += 1
+                        if count == artistTracks.count {
+                            self?.cache.filterForCaching(mood: selectedMood, genre: selectedGenre, analyzedTracks: self?.analyzedSongs)
+                        }
                     case .failure(let error):
                         print("error")
                     }
-                    
                 }
-                
+                self.networkCalls.cyanite += 1
             }
         }
     }
@@ -135,14 +126,11 @@ class SpotifyAnalysisViewModel {
     var id: String {
         analyzedSpotifyTrack.asSpotifyTrack!.id
     }
-    
-    let name:String
-    
+        
     var maxMood:Moods
     
-    init(analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack, name:String) {
+    init(analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack) {
         self.analyzedSpotifyTrack = analyzedSpotifyTrack
-        self.name = name
         self.maxMood = Moods.Energetic
         getMaxValue()
     }

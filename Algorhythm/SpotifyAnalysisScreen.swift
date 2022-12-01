@@ -79,7 +79,7 @@ struct SpotifyAnalysisScreen: View{
         NavigationView{
             VStack{
                 Group{
-                    if userTopTracks.isEmpty {
+                    if false {
                         if isLoadingPage {
                             HStack {
                                 ProgressView()
@@ -104,9 +104,12 @@ struct SpotifyAnalysisScreen: View{
                             TrackView(track: item.element)
                         }
                         Spacer()
-                        Button(action: { getUserTopArtists()
+                        Button(action: { print("analyzed: \(analyzedSongListVM.getAnalyzedSongsCount()) songs")
                         }){Text("Get Recommendations")}
                     }
+                }
+                Button(action: {analyzedSongListVM.printCacheContents()}){
+                    Text("print cache contents")
                 }
                 Spacer()
                 Button(action: {analyzedSongListVM.printNetworkCalls()}){
@@ -115,7 +118,8 @@ struct SpotifyAnalysisScreen: View{
             }
         }
         .onAppear{
-            getTopTracks(trackLimit: 10)
+            getRecommendations(genreIsSelected: false)
+//            getTopTracks(trackLimit: 10)
         }
         .navigationTitle("User top tracks")
         .padding()
@@ -138,7 +142,7 @@ extension SpotifyAnalysisScreen {
         }
         else {
             print("cached seeds not found")
-            getRecommendationsWithMoodSeeds(trackLimit: 10, seedTracks: analyzedSongListVM.getAnalyzedMoodSeeds(bymood: selectedMood))
+            getUserTopArtists()
         }
         // there are no genre mood seeds cached, make network calls, and
         // retrieve the selected genre mood seed
@@ -168,7 +172,6 @@ extension SpotifyAnalysisScreen {
                     )
                     analyzedSongListVM.setSongIds(songIds: songIds)
                     analyzedSongListVM.networkCalls.spotify += 1
-                    analyzedSongListVM.populateRecentlyPlayedSongAnalysis()
                 }
             )
     }
@@ -225,7 +228,6 @@ extension SpotifyAnalysisScreen {
                     if let genres = artist?.genres {
                         for genre in genres {
                             if genre == selectedGenre as String {
-
                                 if let artistId = artist?.id {
                                     artists.append(artistId)
                                 }
@@ -241,22 +243,32 @@ extension SpotifyAnalysisScreen {
             }
         )
     }
+    /**
+     * function fetches the top tracks for the provided Ids and passes them to
+     * the view mdoel for analysis.
+     * @param: Ids - The artist ids to analyze
+     * @ return bool whether or not a track with the selected mood or genre was found
+     * in the artist top tracks
+     */
     func getArtistTopTracks(withIds Ids:[String]){
-        let myGroup = DispatchGroup()
-        for Id in Ids {
-            myGroup.enter()
+        let group = DispatchGroup()
+        var count:Int = Ids.count
+        while count > 0 {
+            count -= 1
+            let Id = Ids[(Ids.count - 1) - count]
+            count = 0
             self.getArtistTopTracksCancellable?.append(  self.spotify.api.artistTopTracks(artistURI(URI: Id), country: "US")
                 .receive(on: RunLoop.main)
                 .sink(receiveCompletion: self.getArtistTopTracksCompletion(_:),
                       receiveValue: { response in
-                    for item in response {
-                        print("Found track \(item.name)")
+                if let mood = self.selectedMood {
+                    analyzedSongListVM.findMoodGenreTrack(mood:
+                                                            mood,
+                                                          genre: selectedGenre as String,
+                                                          tracks: response)
                     }
-                    myGroup.leave()
-                }))
-        }
-        myGroup.notify(queue: .main) {
-            print("Finished all requests.")
+                }
+            ))
         }
     }
 }
