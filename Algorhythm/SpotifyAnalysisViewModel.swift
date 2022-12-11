@@ -43,6 +43,13 @@ class SpotifyAnalysisListViewModel: ObservableObject {
     // the list of seed ids for the selected mood and genre
     @Published var seedIds:[String] = []
     
+    // the event listener
+    private var eventListener:Event<Node<String>?>? = nil
+    
+    func initialize(listener:Event<Node<String>?>){
+        self.eventListener = listener
+    }
+    
 }
 
 /**
@@ -91,10 +98,9 @@ extension SpotifyAnalysisListViewModel {
  */
 extension SpotifyAnalysisListViewModel{    
     func findMoodGenreTrack(mood selectedMood:SpotifyAnalysisViewModel.Moods,
-                            genre selectedGenre:String, tracks artistTracks:[Track]) {
-        var count:Int = 0
-        for track in artistTracks {
-                if let id = track.id {
+                            genre selectedGenre:String, tracks artistTracks:Node<String?>?, parentNode node:Node<String>?) {
+        if let head = artistTracks {
+            if let id = head.value {
                 Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id)) { [weak self] result in
                     switch result {
                     case .success(let graphQLResult):
@@ -103,9 +109,13 @@ extension SpotifyAnalysisListViewModel{
                                 self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedTrack))
                             }
                         }
-                        count += 1
-                        if count == artistTracks.count {
-                            self?.filterForWriting(mood: selectedMood, genre: selectedGenre, analyzedTracks: self?.analyzedSongs)
+                        let res = self?.filterForWriting(mood: selectedMood, genre: selectedGenre, analyzedTracks: self?.analyzedSongs)
+                        if res! {
+                            return
+                        }
+                        else {
+                            self?.findMoodGenreTrack(mood: selectedMood, genre: selectedGenre,
+                                                     tracks: head.next, parentNode: node)
                         }
                     case .failure(let error):
                         print("error")
@@ -113,6 +123,12 @@ extension SpotifyAnalysisListViewModel{
                 }
                 self.networkCalls.cyanite += 1
             }
+            
+        }
+        else {
+            // we need to call get artist Top tracks again, with the parent head.
+            // we will pass the parent head in to the function, then use it while calling the parent function
+            eventListener?.raise(data: node?.next)
         }
     }
     
@@ -121,16 +137,16 @@ extension SpotifyAnalysisListViewModel{
      * write to the data base and return
      */
     func filterForWriting(mood selectedMood:SpotifyAnalysisViewModel.Moods,
-                          genre selectedGenre:String, analyzedTracks tracks:[SpotifyAnalysisViewModel]?){
+                          genre selectedGenre:String, analyzedTracks tracks:[SpotifyAnalysisViewModel]?) -> Bool{
         if let loc_tracks = tracks {
             for track in loc_tracks {
                 if track.maxMood == selectedMood {
                     seedIds.append(track.id)
-                    return
+                    return true
                 }
             }
-            print("no track written! mood not found for selected genre \(selectedGenre)")
         }
+        return false
     }
     
     func writeToDataBase(mood selectedMood:SpotifyAnalysisViewModel.Moods,

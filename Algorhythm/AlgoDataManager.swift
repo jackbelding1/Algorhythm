@@ -66,14 +66,12 @@ extension AlgoDataManager {
                 try! realm.write {
                     results.first?.IdsByMood.append(moodObject)
                 }
-                print("mood not found")
             }
             else {
                 // mood found. append to list of ids
                 try! realm.write {
                     dataObject?.first?.Ids.append(objectsIn: ids)
                 }
-                print("mood found")
             }
         }
         
