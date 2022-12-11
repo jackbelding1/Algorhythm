@@ -79,7 +79,7 @@ struct SpotifyAnalysisScreen: View{
         NavigationView{
             VStack{
                 Group{
-                    if false {
+                    if analyzedSongListVM.seedIds.isEmpty {
                         if isLoadingPage {
                             HStack {
                                 ProgressView()
@@ -98,18 +98,18 @@ struct SpotifyAnalysisScreen: View{
                     else {
                         // show user top tracks
                         ForEach(
-                            Array(recommendedTracks.enumerated()),
+                            Array(analyzedSongListVM.seedIds.enumerated()),
                             id: \.offset
                         ){item in
-                            TrackView(track: item.element)
+                            Text(item.element)
                         }
                         Spacer()
-                        Button(action: { print("analyzed: \(analyzedSongListVM.getAnalyzedSongsCount()) songs")
-                        }){Text("Get Recommendations")}
+//                        Button(action: { print("analyzed: \(analyzedSongListVM.getAnalyzedSongsCount()) songs")
+//                        }){Text("Get Recommendations")}
+                        Button(action: {writeTracks()}){
+                            Text("Write tracks")
+                        }
                     }
-                }
-                Button(action: {analyzedSongListVM.printCacheContents()}){
-                    Text("print cache contents")
                 }
                 Spacer()
                 Button(action: {analyzedSongListVM.printNetworkCalls()}){
@@ -134,19 +134,15 @@ extension SpotifyAnalysisScreen {
             // TODO: generate normalized genre
             //
         }
-        //
-        // TODO: check cache for genre mood seeds
-        //
-        if let cachedSeeds = analyzedSongListVM.retrieveCachedMoodSeeds(genre: selectedGenre, mood: selectedMood!){
-            print("found cached mood seeds")
+        if !analyzedSongListVM.loadFromDatabase(mood: selectedMood!, genre: selectedGenre as String){
+            getUserTopArtists() // download mood seed from network
         }
-        else {
-            print("cached seeds not found")
-            getUserTopArtists()
-        }
-        // there are no genre mood seeds cached, make network calls, and
-        // retrieve the selected genre mood seed
-        
+        self.isLoadingPage = false
+    }
+    
+    func writeTracks() {
+        analyzedSongListVM.writeToDataBase(
+            mood: selectedMood!, genre: selectedGenre as String)
     }
     
     /**
