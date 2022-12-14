@@ -68,8 +68,9 @@ extension AlgoDataManager {
                 }
             }
             else {
-                // mood found. append to list of ids
+                // mood found. replace ids with ids passed in
                 try! realm.write {
+                    dataObject?.first?.Ids.removeAll()
                     dataObject?.first?.Ids.append(objectsIn: ids)
                 }
             }

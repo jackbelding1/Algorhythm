@@ -19,7 +19,6 @@ class artistURI: SpotifyURIConvertible {
     }
 }
 
-
 struct SpotifyAnalysisScreen: View{
 
     // spotify object
@@ -36,24 +35,18 @@ struct SpotifyAnalysisScreen: View{
     
     // the array recommended tracks generated
     @State private var recommendedTracks: [Track]
-    
-    // the array of top artist
-    private var topArtists:[String] = []
 
-    // cancellable for top tracks api
-    @State private var getUserTopTracksCancellable: AnyCancellable? = nil
+    @State private var createPlaylistCancellable: AnyCancellable? = nil
     
-    // cancellable for track recommendation api
     @State private var getRecommendationsCancellable: AnyCancellable? = nil
 
-    // cancellable for top artists api
     @State private var getUserTopArtistsCancellable: AnyCancellable? = nil
     
-    // cancellable for artist api
     @State private var getArtistsCancellable: AnyCancellable? = nil
     
-    // cancellable for artist top tracks
     @State private var getArtistTopTracksCancellable: [AnyCancellable]? = []
+    
+    @State private var addTracksCancellable: AnyCancellable? = nil
     
     // store an alert
     @State private var alert: AlertItem? = nil
@@ -83,8 +76,8 @@ struct SpotifyAnalysisScreen: View{
         NavigationView{
             VStack{
                 Group{
-                    if analyzedSongListVM.seedIds.isEmpty {
-                        if isLoadingPage {
+                    if recommendedTracks.isEmpty{
+                        if analyzedSongListVM.seedIds.isEmpty {
                             HStack {
                                 ProgressView()
                                     .padding()
@@ -94,22 +87,24 @@ struct SpotifyAnalysisScreen: View{
                             }
                         }
                         else {
-                            Text("No Recommended Tracks")
-                                .font(.title)
-                                .foregroundColor(.secondary)
+                            Button(action: {getRecommendations()}){
+                                Text("Generate Recommendations")
+                                    .font(.title)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
                     else {
                         // show user top tracks
                         ForEach(
-                            Array(analyzedSongListVM.seedIds.enumerated()),
-                            id: \.offset
+                            recommendedTracks,
+                            id: \.self
                         ){item in
-                            Text(item.element)
+                            TrackView(track: item)
                         }
                         Spacer()
-                        Button(action: {writeTracks()}){
-                            Text("Write tracks")
+                        Button(action: {createPlaylistFromRecommendations()}){
+                            Text("Create playlist!!")
                         }
                     }
                 }
@@ -122,7 +117,7 @@ struct SpotifyAnalysisScreen: View{
         .onAppear{
             eventListener.addHandler {data in networkRetryHandler(Ids: data)}
             analyzedSongListVM.initialize(listener: eventListener)
-            getRecommendations(genreIsSelected: false)
+            getSeeds(genreIsSelected: false)
         }
         .navigationTitle("User top tracks")
         .padding()
@@ -131,7 +126,7 @@ struct SpotifyAnalysisScreen: View{
 
 extension SpotifyAnalysisScreen {
     
-    func getRecommendations(genreIsSelected:Bool) {
+    func getSeeds(genreIsSelected:Bool) {
         if !genreIsSelected {
             //
             // TODO: generate normalized genre
@@ -140,13 +135,59 @@ extension SpotifyAnalysisScreen {
         if !analyzedSongListVM.loadFromDatabase(mood: selectedMood!, genre: selectedGenre as String){
             getUserTopArtists() // download mood seed from network
         }
-        self.isLoadingPage = false
+    }
+    
+    func getRecommendations() {
+        let trackURIs:[String] = analyzedSongListVM.seedIds.map {"spotify:track:\($0)" }
+        self.getRecommendationsCancellable = self.spotify.api
+            .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 10)
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: self.getRecommendationsCompletion(_:),
+                  receiveValue: {
+                response in
+                self.recommendedTracks = response.tracks
+                analyzedSongListVM.networkCalls.spotify += 1
+            })
+        
+    }
+    
+    func createPlaylistFromRecommendations() {
+        var playlistURI:String = ""
+        var user:String = spotify.currentUser!.id
+        if let currentUser = spotify.currentUser?.uri {
+            self.createPlaylistCancellable = self.spotify.api
+                .createPlaylist(for: currentUser, PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "dudes be like subway sucks"))
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: self.createPlaylistCompletion(_:),
+                    receiveValue: {
+                        response in
+                    playlistURI = response.uri
+                        
+                }
+            )
+        }
+        if !playlistURI.isEmpty {
+            let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id)" }
+            self.addTracksCancellable = self.spotify.api
+                .addToPlaylist(playlistURI, uris: trackURIs)
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: self.addTracksCompletion(_:),
+                      receiveValue: {
+                    response in
+                    print("Ids added to playlist")
+                })
+            
+        }
     }
     
     func writeTracks() {
-        analyzedSongListVM.writeToDataBase(
-            mood: selectedMood!, genre: selectedGenre as String)
+        let ids = self.recommendedTracks.map { $0.id! }
+        if !ids.isEmpty {
+            analyzedSongListVM.writeToDataBase(
+                mood: selectedMood!, genre: selectedGenre as String, withIds: ids)
+        }
     }
+    
 }
 
 // Generate the seeds for the cache
@@ -252,6 +293,32 @@ extension SpotifyAnalysisScreen {
 }
 
 extension SpotifyAnalysisScreen {
+    func createPlaylistCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        if case .failure(let error) = completion {
+            let title = "Couldn't create playlist"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+    }
+    
+    func addTracksCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        if case .failure(let error) = completion {
+            let title = "Couldn't add items"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+    }
+    
     func getRecommendationsCompletion(
         _ completion: Subscribers.Completion<Error>
     ) {
@@ -263,21 +330,6 @@ extension SpotifyAnalysisScreen {
                 message: error.localizedDescription
             )
         }
-        self.isLoadingPage = false
-    }
-    
-    func getTopTracksCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        if case .failure(let error) = completion {
-            let title = "Couldn't retrieve user top tracks"
-            print("\(title): \(error)")
-            self.alert = AlertItem(
-                title: title,
-                message: error.localizedDescription
-            )
-        }
-        self.isLoadingPage = false
     }
     
     func getTopArtistsCompletion(

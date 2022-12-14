@@ -142,6 +142,7 @@ extension SpotifyAnalysisListViewModel{
             for track in loc_tracks {
                 if track.maxMood == selectedMood {
                     seedIds.append(track.id)
+                    writeToDataBase(mood: selectedMood, genre: selectedGenre, withIds: seedIds)
                     return true
                 }
             }
@@ -150,8 +151,8 @@ extension SpotifyAnalysisListViewModel{
     }
     
     func writeToDataBase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
-                         genre selectedGenre:String) {
-        algoDbManager.writeIds(forGenre: selectedGenre, forMood: enumToString(selectedMood)!, ids: seedIds)
+                         genre selectedGenre:String, withIds Ids:[String]) {
+        algoDbManager.writeIds(forGenre: selectedGenre, forMood: enumToString(selectedMood)!, ids: Ids)
         
     }
     
