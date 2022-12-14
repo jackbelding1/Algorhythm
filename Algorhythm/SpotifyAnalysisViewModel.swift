@@ -37,13 +37,26 @@ class SpotifyAnalysisListViewModel: ObservableObject {
     // the cache manager for recommendation seeds
     private let cache:RecommendationSeedCacheManager = RecommendationSeedCacheManager()
     
+    // the realm database manager
+    private let algoDbManager = AlgoDataManager()
+    
+    // the list of seed ids for the selected mood and genre
+    @Published var seedIds:[String] = []
+    
+    // the event listener
+    private var eventListener:Event<Node<String>?>? = nil
+    
+    func initialize(listener:Event<Node<String>?>){
+        self.eventListener = listener
+    }
+    
 }
 
 /**
  * utility functions
  */
 extension SpotifyAnalysisListViewModel {
-    
+        
     func getAnalyzedSongsCount() -> Int { return analyzedSongs.count }
     
     // print the contents of the network call logger
@@ -75,11 +88,7 @@ extension SpotifyAnalysisListViewModel {
         }
         return filteredTrackIds
     }
-    
-    func retrieveCachedMoodSeeds(genre:NSString, mood:SpotifyAnalysisViewModel.Moods) -> [String]? {
-        return cache.getFromCache(genre: genre, mood: mood)
-    }
-    
+
     func printCacheContents() {
         cache.printContent()
     }
@@ -89,10 +98,9 @@ extension SpotifyAnalysisListViewModel {
  */
 extension SpotifyAnalysisListViewModel{    
     func findMoodGenreTrack(mood selectedMood:SpotifyAnalysisViewModel.Moods,
-                            genre selectedGenre:String, tracks artistTracks:[Track]) {
-        var count:Int = 0
-        for track in artistTracks {
-                if let id = track.id {
+                            genre selectedGenre:String, tracks artistTracks:Node<String?>?, parentNode node:Node<String>?) {
+        if let head = artistTracks {
+            if let id = head.value {
                 Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id)) { [weak self] result in
                     switch result {
                     case .success(let graphQLResult):
@@ -101,9 +109,13 @@ extension SpotifyAnalysisListViewModel{
                                 self?.analyzedSongs.append(SpotifyAnalysisViewModel.init(analyzedSpotifyTrack: analyzedTrack))
                             }
                         }
-                        count += 1
-                        if count == artistTracks.count {
-                            self?.cache.filterForCaching(mood: selectedMood, genre: selectedGenre, analyzedTracks: self?.analyzedSongs)
+                        let res = self?.filterForWriting(mood: selectedMood, genre: selectedGenre, analyzedTracks: self?.analyzedSongs)
+                        if res! {
+                            return
+                        }
+                        else {
+                            self?.findMoodGenreTrack(mood: selectedMood, genre: selectedGenre,
+                                                     tracks: head.next, parentNode: node)
                         }
                     case .failure(let error):
                         print("error")
@@ -111,7 +123,56 @@ extension SpotifyAnalysisListViewModel{
                 }
                 self.networkCalls.cyanite += 1
             }
+            
         }
+        else {
+            // we need to call get artist Top tracks again, with the parent head.
+            // we will pass the parent head in to the function, then use it while calling the parent function
+            eventListener?.raise(data: node?.next)
+        }
+    }
+    
+    /**
+     * Search through the provided tracks. When a track's max mood is the selected mood,
+     * write to the data base and return
+     */
+    func filterForWriting(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+                          genre selectedGenre:String, analyzedTracks tracks:[SpotifyAnalysisViewModel]?) -> Bool{
+        if let loc_tracks = tracks {
+            for track in loc_tracks {
+                if track.maxMood == selectedMood {
+                    seedIds.append(track.id)
+                    writeToDataBase(mood: selectedMood, genre: selectedGenre, withIds: seedIds)
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    func writeToDataBase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+                         genre selectedGenre:String, withIds Ids:[String]) {
+        algoDbManager.writeIds(forGenre: selectedGenre, forMood: enumToString(selectedMood)!, ids: Ids)
+        
+    }
+    
+    func loadFromDatabase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+                          genre selectedGenre:String) -> Bool {
+        // try to load from the data manager. if ids are found, append to the
+        // list and return true. if empty ids, return false
+        if let mood = enumToString(selectedMood){
+            let ids = algoDbManager.readIds(forGenre: selectedGenre, forMood: mood)
+            if ids.isEmpty {
+                return false
+            }
+            else {
+                for id in ids {
+                    seedIds.append(id)
+                }
+                return true
+            }
+        }
+        return false
     }
 }
 

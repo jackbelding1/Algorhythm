@@ -1,0 +1,63 @@
+{
+  "configurations" : [
+    {
+      "id" : "350E5B2C-AAD2-43E6-BC71-0A0B3C4B12F3",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "enabled" : false,
+        "key" : "SPOTIFY_CREDENTIALS_PATH",
+        "value" : "path\/to\/file"
+      },
+      {
+        "enabled" : false,
+        "key" : "SPOTIFY_DATA_DUMP_FOLDER",
+        "value" : "path\/to\/folder"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow\/retrieve-tokens"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_REFRESH_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow\/refresh-tokens"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_PKCE_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow-pkce\/retrieve-tokens"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_PKCE_REFRESH_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow-pkce\/refresh-tokens"
+      },
+      {
+        "key" : "SPOTIFY_CLIENT_CREDENTIALS_FLOW_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/client-credentials-flow\/retrieve-tokens"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:",
+      "identifier" : "SpotifyAPI",
+      "name" : "SpotifyAPI"
+    },
+    "testExecutionOrdering" : "random",
+    "threadSanitizerEnabled" : true,
+    "undefinedBehaviorSanitizerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpotifyAPIMainTests",
+        "name" : "SpotifyAPIMainTests"
+      }
+    }
+  ],
+  "version" : 1
+}

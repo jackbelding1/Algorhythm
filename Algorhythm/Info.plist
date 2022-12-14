@@ -5,6 +5,10 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+            <key>LSApplicationQueriesSchemes</key>
+                <array>
+                    <string>spotify</string>
+                </array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>

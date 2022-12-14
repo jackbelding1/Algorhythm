@@ -1,0 +1,15 @@
+version: 1
+builder:
+  configs:
+  - platform: watchos
+    scheme: SpotifyAPI
+  - platform: ios
+    scheme: SpotifyAPI
+  - platform: macos-xcodebuild
+    scheme: SpotifyAPI
+  - platform: macos-xcodebuild-arm
+    scheme: SpotifyAPI
+  - platform: tvos
+    scheme: SpotifyAPI
+  - platform: linux
+    scheme: SpotifyAPI

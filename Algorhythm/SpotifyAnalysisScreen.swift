@@ -10,16 +10,17 @@ import Combine
 import SpotifyWebAPI
 import SpotifyExampleContent
 
-struct SpotifyAnalysisScreen: View{
-    // the URI for artists
-    class artistURI: SpotifyURIConvertible {
-        public var uri:String
-        
-        init(URI artistUri:String){
-            self.uri = "spotify:artist:\(artistUri)"
-        }
-    }
+// the URI for artists
+class artistURI: SpotifyURIConvertible {
+    public var uri:String
     
+    init(URI artistUri:String){
+        self.uri = "spotify:artist:\(artistUri)"
+    }
+}
+
+struct SpotifyAnalysisScreen: View{
+
     // spotify object
     @EnvironmentObject var spotify: Spotify
 
@@ -34,24 +35,18 @@ struct SpotifyAnalysisScreen: View{
     
     // the array recommended tracks generated
     @State private var recommendedTracks: [Track]
-    
-    // the array of top artist
-    private var topArtists:[String] = []
 
-    // cancellable for top tracks api
-    @State private var getUserTopTracksCancellable: AnyCancellable? = nil
+    @State private var createPlaylistCancellable: AnyCancellable? = nil
     
-    // cancellable for track recommendation api
     @State private var getRecommendationsCancellable: AnyCancellable? = nil
 
-    // cancellable for top artists api
     @State private var getUserTopArtistsCancellable: AnyCancellable? = nil
     
-    // cancellable for artist api
     @State private var getArtistsCancellable: AnyCancellable? = nil
     
-    // cancellable for artist top tracks
     @State private var getArtistTopTracksCancellable: [AnyCancellable]? = []
+    
+    @State private var addTracksCancellable: AnyCancellable? = nil
     
     // store an alert
     @State private var alert: AlertItem? = nil
@@ -61,6 +56,9 @@ struct SpotifyAnalysisScreen: View{
     
     // the genre to generate the playlist from
     private var selectedGenre:NSString = "edm"
+    
+    // the event listener
+    private var eventListener = Event<Node<String>?>()
 
     // initializer
     init(mood:SpotifyAnalysisViewModel.Moods?) {
@@ -74,13 +72,12 @@ struct SpotifyAnalysisScreen: View{
         self._recommendedTracks = State(initialValue: recommendedTracks)
         selectedMood = nil
     }
-    
     var body: some View {
         NavigationView{
             VStack{
                 Group{
-                    if false {
-                        if isLoadingPage {
+                    if recommendedTracks.isEmpty{
+                        if analyzedSongListVM.seedIds.isEmpty {
                             HStack {
                                 ProgressView()
                                     .padding()
@@ -90,26 +87,26 @@ struct SpotifyAnalysisScreen: View{
                             }
                         }
                         else {
-                            Text("No Recommended Tracks")
-                                .font(.title)
-                                .foregroundColor(.secondary)
+                            Button(action: {getRecommendations()}){
+                                Text("Generate Recommendations")
+                                    .font(.title)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
                     else {
                         // show user top tracks
                         ForEach(
-                            Array(recommendedTracks.enumerated()),
-                            id: \.offset
+                            recommendedTracks,
+                            id: \.self
                         ){item in
-                            TrackView(track: item.element)
+                            TrackView(track: item)
                         }
                         Spacer()
-                        Button(action: { print("analyzed: \(analyzedSongListVM.getAnalyzedSongsCount()) songs")
-                        }){Text("Get Recommendations")}
+                        Button(action: {createPlaylistFromRecommendations()}){
+                            Text("Create playlist!!")
+                        }
                     }
-                }
-                Button(action: {analyzedSongListVM.printCacheContents()}){
-                    Text("print cache contents")
                 }
                 Spacer()
                 Button(action: {analyzedSongListVM.printNetworkCalls()}){
@@ -118,8 +115,9 @@ struct SpotifyAnalysisScreen: View{
             }
         }
         .onAppear{
-            getRecommendations(genreIsSelected: false)
-//            getTopTracks(trackLimit: 10)
+            eventListener.addHandler {data in networkRetryHandler(Ids: data)}
+            analyzedSongListVM.initialize(listener: eventListener)
+            getSeeds(genreIsSelected: false)
         }
         .navigationTitle("User top tracks")
         .padding()
@@ -128,73 +126,67 @@ struct SpotifyAnalysisScreen: View{
 
 extension SpotifyAnalysisScreen {
     
-    func getRecommendations(genreIsSelected:Bool) {
+    func getSeeds(genreIsSelected:Bool) {
         if !genreIsSelected {
             //
             // TODO: generate normalized genre
             //
         }
-        //
-        // TODO: check cache for genre mood seeds
-        //
-        if let cachedSeeds = analyzedSongListVM.retrieveCachedMoodSeeds(genre: selectedGenre, mood: selectedMood!){
-            print("found cached mood seeds")
+        if !analyzedSongListVM.loadFromDatabase(mood: selectedMood!, genre: selectedGenre as String){
+            getUserTopArtists() // download mood seed from network
         }
-        else {
-            print("cached seeds not found")
-            getUserTopArtists()
-        }
-        // there are no genre mood seeds cached, make network calls, and
-        // retrieve the selected genre mood seed
-        
     }
     
-    /**
-     * function returns user top tracks
-     */
-    func getTopTracks(trackLimit:Int?) {
-        self.isLoadingPage = true
-        self.userTopTracks = []
-        var songIds:[String:String] = [:]
-        
-        self.getUserTopTracksCancellable = self.spotify.api
-            .currentUserTopTracks(limit:trackLimit)
-            .receive(on: RunLoop.main)
-            .sink(
-                receiveCompletion: self.getTopTracksCompletion(_:),
-                receiveValue: {
-                    response in self.userTopTracks = response.items
-                    for song in response.items{
-                        songIds[song.id!] = song.name
-                    }
-                    print(
-                        "received first page with \(userTopTracks.count) items"
-                    )
-                    analyzedSongListVM.setSongIds(songIds: songIds)
-                    analyzedSongListVM.networkCalls.spotify += 1
-                }
-            )
-    }
-    
-    func getRecommendationsWithMoodSeeds(trackLimit:Int?, seedTracks:[String]){
-        
-        let trackIds = seedTracks.map { "spotify:track:" + $0 }
-        let trackAttributes = TrackAttributes(seedTracks: trackIds)
+    func getRecommendations() {
+        let trackURIs:[String] = analyzedSongListVM.seedIds.map {"spotify:track:\($0)" }
         self.getRecommendationsCancellable = self.spotify.api
-            .recommendations(trackAttributes, limit: trackLimit)
+            .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 10)
             .receive(on: RunLoop.main)
-            .sink(
-            receiveCompletion: self.getRecommendationsCompletion(_:),
-            receiveValue: {
+            .sink(receiveCompletion: self.getRecommendationsCompletion(_:),
+                  receiveValue: {
                 response in
                 self.recommendedTracks = response.tracks
-                print(
-                    "received first page with \(recommendedTracks.count) items"
-                )
                 analyzedSongListVM.networkCalls.spotify += 1
-            }
-        )
+            })
+        
     }
+    
+    func createPlaylistFromRecommendations() {
+        var playlistURI:String = ""
+        if let currentUser = spotify.currentUser?.id {
+            self.createPlaylistCancellable = self.spotify.api
+                .createPlaylist(for: currentUser, PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "dudes be like subway sucks"))
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: self.createPlaylistCompletion(_:),
+                    receiveValue: {
+                        response in
+                    playlistURI = response.uri
+                    if !playlistURI.isEmpty {
+                        let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id!)" }
+                        self.addTracksCancellable = self.spotify.api
+                            .addToPlaylist(playlistURI, uris: trackURIs)
+                            .receive(on: RunLoop.main)
+                            .sink(receiveCompletion: self.addTracksCompletion(_:),
+                                  receiveValue: {
+                                response in
+                                print("Ids added to playlist")
+                            }
+                        )
+                    }
+                }
+            )
+        }
+
+    }
+    
+    func writeTracks() {
+        let ids = self.recommendedTracks.map { $0.id! }
+        if !ids.isEmpty {
+            analyzedSongListVM.writeToDataBase(
+                mood: selectedMood!, genre: selectedGenre as String, withIds: ids)
+        }
+    }
+    
 }
 
 // Generate the seeds for the cache
@@ -218,7 +210,8 @@ extension SpotifyAnalysisScreen {
     
     func findArtistWithSelectedGenre(withIds artistIds:[String]) {
         let uris = artistIds.map {artistURI(URI: $0)}
-        var artists:[String] = []
+        var artists:LinkedList<String> = LinkedList<String>()
+        var createList:Bool = true
         self.getArtistsCancellable = self.spotify.api.artists(uris)
             .receive(on: RunLoop.main)
             .sink(receiveCompletion:
@@ -229,17 +222,21 @@ extension SpotifyAnalysisScreen {
                         for genre in genres {
                             if genre == selectedGenre as String {
                                 if let artistId = artist?.id {
-                                    artists.append(artistId)
+                                    if createList {
+                                        let node = Node(value: artistId)
+                                        artists.initialize(withNode: node)
+                                        createList = false
+                                    }
+                                    else {
+                                        artists.append(artistId) // populate linked list
+                                    }
+
                                 }
                             }
                         }
                     }
                 }
-                //
-                // TODO: analyze artist top tracks
-                // TODO: If mood and genre found, cache the track id
-                //
-                getArtistTopTracks(withIds: artists)
+                getArtistTopTracks(withIds: artists.head)
             }
         )
     }
@@ -250,22 +247,32 @@ extension SpotifyAnalysisScreen {
      * @ return bool whether or not a track with the selected mood or genre was found
      * in the artist top tracks
      */
-    func getArtistTopTracks(withIds Ids:[String]){
-        let group = DispatchGroup()
-        var count:Int = Ids.count
-        while count > 0 {
-            count -= 1
-            let Id = Ids[(Ids.count - 1) - count]
-            count = 0
+    func getArtistTopTracks(withIds Ids:Node<String>?){
+        var tracks:LinkedList<String?> = LinkedList<String?>()
+        var createList:Bool = true
+        if let head = Ids {
+            let Id = head.value
             self.getArtistTopTracksCancellable?.append(  self.spotify.api.artistTopTracks(artistURI(URI: Id), country: "US")
                 .receive(on: RunLoop.main)
                 .sink(receiveCompletion: self.getArtistTopTracksCompletion(_:),
                       receiveValue: { response in
                 if let mood = self.selectedMood {
-                    analyzedSongListVM.findMoodGenreTrack(mood:
-                                                            mood,
-                                                          genre: selectedGenre as String,
-                                                          tracks: response)
+                    // create linked list from response and pass it to the function
+                    for val in response {
+                        if createList {
+                            let node = Node(value: val.id)
+                            tracks.initialize(withNode: node)
+                            createList = false
+                        }
+                        else {
+                            tracks.append(val.id)
+                        }
+                    }
+                    analyzedSongListVM.findMoodGenreTrack(
+                        mood: mood, genre: selectedGenre as String,
+                        tracks: tracks.head, parentNode: head)
+                        print("iteration done")
+                        
                     }
                 }
             ))
@@ -274,6 +281,43 @@ extension SpotifyAnalysisScreen {
 }
 
 extension SpotifyAnalysisScreen {
+    func networkRetryHandler(Ids:Node<String>?){
+        if let node = Ids {
+            getArtistTopTracks(withIds: node)
+        }
+        else {
+            print("no seeds matching mood found! try again!")
+        }
+    }
+}
+
+extension SpotifyAnalysisScreen {
+    func createPlaylistCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        if case .failure(let error) = completion {
+            let title = "Couldn't create playlist"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+    }
+    
+    func addTracksCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        if case .failure(let error) = completion {
+            let title = "Couldn't add items"
+            print("\(title): \(error)")
+            self.alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+    }
+    
     func getRecommendationsCompletion(
         _ completion: Subscribers.Completion<Error>
     ) {
@@ -285,21 +329,6 @@ extension SpotifyAnalysisScreen {
                 message: error.localizedDescription
             )
         }
-        self.isLoadingPage = false
-    }
-    
-    func getTopTracksCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        if case .failure(let error) = completion {
-            let title = "Couldn't retrieve user top tracks"
-            print("\(title): \(error)")
-            self.alert = AlertItem(
-                title: title,
-                message: error.localizedDescription
-            )
-        }
-        self.isLoadingPage = false
     }
     
     func getTopArtistsCompletion(

@@ -10,9 +10,9 @@
 		771D46CB291337BF005F7781 /* SpotifyAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */; };
 		771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CC29133B85005F7781 /* ApolloNetwork.swift */; };
 		771D46CF29133BBA005F7781 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CE29133BBA005F7781 /* API.swift */; };
-		771D46D2291463B3005F7781 /* SpotifyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 771D46D1291463B3005F7781 /* SpotifyAPI */; };
 		771D46D42914657E005F7781 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46D32914657E005F7781 /* Spotify.swift */; };
 		773EFC98292FE6AA00F5ED82 /* SeedCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773EFC97292FE6AA00F5ED82 /* SeedCacheManager.swift */; };
+		77587143294A4BD100BAB8EB /* SpotifyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 77587142294A4BD100BAB8EB /* SpotifyAPI */; };
 		7765B2D029186AC600DB67AC /* MoodScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7765B2CF29186AC600DB67AC /* MoodScreen.swift */; };
 		776DB7D829148B2C0055424F /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 776DB7D729148B2C0055424F /* KeychainAccess */; };
 		776DB7DA29148D7F0055424F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7D929148D7F0055424F /* LoginView.swift */; };
@@ -33,9 +33,13 @@
 		77CE433F29132B3A000019A8 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE433E29132B3A000019A8 /* ApolloAPI */; };
 		77CE434429132BBB000019A8 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434329132BBB000019A8 /* schema.json */; };
 		77CE434C291333CB000019A8 /* GraphQL in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434B291333CA000019A8 /* GraphQL */; };
+		77DB3726293AD8490058DBC6 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 77DB3725293AD8490058DBC6 /* Realm */; };
+		77DB3728293AD8490058DBC6 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 77DB3727293AD8490058DBC6 /* RealmSwift */; };
+		77DB372A293BEA230058DBC6 /* AlgoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		77062580294A4A2F002E3AC8 /* SpotifyAPI */ = {isa = PBXFileReference; lastKnownFileType = text; path = SpotifyAPI; sourceTree = SOURCE_ROOT; };
 		771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisViewModel.swift; sourceTree = "<group>"; };
 		771D46CC29133B85005F7781 /* ApolloNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApolloNetwork.swift; sourceTree = "<group>"; };
 		771D46CE29133BBA005F7781 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -60,6 +64,7 @@
 		77CE43342913299D000019A8 /* Algorhythm.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Algorhythm.xcdatamodel; sourceTree = "<group>"; };
 		77CE434329132BBB000019A8 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		77CE434B291333CA000019A8 /* GraphQL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GraphQL; sourceTree = "<group>"; };
+		77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,21 +72,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77DB3728293AD8490058DBC6 /* RealmSwift in Frameworks */,
 				77CE433F29132B3A000019A8 /* ApolloAPI in Frameworks */,
 				77CE433D29132B3A000019A8 /* Apollo in Frameworks */,
-				771D46D2291463B3005F7781 /* SpotifyAPI in Frameworks */,
 				776DB7D829148B2C0055424F /* KeychainAccess in Frameworks */,
+				77587143294A4BD100BAB8EB /* SpotifyAPI in Frameworks */,
+				77DB3726293AD8490058DBC6 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7706257C294A4875002E3AC8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		77CE431C2913299C000019A8 = {
 			isa = PBXGroup;
 			children = (
 				77CE43272913299C000019A8 /* Algorhythm */,
 				77CE43262913299C000019A8 /* Products */,
+				7706257C294A4875002E3AC8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +111,7 @@
 		77CE43272913299C000019A8 /* Algorhythm */ = {
 			isa = PBXGroup;
 			children = (
+				77062580294A4A2F002E3AC8 /* SpotifyAPI */,
 				77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */,
 				77BB442429200E3D00EF8E90 /* TrackView.swift */,
 				77B75DC9291B08E00014CEF8 /* SpotifyAnalysisScreen.swift */,
@@ -119,6 +135,7 @@
 				77CE432E2913299D000019A8 /* Preview Content */,
 				771D46D32914657E005F7781 /* Spotify.swift */,
 				7765B2CF29186AC600DB67AC /* MoodScreen.swift */,
+				77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */,
 			);
 			path = Algorhythm;
 			sourceTree = "<group>";
@@ -151,8 +168,10 @@
 			packageProductDependencies = (
 				77CE433C29132B3A000019A8 /* Apollo */,
 				77CE433E29132B3A000019A8 /* ApolloAPI */,
-				771D46D1291463B3005F7781 /* SpotifyAPI */,
 				776DB7D729148B2C0055424F /* KeychainAccess */,
+				77DB3725293AD8490058DBC6 /* Realm */,
+				77DB3727293AD8490058DBC6 /* RealmSwift */,
+				77587142294A4BD100BAB8EB /* SpotifyAPI */,
 			);
 			productName = Algorhythm;
 			productReference = 77CE43252913299C000019A8 /* Algorhythm.app */;
@@ -184,8 +203,8 @@
 			mainGroup = 77CE431C2913299C000019A8;
 			packageReferences = (
 				77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */,
-				771D46D0291463B3005F7781 /* XCRemoteSwiftPackageReference "SpotifyAPI" */,
 				776DB7D629148B2B0055424F /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				77DB3724293AD8490058DBC6 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 77CE43262913299C000019A8 /* Products */;
 			projectDirPath = "";
@@ -237,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7765B2D029186AC600DB67AC /* MoodScreen.swift in Sources */,
+				77DB372A293BEA230058DBC6 /* AlgoDataManager.swift in Sources */,
 				77CE43322913299D000019A8 /* Persistence.swift in Sources */,
 				776DB7E129148E630055424F /* MiscellaneousUtilities.swift in Sources */,
 				773EFC98292FE6AA00F5ED82 /* SeedCacheManager.swift in Sources */,
@@ -460,14 +480,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		771D46D0291463B3005F7781 /* XCRemoteSwiftPackageReference "SpotifyAPI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Peter-Schorn/SpotifyAPI.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		776DB7D629148B2B0055424F /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -484,12 +496,19 @@
 				minimumVersion = 0.46.0;
 			};
 		};
+		77DB3724293AD8490058DBC6 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.33.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		771D46D1291463B3005F7781 /* SpotifyAPI */ = {
+		77587142294A4BD100BAB8EB /* SpotifyAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 771D46D0291463B3005F7781 /* XCRemoteSwiftPackageReference "SpotifyAPI" */;
 			productName = SpotifyAPI;
 		};
 		776DB7D729148B2C0055424F /* KeychainAccess */ = {
@@ -506,6 +525,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 77CE433B29132B3A000019A8 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloAPI;
+		};
+		77DB3725293AD8490058DBC6 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77DB3724293AD8490058DBC6 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		77DB3727293AD8490058DBC6 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77DB3724293AD8490058DBC6 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 
