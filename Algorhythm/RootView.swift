@@ -15,6 +15,7 @@ struct RootView: View {
             ExamplesListView()
                 .navigationBarItems(trailing: logoutButton)
                 .disabled(!spotify.isAuthorized)
+                .environmentObject(spotify)
         }
         // The login view is presented if `Spotify.isAuthorized` == `false. When
         // the login button is tapped, `Spotify.authorize()` is called. After

@@ -20,5 +20,132 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C8635808-54EE-4720-A864-333D74AA527E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Algorhythm/SpotifyAnalysisViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "populateRecentlyPlayedSongAnalysis()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C8635808-54EE-4720-A864-333D74AA527E - 609e51d8440c35a3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Algorhythm.SpotifyAnalysisListViewModel.populateRecentlyPlayedSongAnalysis() -&gt; ()"
+                  moduleName = "Algorhythm"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jackbelding/Dropbox/My%20Mac%20(Jack%E2%80%99s%20MacBook%20Pro)/Desktop/XcodeProjs/Algorhythm/Algorhythm/Algorhythm/SpotifyAnalysisViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "344">
+               </Location>
+               <Location
+                  uuid = "C8635808-54EE-4720-A864-333D74AA527E - 578a9263ecbfe3e9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Algorhythm.SpotifyTrackQueryQuery.Data&gt;, Swift.Error&gt;) -&gt; () in Algorhythm.SpotifyAnalysisListViewModel.populateRecentlyPlayedSongAnalysis() -&gt; ()"
+                  moduleName = "Algorhythm"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jackbelding/Dropbox/My%20Mac%20(Jack%E2%80%99s%20MacBook%20Pro)/Desktop/XcodeProjs/Algorhythm/Algorhythm/Algorhythm/SpotifyAnalysisViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "209">
+               </Location>
+               <Location
+                  uuid = "C8635808-54EE-4720-A864-333D74AA527E - a841db087a111b9f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Algorhythm.SpotifyTrackQueryQuery.Data&gt;, Swift.Error&gt;) -&gt; () in Algorhythm.SpotifyAnalysisListViewModel.populateRecentlyPlayedSongAnalysis() -&gt; ()"
+                  moduleName = "Algorhythm"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jackbelding/Dropbox/My%20Mac%20(Jack%E2%80%99s%20MacBook%20Pro)/Desktop/XcodeProjs/Algorhythm/Algorhythm/Algorhythm/SpotifyAnalysisViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "73">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ADB4BA08-B418-4C21-819B-7B4D7C81C409"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Algorhythm/SpotifyAnalysisScreen.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "getTopTracks(trackLimit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4C143D4-DCAC-4187-8923-5FDF63FDF241"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Algorhythm/SpotifyAnalysisViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "populateRecentlyPlayedSongAnalysis()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CF02066E-7C51-46F1-BA7B-383D91C4604D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Algorhythm/SpotifyAnalysisScreen.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "getTopTracks(trackLimit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BF4ECED4-F349-4B0D-B86B-CB0214051E45"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Algorhythm/SpotifyAnalysisViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "populateRecentlyPlayedSongAnalysis()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

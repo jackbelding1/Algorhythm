@@ -27,9 +27,12 @@ query SpotifyTrackQuery($id: ID!) {
          mood {
             aggressive
             energetic
-            uplifting
+            dark
+            calm
+            happy
+            romantic
             sad
-            chilled
+            sexy
             }
           }
         }

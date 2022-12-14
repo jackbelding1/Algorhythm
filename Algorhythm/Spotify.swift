@@ -153,6 +153,7 @@ final class Spotify: ObservableObject {
             state: self.authorizationState,
             scopes: [
                 .userReadPlaybackState,
+                .userTopRead,
                 .userModifyPlaybackState,
                 .playlistModifyPrivate,
                 .playlistModifyPublic,

@@ -2,11 +2,15 @@ import SwiftUI
 
 struct ExamplesListView: View {
     
+    @EnvironmentObject var spotify: Spotify
+    
     var body: some View {
         NavigationView{
             List{
                 NavigationLink("Create a new playlist", destination: MoodScreen())
-                NavigationLink("test the algorithm", destination: SpotifyAnalysisScreen())
+                NavigationLink("test the algorithm", destination: SpotifyAnalysisScreen(mood: nil)
+                    .environmentObject(spotify)
+)
             }
 
         }
