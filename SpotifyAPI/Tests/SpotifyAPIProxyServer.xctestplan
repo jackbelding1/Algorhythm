@@ -1,0 +1,147 @@
+{
+  "configurations" : [
+    {
+      "id" : "779B6687-BA90-45F6-A1ED-9E8F67BDA37E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "enabled" : false,
+        "key" : "SPOTIFY_CREDENTIALS_PATH",
+        "value" : "path\/to\/file"
+      },
+      {
+        "enabled" : false,
+        "key" : "SPOTIFY_DATA_DUMP_FOLDER",
+        "value" : "path\/to\/folder"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow\/retrieve-tokens"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_REFRESH_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow\/refresh-tokens"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_PKCE_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow-pkce\/retrieve-tokens"
+      },
+      {
+        "key" : "SPOTIFY_AUTHORIZATION_CODE_FLOW_PKCE_REFRESH_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/authorization-code-flow-pkce\/refresh-tokens"
+      },
+      {
+        "key" : "SPOTIFY_CLIENT_CREDENTIALS_FLOW_TOKENS_URL",
+        "value" : "http:\/\/127.0.0.1:7000\/client-credentials-flow\/retrieve-tokens"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:",
+      "identifier" : "SpotifyAPI",
+      "name" : "SpotifyAPI"
+    },
+    "testExecutionOrdering" : "random",
+    "threadSanitizerEnabled" : true,
+    "undefinedBehaviorSanitizerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testArtist()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testArtistAlbums()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testArtistAlbumsExtendSinglePageConcurrent()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testArtistAlbumsExtendSinglePageSerial()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testArtistAlbumsSingles()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testArtistTopTracks()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testArtists()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyArtistTests\/testRelatedArtists()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testCodingSpotifyAPI()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testConvenienceInitializer()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testDeauthorizeReauthorize()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testDenyAuthorizationRequest()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testInvalidCode()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testInvalidCodeVerifier()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testInvalidState1()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testInvalidState2()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testInvalidState3()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testReassigningAuthorizationManager()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testRefreshTokens()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyAuthorizationTests\/testRefreshWithInvalidRefreshToken()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyFollowTests\/testFollowArtists()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyFollowTests\/testFollowPlaylist()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyFollowTests\/testFollowUsers()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyFollowTests\/testFollowedArtists()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyFollowTests\/testUsersFollowPlaylist()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyInsufficientScopeTests\/testInsufficientScope2()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyInsufficientScopeTests\/testInsufficientScopeLocal()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyInsufficientScopeTests\/testMakeRequestWithoutAuthorization()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyRefreshTokensConcurrentTests\/testConcurrentRequestsWithExpiredToken()",
+        "SpotifyAPIAuthorizationCodeFlowPKCEProxyRefreshTokensConcurrentTests\/testConcurrentTokensRefresh()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testArtist()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testArtistAlbums()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testArtistAlbumsExtendSinglePageConcurrent()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testArtistAlbumsExtendSinglePageSerial()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testArtistAlbumsSingles()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testArtistTopTracks()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testArtists()",
+        "SpotifyAPIAuthorizationCodeFlowProxyArtistTests\/testRelatedArtists()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testCodingSpotifyAPI()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testConvenienceInitializer()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testDeauthorizeReauthorize()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testDenyAuthorizationRequest()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testInvalidCode()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testInvalidState1()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testInvalidState2()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testInvalidState3()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testReassigningAuthorizationManager()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testRefreshTokens()",
+        "SpotifyAPIAuthorizationCodeFlowProxyAuthorizationTests\/testRefreshWithInvalidRefreshToken()",
+        "SpotifyAPIAuthorizationCodeFlowProxyFollowTests\/testFollowArtists()",
+        "SpotifyAPIAuthorizationCodeFlowProxyFollowTests\/testFollowPlaylist()",
+        "SpotifyAPIAuthorizationCodeFlowProxyFollowTests\/testFollowUsers()",
+        "SpotifyAPIAuthorizationCodeFlowProxyFollowTests\/testFollowedArtists()",
+        "SpotifyAPIAuthorizationCodeFlowProxyFollowTests\/testUsersFollowPlaylist()",
+        "SpotifyAPIAuthorizationCodeFlowProxyInsufficientScopeTests\/testInsufficientScope2()",
+        "SpotifyAPIAuthorizationCodeFlowProxyInsufficientScopeTests\/testInsufficientScopeLocal()",
+        "SpotifyAPIAuthorizationCodeFlowProxyInsufficientScopeTests\/testMakeRequestWithoutAuthorization()",
+        "SpotifyAPIAuthorizationCodeFlowProxyRefreshTokensConcurrentTests\/testConcurrentRequestsWithExpiredToken()",
+        "SpotifyAPIAuthorizationCodeFlowProxyRefreshTokensConcurrentTests\/testConcurrentTokensRefresh()",
+        "SpotifyAPIClientCredentialsFlowClientAuthorizationTests\/testConvenienceInitializer()",
+        "SpotifyAPIClientCredentialsFlowClientAuthorizationTests\/testDeauthorizeReauthorize()",
+        "SpotifyAPIClientCredentialsFlowClientAuthorizationTests\/testInvalidCredentials()",
+        "SpotifyAPIClientCredentialsFlowClientAuthorizationTests\/testReassigningAuthorizationManager()",
+        "SpotifyAPIClientCredentialsFlowClientAuthorizationTests\/testRefreshTokens()",
+        "SpotifyAPIClientCredentialsFlowClientAuthorizationTests\/testRefreshTokensWithInvalidCredentials()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testArtist()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testArtistAlbums()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testArtistAlbumsExtendSinglePageConcurrent()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testArtistAlbumsExtendSinglePageSerial()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testArtistAlbumsSingles()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testArtistTopTracks()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testArtists()",
+        "SpotifyAPIClientCredentialsFlowProxyArtistTests\/testRelatedArtists()",
+        "SpotifyAPIClientCredentialsFlowProxyAuthorizationTests\/testCodingSpotifyAPI()",
+        "SpotifyAPIClientCredentialsFlowProxyAuthorizationTests\/testConvenienceInitializer()",
+        "SpotifyAPIClientCredentialsFlowProxyAuthorizationTests\/testDeauthorizeReauthorize()",
+        "SpotifyAPIClientCredentialsFlowProxyAuthorizationTests\/testReassigningAuthorizationManager()",
+        "SpotifyAPIClientCredentialsFlowProxyAuthorizationTests\/testRefreshTokens()",
+        "SpotifyAPIClientCredentialsFlowProxyFollowTests\/testUsersFollowPlaylist()",
+        "SpotifyAPIClientCredentialsFlowProxyInsufficientScopeTests\/testMakeRequestWithoutAuthorization()",
+        "SpotifyAPIClientCredentialsFlowProxyRefreshTokensConcurrentTests\/testConcurrentRequestsWithExpiredToken()",
+        "SpotifyAPIClientCredentialsFlowProxyRefreshTokensConcurrentTests\/testConcurrentTokensRefresh()"
+      ],
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpotifyAPIMainTests",
+        "name" : "SpotifyAPIMainTests"
+      }
+    }
+  ],
+  "version" : 1
+}

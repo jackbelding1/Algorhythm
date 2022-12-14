@@ -1,0 +1,13 @@
+TAG=${1:-swift:latest}
+
+docker run \
+    --rm \
+    --volume "$(pwd):/src" \
+    --workdir "/src" \
+    -it \
+    --privileged \
+    -e SPOTIFY_DATA_DUMP_FOLDER="/logs" \
+    -e SPOTIFY_CLIENT_CREDENTIALS_FLOW_TOKENS_URL=$SPOTIFY_CLIENT_CREDENTIALS_FLOW_TOKENS_URL \
+    -e SPOTIFY_SWIFT_TESTING_CLIENT_ID=$SPOTIFY_SWIFT_TESTING_CLIENT_ID \
+    -e SPOTIFY_SWIFT_TESTING_CLIENT_SECRET=$SPOTIFY_SWIFT_TESTING_CLIENT_SECRET \
+    $TAG

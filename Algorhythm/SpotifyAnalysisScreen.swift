@@ -153,8 +153,7 @@ extension SpotifyAnalysisScreen {
     
     func createPlaylistFromRecommendations() {
         var playlistURI:String = ""
-        var user:String = spotify.currentUser!.id
-        if let currentUser = spotify.currentUser?.uri {
+        if let currentUser = spotify.currentUser?.id {
             self.createPlaylistCancellable = self.spotify.api
                 .createPlaylist(for: currentUser, PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "dudes be like subway sucks"))
                 .receive(on: RunLoop.main)
@@ -162,22 +161,22 @@ extension SpotifyAnalysisScreen {
                     receiveValue: {
                         response in
                     playlistURI = response.uri
-                        
+                    if !playlistURI.isEmpty {
+                        let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id!)" }
+                        self.addTracksCancellable = self.spotify.api
+                            .addToPlaylist(playlistURI, uris: trackURIs)
+                            .receive(on: RunLoop.main)
+                            .sink(receiveCompletion: self.addTracksCompletion(_:),
+                                  receiveValue: {
+                                response in
+                                print("Ids added to playlist")
+                            }
+                        )
+                    }
                 }
             )
         }
-        if !playlistURI.isEmpty {
-            let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id)" }
-            self.addTracksCancellable = self.spotify.api
-                .addToPlaylist(playlistURI, uris: trackURIs)
-                .receive(on: RunLoop.main)
-                .sink(receiveCompletion: self.addTracksCompletion(_:),
-                      receiveValue: {
-                    response in
-                    print("Ids added to playlist")
-                })
-            
-        }
+
     }
     
     func writeTracks() {
