@@ -102,10 +102,12 @@ struct SpotifyAnalysisScreen: View{
                         ){item in
                             TrackView(track: item)
                         }
-                        Spacer()
-                        Button(action: {createPlaylistFromRecommendations()}){
-                            Text("Create playlist!!")
+                        .overlay(alignment: .bottom) {
+                            PopupView()
                         }
+                        .ignoresSafeArea()
+                        Spacer()
+                        
                     }
                 }
                 Spacer()
