@@ -20,9 +20,13 @@ class artistURI: SpotifyURIConvertible {
 }
 
 struct SpotifyAnalysisScreen: View{
+    @EnvironmentObject var sheetManager : SheetManager
 
     // spotify object
     @EnvironmentObject var spotify: Spotify
+    
+    // initialize the check box state
+    @State var willUniqueSave: Bool = false
 
     // View model for mood analysis and data storage
     @StateObject private var analyzedSongListVM = SpotifyAnalysisListViewModel()
@@ -95,24 +99,28 @@ struct SpotifyAnalysisScreen: View{
                         }
                     }
                     else {
-                        // show user top tracks
-                        ForEach(
-                            recommendedTracks,
-                            id: \.self
-                        ){item in
-                            TrackView(track: item)
+                        ZStack {
+                            Text("Recommendations Successfully generated!")
                         }
-                        .overlay(alignment: .bottom) {
-                            PopupView()
+                        .onAppear{
+                            withAnimation{
+                                sheetManager.present()
+                            }
                         }
-                        .ignoresSafeArea()
-                        Spacer()
-                        
+                    }
+                    Spacer()
+                    Button(action: {analyzedSongListVM.printNetworkCalls()}){
+                        Text("Print network calls")
                     }
                 }
-                Spacer()
-                Button(action: {analyzedSongListVM.printNetworkCalls()}){
-                    Text("Print network calls")
+            }
+        }
+        .overlay(alignment: .center) {
+            if (sheetManager.action.isPresented && !recommendedTracks.isEmpty) {
+                PopupView(willUniqueSave: $willUniqueSave) {
+                    withAnimation{
+                        sheetManager.dismiss()
+                    }
                 }
             }
         }

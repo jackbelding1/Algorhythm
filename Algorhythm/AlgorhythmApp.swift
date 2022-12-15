@@ -12,6 +12,7 @@ import SpotifyWebAPI
 @main
 struct AlgorhythmApp: App {
     @StateObject var spotify = Spotify()
+    @StateObject var sheetManager = SheetManager()
 
     init() {
         SpotifyAPILogHandler.bootstrap()

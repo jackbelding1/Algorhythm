@@ -9,11 +9,23 @@ import Foundation
 import SwiftUI
 
 struct PopupView: View {
+    
+    // input from the text box
+    @State private var playlistName: String = "Enter playlist title..."
+
+    
+    // boolean value for check box
+    @Binding var willUniqueSave: Bool
+    
+    let didClose: () -> Void
+    
     var body: some View {
-        VStack(spacing: .zero) {
+        VStack(spacing: 10.0) {
             icon
             title
             content
+            textInput
+            createPlaylistButton
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 24)
@@ -28,7 +40,9 @@ struct PopupView: View {
 
 struct PopupView_Previews: PreviewProvider {
     static var previews: some View {
-        PopupView()
+        
+        PopupView(willUniqueSave: .constant(false)) {
+        }
             .padding()
             .background(.blue)
             .previewLayout(.sizeThatFits)
@@ -47,7 +61,7 @@ private extension PopupView {
     
     var close: some View {
         Button {
-            // TODO: Handle close
+            didClose()
         } label : {
             Image(systemName: "xmark")
                 .symbolVariant(.circle.fill)
@@ -73,15 +87,50 @@ private extension PopupView {
         Text("Text here")
             .font(.system(size: 30,
                           weight: .bold,
-                          design: .rounded)
+                          design: .rounded
+                         )
             )
+            .foregroundColor(.black)
             .padding()
     }
     
     var content: some View {
-        Text("my life be like oooooooo aaaaaaaaa ooooooooo oohhhhhhhhhh")
-            .font(.callout)
-            .foregroundColor(.black.opacity(0.8))
+        HStack {
+            Text("Save as a unique playlist?")
+                .font(.callout)
+                .foregroundColor(.black.opacity(0.8))
+            Spacer()
+            Image(systemName: willUniqueSave ? "checkmark.square.fill" : "square")
+                .foregroundColor(willUniqueSave ? Color(.black) : .black)
+                .onTapGesture {
+                    self.willUniqueSave.toggle()
+                }
+        }
+    }
+    
+    var textInput: some View {
+        VStack {
+            TextField("", text: $playlistName)
+                .font(.callout)
+                .foregroundColor(.black.opacity(0.8))
+                .accentColor(.black)
+                .disabled(!willUniqueSave)
+            Divider()
+             .frame(height: 1)
+             .padding(.horizontal, 30)
+             .background(Color.black)
+            }
+        .padding()
+        }
+    
+    var createPlaylistButton: some View {
+        Button(action: {print("button tapped!")}) {
+            Text("Create Playlist!!")
+                .foregroundColor(.white)
+        }
+        .background(.black)
+        .frame(width: 300.0, height: 50.0)
+        .disabled((willUniqueSave && $playlistName.wrappedValue == "Enter playlist title..."))
     }
 }
 
