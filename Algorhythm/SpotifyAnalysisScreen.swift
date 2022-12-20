@@ -31,6 +31,9 @@ struct SpotifyAnalysisScreen: View{
     // View model for mood analysis and data storage
     @StateObject private var analyzedSongListVM = SpotifyAnalysisListViewModel()
     
+    // the playlist name to print. This will likely become an object
+    @State private var playlist:String? = nil
+    
     // display loading page
     @State private var isLoadingPage = false
     
@@ -61,8 +64,11 @@ struct SpotifyAnalysisScreen: View{
     // the genre to generate the playlist from
     private var selectedGenre:NSString = "edm"
     
-    // the event listener
-    private var eventListener = Event<Node<String>?>()
+    // the network retry listener
+    private var artistRetryHandler = Event<Node<String>?>()
+    
+//    // the create playlist listener
+//    private var playlistListener = Event<String?>()
 
     // initializer
     init(mood:SpotifyAnalysisViewModel.Moods?) {
@@ -76,6 +82,8 @@ struct SpotifyAnalysisScreen: View{
         self._recommendedTracks = State(initialValue: recommendedTracks)
         selectedMood = nil
     }
+    
+    
     var body: some View {
         NavigationView{
             VStack{
@@ -117,16 +125,18 @@ struct SpotifyAnalysisScreen: View{
         }
         .overlay(alignment: .center) {
             if (sheetManager.action.isPresented && !recommendedTracks.isEmpty) {
-                PopupView(willUniqueSave: $willUniqueSave) {
+                PopupView(willUniqueSave: $willUniqueSave,
+                          screenPlaylistName: Binding<String?>(projectedValue: $playlist)) {
                     withAnimation{
                         sheetManager.dismiss()
+                        createPlaylistFromRecommendations(withPlaylistName: $playlist.wrappedValue)
                     }
                 }
             }
         }
         .onAppear{
-            eventListener.addHandler {data in networkRetryHandler(Ids: data)}
-            analyzedSongListVM.initialize(listener: eventListener)
+            artistRetryHandler.addHandler {data in networkRetryHandler(Ids: data)}
+            analyzedSongListVM.initialize(listener: artistRetryHandler)
             getSeeds(genreIsSelected: false)
         }
         .navigationTitle("User top tracks")
@@ -161,11 +171,18 @@ extension SpotifyAnalysisScreen {
         
     }
     
-    func createPlaylistFromRecommendations() {
+    func createPlaylistFromRecommendations(withPlaylistName name:String?) {
         var playlistURI:String = ""
+        var playlistDetails:PlaylistDetails
+        if let playlistName = name {
+            playlistDetails = PlaylistDetails(name: playlistName, isPublic: false, isCollaborative: false, description: "dudes be like subway sucks")
+        }
+        else {
+            playlistDetails = PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "dudes be like subway sucks")
+        }
         if let currentUser = spotify.currentUser?.id {
             self.createPlaylistCancellable = self.spotify.api
-                .createPlaylist(for: currentUser, PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "dudes be like subway sucks"))
+                .createPlaylist(for: currentUser, playlistDetails)
                 .receive(on: RunLoop.main)
                 .sink(receiveCompletion: self.createPlaylistCompletion(_:),
                     receiveValue: {
@@ -282,7 +299,6 @@ extension SpotifyAnalysisScreen {
                         mood: mood, genre: selectedGenre as String,
                         tracks: tracks.head, parentNode: head)
                         print("iteration done")
-                        
                     }
                 }
             ))
@@ -290,6 +306,9 @@ extension SpotifyAnalysisScreen {
     }
 }
 
+/**
+ * Event handler functions
+ */
 extension SpotifyAnalysisScreen {
     func networkRetryHandler(Ids:Node<String>?){
         if let node = Ids {
@@ -298,6 +317,18 @@ extension SpotifyAnalysisScreen {
         else {
             print("no seeds matching mood found! try again!")
         }
+    }
+    
+    func createPlaylistHandler(playlistName name:String?) {
+        if let playlistName = name {
+            // create a unique playlist
+            print("creating unique playlist with name \(playlistName)")
+        }
+        else {
+            // overwrite existing playlist
+            print("overwrite existing playlist")
+        }
+//        createPlaylistFromRecommendations(withPlaylistName: name)
     }
 }
 
