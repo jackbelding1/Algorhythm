@@ -153,7 +153,6 @@ extension SpotifyAnalysisListViewModel{
     func writeToDataBase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
                          genre selectedGenre:String, withIds Ids:[String]) {
         algoDbManager.writeIds(forGenre: selectedGenre, forMood: enumToString(selectedMood)!, ids: Ids)
-        
     }
     
     func loadFromDatabase(mood selectedMood:SpotifyAnalysisViewModel.Moods,

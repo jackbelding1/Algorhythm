@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MoodScreen: View {
+    @StateObject var sheetManager = SheetManager()
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     // emojis for mood options
     private let symbols = ["🔥", "🤠", "🌴", "💗", "😈", "😪", "⚡️", "💦"]
@@ -66,7 +68,8 @@ struct MoodScreen: View {
                 .frame(height:300)
                 Spacer()
                 if selectedMood != nil {
-                    NavigationLink(destination: SpotifyAnalysisScreen(mood: selectedMood)){
+                    NavigationLink(destination: SpotifyAnalysisScreen(mood: selectedMood)
+                        .environmentObject(sheetManager)){
                         Image(systemName: "arrow.right.circle")
                             .frame(height:200)
                         Text("Continue")
