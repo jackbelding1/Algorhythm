@@ -20,25 +20,29 @@ class artistURI: SpotifyURIConvertible {
 }
 
 struct SpotifyAnalysisScreen: View{
-    @EnvironmentObject var sheetManager : SheetManager
-
+    
+    @Environment(\.isPreview) var isPreview
+    
+    // the playlist creating result
+    enum PlaylistState {
+        case in_progress
+        case waiting_request
+        case success
+        case failiure
+    }
+    @State private var playlistCreationState:PlaylistState = .waiting_request
+    
     // spotify object
     @EnvironmentObject var spotify: Spotify
-    
-    // initialize the check box state
-    @State var willUniqueSave: Bool = false
 
     // View model for mood analysis and data storage
     @StateObject private var analyzedSongListVM = SpotifyAnalysisListViewModel()
     
     // the playlist name to print. This will likely become an object
-    @State private var playlist:String? = nil
+    @State private var playlist:String = ""
     
     // display loading page
     @State private var isLoadingPage = false
-    
-    // the array of user top tracks to be filtered for moods
-    @State private var userTopTracks: [Track]
     
     // the array recommended tracks generated
     @State private var recommendedTracks: [Track]
@@ -67,71 +71,152 @@ struct SpotifyAnalysisScreen: View{
     // the network retry listener
     private var artistRetryHandler = Event<Node<String>?>()
     
-//    // the create playlist listener
-//    private var playlistListener = Event<String?>()
+    // the playlist creation listener
+    private var playlistListener = Event<Bool>()
+    
+    // the created playlist uri
+    @State private var createdPlaylistId:String = ""
 
     // initializer
     init(mood:SpotifyAnalysisViewModel.Moods?) {
-        self._userTopTracks = State(initialValue: [])
         self._recommendedTracks = State(initialValue: [])
         selectedMood = mood
     }
     // preview initializer
-    fileprivate init(topTracks: [Track], recommendedTracks: [Track]) {
-        self._userTopTracks = State(initialValue: topTracks)
+    fileprivate init(recommendedTracks: [Track]) {
         self._recommendedTracks = State(initialValue: recommendedTracks)
         selectedMood = nil
     }
     
-    
     var body: some View {
-        NavigationView{
-            VStack{
-                Group{
-                    if recommendedTracks.isEmpty{
-                        if analyzedSongListVM.seedIds.isEmpty {
-                            HStack {
-                                ProgressView()
-                                    .padding()
-                                Text("Loading Tracks")
-                                    .font(.title)
-                                    .foregroundColor(.secondary)
-                            }
+        VStack{
+            if recommendedTracks.isEmpty &&
+                analyzedSongListVM.seedIds.isEmpty {
+                HStack {
+                    ProgressView()
+                        .padding()
+                    Text("Loading Tracks")
+                        .font(.title)
+                        .foregroundColor(.secondary)
+                }
+                .onAppear(perform: {
+                    getRecommendations()
+                })
+            }
+            else {
+                switch (playlistCreationState){
+                case .waiting_request:
+                    Text("Name your playlist!")
+                        .font(.title)
+                        .padding()
+                    TextField(text: $playlist, prompt: Text("Type Here")){}
+                        .font(.largeTitle)
+                        .padding(EdgeInsets(top: 80, leading: 100, bottom: 1, trailing: 100))
+                    Divider()
+                    Button(action: {
+                        createPlaylistFromRecommendations(withPlaylistName: $playlist.wrappedValue)
+                        playlistCreationState = .in_progress
+                    }) {
+                        Text("Create")
+                            .foregroundColor(Color.black)
+                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                            .font(Font.headline.weight(.bold))
+                            .lineLimit(1)
+                    }
+                        .disabled($playlist.wrappedValue == "")
+                        .background(Color.white)
+                        .clipShape(Capsule())
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+//                        .navigationBarHidden(false)
+
+                case .in_progress:
+                    ProgressView()
+                        .padding()
+                    Text("Creating playlist...")
+                        .font(.title)
+                        .foregroundColor(.secondary)
+                case .success:
+                    Spacer()
+                    Group{
+                        Text("✅")
+                            .font(.largeTitle)
+                        Text("Great Success!")
+                            .font(.largeTitle)
+                    }
+                    Divider()
+                    Spacer()
+                    Button(action: {
+                        print("created playlist with id: \(createdPlaylistId)")
+                        
+                        let spotifyUrl = URL(string: "https://open.spotify.com/playlist/\(createdPlaylistId)")!
+                        if UIApplication.shared.canOpenURL(spotifyUrl) {
+                            UIApplication.shared.open(spotifyUrl) // open the spotify app
                         }
                         else {
-                            Button(action: {getRecommendations()}){
-                                Text("Generate Recommendations")
-                                    .font(.title)
-                                    .foregroundColor(.secondary)
-                            }
+                            // redirect user to app store to install spotfiy
+                            print("Spotify app not found!!!")
                         }
+                    }){ Text("Open Spotify")
+                        .foregroundColor(Color.black)
+                        .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
+                        .font(Font.headline.weight(.bold))
+                        .lineLimit(1)
                     }
-                    else {
-                        ZStack {
-                            Text("Recommendations Successfully generated!")
-                        }
-                        .onAppear{
-                            withAnimation{
-                                sheetManager.present()
-                            }
-                        }
+                    .background(Color.white)
+                    .clipShape(Capsule())
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+                    NavigationLink(destination: ExamplesListView()) {
+                        Text("Return Home")
+                            .foregroundColor(Color.black)
+                            .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
+                            .font(Font.headline.weight(.bold))
+                            .lineLimit(1)
                     }
+                        .background(Color.white)
+                        .clipShape(Capsule())
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+                case .failiure:
                     Spacer()
-                    Button(action: {analyzedSongListVM.printNetworkCalls()}){
-                        Text("Print network calls")
+                    Group{
+                        Text("❌")
+                            .font(.largeTitle)
+                        Text("Failed to create playlist")
+                            .font(.largeTitle)
                     }
+                    Divider()
+                    Spacer()
+                    Button(action: {
+                        print("hello")
+                    }){ Text("One more try")
+                        .foregroundColor(Color.black)
+                        .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
+                        .font(Font.headline.weight(.bold))
+                        .lineLimit(1)
+                    }
+                    .background(Color.white)
+                    .clipShape(Capsule())
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+                    NavigationLink(destination: ExamplesListView()) {
+                        Text("Return Home")
+                            .foregroundColor(Color.black)
+                            .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
+                            .font(Font.headline.weight(.bold))
+                            .lineLimit(1)
+                    }
+                        .background(Color.white)
+                        .clipShape(Capsule())
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
                 }
+
             }
-        }
-        .overlay(alignment: .center) {
-            if (sheetManager.action.isPresented && !recommendedTracks.isEmpty) {
-                PopupView(willUniqueSave: $willUniqueSave,
-                          screenPlaylistName: Binding<String?>(projectedValue: $playlist)) {
-                    withAnimation{
-                        sheetManager.dismiss()
-                        createPlaylistFromRecommendations(withPlaylistName: $playlist.wrappedValue)
-                    }
-                }
+            Spacer()
+            Button(action: {analyzedSongListVM.printNetworkCalls()}){
+                Text("Print network calls")
             }
         }
         .onAppear{
@@ -139,14 +224,19 @@ struct SpotifyAnalysisScreen: View{
             analyzedSongListVM.initialize(listener: artistRetryHandler)
             getSeeds(genreIsSelected: false)
         }
-        .navigationTitle("User top tracks")
         .padding()
+        .navigationBarHidden(playlistCreationState == PlaylistState.success || playlistCreationState == PlaylistState.failiure)
     }
 }
 
 extension SpotifyAnalysisScreen {
     
     func getSeeds(genreIsSelected:Bool) {
+        if isPreview {
+            return
+        }
+        
+        
         if !genreIsSelected {
             //
             // TODO: generate normalized genre
@@ -188,6 +278,7 @@ extension SpotifyAnalysisScreen {
                     receiveValue: {
                         response in
                     playlistURI = response.uri
+                    self.createdPlaylistId = response.id
                     if !playlistURI.isEmpty {
                         let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id!)" }
                         self.addTracksCancellable = self.spotify.api
@@ -196,14 +287,13 @@ extension SpotifyAnalysisScreen {
                             .sink(receiveCompletion: self.addTracksCompletion(_:),
                                   receiveValue: {
                                 response in
-                                print("Ids added to playlist")
+                                self.playlistCreationState = .success
                             }
                         )
                     }
                 }
             )
         }
-
     }
     
     func writeTracks() {
@@ -213,7 +303,6 @@ extension SpotifyAnalysisScreen {
                 mood: selectedMood!, genre: selectedGenre as String, withIds: ids)
         }
     }
-    
 }
 
 // Generate the seeds for the cache
@@ -257,7 +346,6 @@ extension SpotifyAnalysisScreen {
                                     else {
                                         artists.append(artistId) // populate linked list
                                     }
-
                                 }
                             }
                         }
@@ -318,18 +406,6 @@ extension SpotifyAnalysisScreen {
             print("no seeds matching mood found! try again!")
         }
     }
-    
-    func createPlaylistHandler(playlistName name:String?) {
-        if let playlistName = name {
-            // create a unique playlist
-            print("creating unique playlist with name \(playlistName)")
-        }
-        else {
-            // overwrite existing playlist
-            print("overwrite existing playlist")
-        }
-//        createPlaylistFromRecommendations(withPlaylistName: name)
-    }
 }
 
 extension SpotifyAnalysisScreen {
@@ -337,6 +413,7 @@ extension SpotifyAnalysisScreen {
         _ completion: Subscribers.Completion<Error>
     ) {
         if case .failure(let error) = completion {
+            self.playlistCreationState = .failiure
             let title = "Couldn't create playlist"
             print("\(title): \(error)")
             self.alert = AlertItem(
@@ -350,6 +427,7 @@ extension SpotifyAnalysisScreen {
         _ completion: Subscribers.Completion<Error>
     ) {
         if case .failure(let error) = completion {
+            self.playlistCreationState = .failiure
             let title = "Couldn't add items"
             print("\(title): \(error)")
             self.alert = AlertItem(
@@ -425,10 +503,19 @@ struct SpotifyAnalysisScreen_Previews: PreviewProvider {
     static var previews: some View {
         ForEach([tracks], id: \.self) { tracks in
             NavigationView {
-                SpotifyAnalysisScreen(topTracks: tracks, recommendedTracks: tracks)
+                SpotifyAnalysisScreen(recommendedTracks: tracks)
                     .listStyle(PlainListStyle())
             }
         }
-        .environmentObject(Spotify())
+    }
+}
+
+public extension EnvironmentValues {
+    var isPreview: Bool {
+        #if DEBUG
+        return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+        #else
+        return false
+        #endif
     }
 }
