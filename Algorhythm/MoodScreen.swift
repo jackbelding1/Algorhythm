@@ -69,7 +69,7 @@ struct MoodScreen: View {
                 Spacer()
                 if selectedMood != nil {
                     NavigationLink(destination: SpotifyAnalysisScreen(mood: selectedMood)
-                        .environmentObject(sheetManager)){
+                        ){
                         Image(systemName: "arrow.right.circle")
                             .frame(height:200)
                         Text("Continue")
