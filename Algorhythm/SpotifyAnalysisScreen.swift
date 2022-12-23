@@ -111,7 +111,9 @@ struct SpotifyAnalysisScreen: View{
                         .padding()
                     TextField(text: $playlist, prompt: Text("Type Here")){}
                         .font(.largeTitle)
-                        .padding(EdgeInsets(top: 80, leading: 100, bottom: 1, trailing: 100))
+                        .padding(EdgeInsets(top: 80, leading: 55, bottom: 1, trailing: 55))
+                        .disableAutocorrection(true)
+                    
                     Divider()
                     Button(action: {
                         createPlaylistFromRecommendations(withPlaylistName: $playlist.wrappedValue)
@@ -128,8 +130,6 @@ struct SpotifyAnalysisScreen: View{
                         .clipShape(Capsule())
                         .buttonStyle(PlainButtonStyle())
                         .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-//                        .navigationBarHidden(false)
-
                 case .in_progress:
                     ProgressView()
                         .padding()
@@ -167,7 +167,7 @@ struct SpotifyAnalysisScreen: View{
                     .clipShape(Capsule())
                     .buttonStyle(PlainButtonStyle())
                     .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-                    NavigationLink(destination: ExamplesListView()) {
+                    NavigationLink(destination: HomeView()) {
                         Text("Return Home")
                             .foregroundColor(Color.black)
                             .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
@@ -200,7 +200,7 @@ struct SpotifyAnalysisScreen: View{
                     .clipShape(Capsule())
                     .buttonStyle(PlainButtonStyle())
                     .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-                    NavigationLink(destination: ExamplesListView()) {
+                    NavigationLink(destination: HomeView()) {
                         Text("Return Home")
                             .foregroundColor(Color.black)
                             .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
@@ -211,8 +211,8 @@ struct SpotifyAnalysisScreen: View{
                         .clipShape(Capsule())
                         .buttonStyle(PlainButtonStyle())
                         .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+                        .navigationBarHidden(true)
                 }
-
             }
             Spacer()
             Button(action: {analyzedSongListVM.printNetworkCalls()}){
@@ -225,7 +225,8 @@ struct SpotifyAnalysisScreen: View{
             getSeeds(genreIsSelected: false)
         }
         .padding()
-        .navigationBarHidden(playlistCreationState == PlaylistState.success || playlistCreationState == PlaylistState.failiure)
+        .navigationBarHidden(playlistCreationState == PlaylistState.success
+                             || playlistCreationState == PlaylistState.failiure)
     }
 }
 
@@ -265,10 +266,10 @@ extension SpotifyAnalysisScreen {
         var playlistURI:String = ""
         var playlistDetails:PlaylistDetails
         if let playlistName = name {
-            playlistDetails = PlaylistDetails(name: playlistName, isPublic: false, isCollaborative: false, description: "dudes be like subway sucks")
+            playlistDetails = PlaylistDetails(name: playlistName, isPublic: false, isCollaborative: false, description: "Thank you for using algorhythm!")
         }
         else {
-            playlistDetails = PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "dudes be like subway sucks")
+            playlistDetails = PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "Thank you for using algorhythm!")
         }
         if let currentUser = spotify.currentUser?.id {
             self.createPlaylistCancellable = self.spotify.api

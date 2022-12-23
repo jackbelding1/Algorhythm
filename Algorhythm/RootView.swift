@@ -12,7 +12,7 @@ struct RootView: View {
     
     var body: some View {
         NavigationView {
-            ExamplesListView()
+            HomeView()
                 .navigationBarItems(trailing: logoutButton)
                 .disabled(!spotify.isAuthorized)
                 .environmentObject(spotify)
