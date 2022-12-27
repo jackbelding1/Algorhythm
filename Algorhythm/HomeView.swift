@@ -6,18 +6,10 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView{
-            VStack {
-                Text("Tap below to create a playlist!")
-                Image(systemName: "arrow.down")
-                    .frame(width: 60, height: 120)
-                    .scaledToFill()
-
-            }
+            PlaylistsListView()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                            print("booyah")
-                    }, label: {
+                    NavigationLink(destination: SettingsView().environmentObject(spotify), label: {
                         if let userImage = spotify.currentUser?.images![0] {
                             AsyncImage(url: userImage.url, scale: 3.0)
                                   .frame(width: 20, height: 20)
