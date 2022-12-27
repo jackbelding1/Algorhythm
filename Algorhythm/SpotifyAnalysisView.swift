@@ -20,9 +20,7 @@ class artistURI: SpotifyURIConvertible {
 }
 
 struct SpotifyAnalysisScreen: View{
-    
-    @Environment(\.isPreview) var isPreview
-    
+        
     // the playlist creating result
     enum PlaylistState {
         case in_progress
@@ -233,9 +231,9 @@ struct SpotifyAnalysisScreen: View{
 extension SpotifyAnalysisScreen {
     
     func getSeeds(genreIsSelected:Bool) {
-        if isPreview {
-            return
-        }
+        
+        // Don't try to load any playlists if we're in preview mode.
+        if ProcessInfo.processInfo.isPreviewing { return }
         
         
         if !genreIsSelected {
@@ -243,7 +241,7 @@ extension SpotifyAnalysisScreen {
             // TODO: generate normalized genre
             //
         }
-        if !analyzedSongListVM.loadFromDatabase(mood: selectedMood!, genre: selectedGenre as String){
+        if !analyzedSongListVM.loadMoodFromDatabase(mood: selectedMood!, genre: selectedGenre as String){
             getUserTopArtists() // download mood seed from network
         }
     }
@@ -280,6 +278,7 @@ extension SpotifyAnalysisScreen {
                         response in
                     playlistURI = response.uri
                     self.createdPlaylistId = response.id
+                    self.analyzedSongListVM.writePlaylistId(response.id)
                     if !playlistURI.isEmpty {
                         let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id!)" }
                         self.addTracksCancellable = self.spotify.api
@@ -300,7 +299,7 @@ extension SpotifyAnalysisScreen {
     func writeTracks() {
         let ids = self.recommendedTracks.map { $0.id! }
         if !ids.isEmpty {
-            analyzedSongListVM.writeToDataBase(
+            analyzedSongListVM.writeMoodToDataBase(
                 mood: selectedMood!, genre: selectedGenre as String, withIds: ids)
         }
     }
@@ -508,15 +507,5 @@ struct SpotifyAnalysisScreen_Previews: PreviewProvider {
                     .listStyle(PlainListStyle())
             }
         }
-    }
-}
-
-public extension EnvironmentValues {
-    var isPreview: Bool {
-        #if DEBUG
-        return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-        #else
-        return false
-        #endif
     }
 }

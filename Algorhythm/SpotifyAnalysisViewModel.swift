@@ -33,10 +33,7 @@ class SpotifyAnalysisListViewModel: ObservableObject {
     
     // songs to analyze
     private var songIds:[String:String] = [:]
-    
-    // the cache manager for recommendation seeds
-    private let cache:RecommendationSeedCacheManager = RecommendationSeedCacheManager()
-    
+
     // the realm database manager
     private let algoDbManager = AlgoDataManager()
     
@@ -88,10 +85,6 @@ extension SpotifyAnalysisListViewModel {
         }
         return filteredTrackIds
     }
-
-    func printCacheContents() {
-        cache.printContent()
-    }
 }
 /**
  * Filter seeds by mood
@@ -142,7 +135,7 @@ extension SpotifyAnalysisListViewModel{
             for track in loc_tracks {
                 if track.maxMood == selectedMood {
                     seedIds.append(track.id)
-                    writeToDataBase(mood: selectedMood, genre: selectedGenre, withIds: seedIds)
+                    writeMoodToDataBase(mood: selectedMood, genre: selectedGenre, withIds: seedIds)
                     return true
                 }
             }
@@ -150,12 +143,14 @@ extension SpotifyAnalysisListViewModel{
         return false
     }
     
-    func writeToDataBase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+    func writePlaylistId(_ id:String) {algoDbManager.writePlaylistId(withId: id)}
+    
+    func writeMoodToDataBase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
                          genre selectedGenre:String, withIds Ids:[String]) {
         algoDbManager.writeIds(forGenre: selectedGenre, forMood: enumToString(selectedMood)!, ids: Ids)
     }
     
-    func loadFromDatabase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+    func loadMoodFromDatabase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
                           genre selectedGenre:String) -> Bool {
         // try to load from the data manager. if ids are found, append to the
         // list and return true. if empty ids, return false
