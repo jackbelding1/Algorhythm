@@ -74,7 +74,7 @@
 		77CE434329132BBB000019A8 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		77CE434B291333CA000019A8 /* GraphQL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GraphQL; sourceTree = "<group>"; };
 		77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoDataManager.swift; sourceTree = "<group>"; };
-		77F2B218295B724D009B22C6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		77F2B218295B724D009B22C6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = ../SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +104,7 @@
 		77CC2AF6295624D90018EF1B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				77F2B218295B724D009B22C6 /* SettingsView.swift */,
 				77CC2AF9295628E10018EF1B /* Playlist Views */,
 				77587146294A85B000BAB8EB /* PopupView.swift */,
 				776DB7D929148D7F0055424F /* LoginView.swift */,
@@ -153,7 +154,6 @@
 		77CE431C2913299C000019A8 = {
 			isa = PBXGroup;
 			children = (
-				77F2B218295B724D009B22C6 /* SettingsView.swift */,
 				77CE43272913299C000019A8 /* Algorhythm */,
 				77CE43262913299C000019A8 /* Products */,
 				7706257C294A4875002E3AC8 /* Frameworks */,
