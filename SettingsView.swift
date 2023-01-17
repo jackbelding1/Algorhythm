@@ -12,7 +12,7 @@ struct SettingsView: View {
     @EnvironmentObject var spotify: Spotify
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        logoutButton
     }
     
     /// Removes the authorization information for the user.

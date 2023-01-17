@@ -11,17 +11,18 @@ struct RootView: View {
     @State private var cancellables: Set<AnyCancellable> = []
     
     var body: some View {
-        NavigationView {
+        VStack{
             if (self.spotify.isAuthorized) {
                 HomeView()
-                    .navigationBarItems(trailing: logoutButton)
-                    .disabled(!spotify.isAuthorized)
                     .environmentObject(spotify)
             }
             else {
-                Text("hey")
+                VStack{
+                    Image("algorhythmlogo")
+                    Text("Algorhythm")
+                    Spacer()
+                }
             }
-
         }
         // The login view is presented if `Spotify.isAuthorized` == `false. When
         // the login button is tapped, `Spotify.authorize()` is called. After
