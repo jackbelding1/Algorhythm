@@ -10,15 +10,6 @@ import Combine
 import SpotifyWebAPI
 import SpotifyExampleContent
 
-// the URI for artists
-class artistURI: SpotifyURIConvertible {
-    public var uri:String
-    
-    init(URI artistUri:String){
-        self.uri = "spotify:artist:\(artistUri)"
-    }
-}
-
 struct SpotifyAnalysisScreen: View{
         
     // the playlist creating result

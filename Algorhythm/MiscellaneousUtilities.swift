@@ -2,6 +2,16 @@ import Foundation
 import SwiftUI
 import SpotifyWebAPI
 
+
+// the URI for artists
+class artistURI: SpotifyURIConvertible {
+    public var uri:String
+    
+    init(URI artistUri:String){
+        self.uri = "spotify:artist:\(artistUri)"
+    }
+}
+
 func enumToString(_ toConvert:SpotifyAnalysisViewModel.Moods) -> String? {
     
     let mapping:[SpotifyAnalysisViewModel.Moods:String] = [
