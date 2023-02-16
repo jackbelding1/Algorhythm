@@ -19,6 +19,51 @@ class AlgoDataManager {
     }
     
 }
+// playlist options functions
+extension AlgoDataManager {
+    // function to save playlist options
+    func savePlaylistOptions(_ preferences:[String:Bool]) {
+        let results = realm.objects(PlaylistOptions.self)
+        var options:[PlaylistOption] = []
+        for (genre, value) in preferences {
+            let option = PlaylistOption(genre, value)
+            options.append(option)
+        }
+        if results.isEmpty {
+            print("add")
+            let newObject = PlaylistOptions()
+            newObject.playlistOptions.append(objectsIn: options)
+            try! realm.write {
+                realm.add(newObject)
+            }
+        }
+        else {
+            print("append")
+            if let playlistOptions = results.first?.playlistOptions {
+                try! realm.write {
+                    playlistOptions.removeAll()
+                    playlistOptions.append(objectsIn: options)
+                }
+            }
+        }
+    }
+    /**
+     * function to load the playlist options
+     * @return RealmSwift.List<PlaylistOption>
+     */
+    func loadPlaylistOptions() -> RealmSwift.List<PlaylistOption>? {
+        let results = realm.objects(PlaylistOptions.self)
+        return results.first?.playlistOptions
+    }
+    
+    // function to reset the playlist options to default
+    func restorePlaylistOptionDefaults() {
+        let toDelete = realm.objects(PlaylistOptions.self)
+        try! realm.write {
+            realm.delete(toDelete)
+        }
+    }
+}
 
 extension AlgoDataManager {
     /**
@@ -183,4 +228,26 @@ final class PlaylistDataObject : Object {
  */
 final class Playlists : Object {
     let playlists:RealmSwift.List<PlaylistDataObject> = RealmSwift.List<PlaylistDataObject>()
+}
+
+/**
+ * The data object for playlist options
+ */
+final class PlaylistOption : Object {
+    override init() {}
+
+    init(_ genre:String, _ value:Bool) {
+        self.genre = genre
+        self.value = value
+    }
+    
+    @objc dynamic var genre:String = ""
+    @objc dynamic var value:Bool = false
+    
+}
+/**
+ * The collection of playlist options
+ */
+final class PlaylistOptions : Object {
+    let playlistOptions:RealmSwift.List<PlaylistOption> = RealmSwift.List<PlaylistOption>()
 }

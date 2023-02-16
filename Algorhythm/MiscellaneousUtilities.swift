@@ -3,7 +3,9 @@ import SwiftUI
 import SpotifyWebAPI
 
 
-// the URI for artists
+/**
+ * The URI string for artist
+ */
 class artistURI: SpotifyURIConvertible {
     public var uri:String
     
@@ -11,7 +13,9 @@ class artistURI: SpotifyURIConvertible {
         self.uri = "spotify:artist:\(artistUri)"
     }
 }
-
+/**
+ * convert spotify analysis view model mood to a string
+ */
 func enumToString(_ toConvert:SpotifyAnalysisViewModel.Moods) -> String? {
     
     let mapping:[SpotifyAnalysisViewModel.Moods:String] = [
@@ -32,7 +36,9 @@ func enumToString(_ toConvert:SpotifyAnalysisViewModel.Moods) -> String? {
     }
     return nil
 }
-
+/**
+ * Event Type
+ */
 class Event<T> {
 
   typealias EventHandler = (T) -> ()
@@ -42,6 +48,7 @@ class Event<T> {
   func addHandler(handler: @escaping EventHandler) {
     eventHandlers.append(handler)
   }
+    
 
   func raise(data: T) {
     for handler in eventHandlers {
@@ -49,7 +56,9 @@ class Event<T> {
     }
   }
 }
-
+/**
+ * List Node
+ */
 class Node<T> {
 
     var value: T
@@ -60,7 +69,9 @@ class Node<T> {
         self.next = next
     }
 }
-
+/**
+ * Singly linked list
+ */
 struct LinkedList<T> {
     mutating func append(_ value: T) {
         let node = Node(value: value)
@@ -99,4 +110,56 @@ extension ProcessInfo {
         return self.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 
+}
+//
+// https://thinkdiff.net/how-to-create-checkbox-in-swiftui-ad08e285ab3d
+//
+//MARK:- Checkbox Field
+struct CheckboxField: View {
+    let id: String
+    let label: String
+    let size: CGFloat
+    let color: Color
+    let textSize: Int
+    let callback: (String, Bool)->()
+    
+    init(
+        id: String,
+        label:String,
+        size: CGFloat = 10,
+        color: Color = Color.black,
+        textSize: Int = 14,
+        callback: @escaping (String, Bool)->(),
+        isMarked: Bool = false
+        ) {
+        self.id = id
+        self.label = label
+        self.size = size
+        self.color = color
+        self.textSize = textSize
+        self.callback = callback
+        self.isMarked = isMarked
+    }
+    
+    @State var isMarked:Bool
+    
+    var body: some View {
+        Button(action:{
+            self.isMarked.toggle()
+            self.callback(self.id, self.isMarked)
+        }) {
+            HStack(alignment: .center, spacing: 10) {
+                Image(systemName: self.isMarked ? "checkmark.square" : "square")
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: self.size, height: self.size)
+                Text(label)
+                    .font(Font.system(size: size))
+                    .foregroundColor(Color.accentColor)
+                Spacer()
+            }.foregroundColor(Color.accentColor)
+        }
+        .foregroundColor(Color.white)
+    }
 }

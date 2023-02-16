@@ -11,6 +11,8 @@ import SpotifyWebAPI
 import SpotifyExampleContent
 
 struct SpotifyAnalysisScreen: View{
+    // the playlist options to be used in playlist generation
+    private var playlistOptions:PlaylistOptionsViewModel
         
     // the playlist creating result
     enum PlaylistState {
@@ -55,26 +57,32 @@ struct SpotifyAnalysisScreen: View{
     private var selectedMood:SpotifyAnalysisViewModel.Moods?
     
     // the genre to generate the playlist from
-    private var selectedGenre:NSString = "edm"
+    private var selectedGenre:String
     
     // the network retry listener
     private var artistRetryHandler = Event<Node<String>?>()
     
-    // the playlist creation listener
-    private var playlistListener = Event<Bool>()
+    private var generateRecommendationsHandler = Event<Void>()
+    
+    // the offset of user artists to analyze
+    @State private var artistOffset:Int = 0
     
     // the created playlist uri
     @State private var createdPlaylistId:String = ""
 
     // initializer
-    init(mood:SpotifyAnalysisViewModel.Moods?) {
+    init(mood:SpotifyAnalysisViewModel.Moods?, _ playlistOptionsVM:PlaylistOptionsViewModel) {
+        playlistOptions = playlistOptionsVM
         self._recommendedTracks = State(initialValue: [])
         selectedMood = mood
+        selectedGenre = playlistOptions.getRandomGenre()
     }
     // preview initializer
-    fileprivate init(recommendedTracks: [Track]) {
+    fileprivate init(recommendedTracks: [Track], _ playlistOptionsVM:PlaylistOptionsViewModel) {
         self._recommendedTracks = State(initialValue: recommendedTracks)
+        playlistOptions = playlistOptionsVM
         selectedMood = nil
+        selectedGenre = "edm"
     }
     
     var body: some View {
@@ -89,7 +97,6 @@ struct SpotifyAnalysisScreen: View{
                         .foregroundColor(.secondary)
                 }
                 .onAppear(perform: {
-                    getRecommendations()
                 })
             }
             else {
@@ -209,8 +216,9 @@ struct SpotifyAnalysisScreen: View{
             }
         }
         .onAppear{
+            generateRecommendationsHandler.addHandler(handler: {getRecommendations()})
             artistRetryHandler.addHandler {data in networkRetryHandler(Ids: data)}
-            analyzedSongListVM.initialize(listener: artistRetryHandler)
+            analyzedSongListVM.initialize(retryListener: artistRetryHandler, recommendationListener: generateRecommendationsHandler)
             getSeeds(genreIsSelected: false)
         }
         .padding()
@@ -232,8 +240,11 @@ extension SpotifyAnalysisScreen {
             // TODO: generate normalized genre
             //
         }
-        if !analyzedSongListVM.loadMoodFromDatabase(mood: selectedMood!, genre: selectedGenre as String){
-            getUserTopArtists() // download mood seed from network
+        if !analyzedSongListVM.loadMoodFromDatabase(mood: selectedMood!, genre: selectedGenre){
+            getUserTopArtists(withTimeRange: TimeRange.mediumTerm) // download mood seed from network
+        }
+        else {
+            getRecommendations()
         }
     }
     
@@ -291,7 +302,7 @@ extension SpotifyAnalysisScreen {
         let ids = self.recommendedTracks.map { $0.id! }
         if !ids.isEmpty {
             analyzedSongListVM.writeMoodToDataBase(
-                mood: selectedMood!, genre: selectedGenre as String, withIds: ids)
+                mood: selectedMood!, genre: selectedGenre, withIds: ids)
         }
     }
 }
@@ -299,10 +310,10 @@ extension SpotifyAnalysisScreen {
 // Generate the seeds for the cache
 extension SpotifyAnalysisScreen {
     
-    func getUserTopArtists() {
+    func getUserTopArtists(withTimeRange range:TimeRange) {
         var artistIds:[String] = []
         self.getUserTopArtistsCancellable = self.spotify.api
-            .currentUserTopArtists(limit:10)
+            .currentUserTopArtists(range, offset: artistOffset, limit: 50)
             .receive(on: RunLoop.main)
             .sink(
                 receiveCompletion: self.getTopArtistsCompletion(_:),
@@ -327,7 +338,7 @@ extension SpotifyAnalysisScreen {
                 for artist in response {
                     if let genres = artist?.genres {
                         for genre in genres {
-                            if genre == selectedGenre as String {
+                            if genre == selectedGenre {
                                 if let artistId = artist?.id {
                                     if createList {
                                         let node = Node(value: artistId)
@@ -342,7 +353,23 @@ extension SpotifyAnalysisScreen {
                         }
                     }
                 }
-                getArtistTopTracks(withIds: artists.head)
+                if artists.head == nil {
+                    if artistOffset > 500 {
+                        artistOffset += 50
+                        getUserTopArtists(withTimeRange: TimeRange.longTerm)
+
+                    }
+                    if artistOffset > 1000 {
+                        return
+                    }
+                    else {
+                        artistOffset += 50
+                        getUserTopArtists(withTimeRange: TimeRange.mediumTerm)
+                    }
+
+                } else {
+                    getArtistTopTracks(withIds: artists.head)
+                }
             }
         )
     }
@@ -375,7 +402,7 @@ extension SpotifyAnalysisScreen {
                         }
                     }
                     analyzedSongListVM.findMoodGenreTrack(
-                        mood: mood, genre: selectedGenre as String,
+                        mood: mood, genre: selectedGenre,
                         tracks: tracks.head, parentNode: head)
                         print("iteration done")
                     }
@@ -389,6 +416,7 @@ extension SpotifyAnalysisScreen {
  * Event handler functions
  */
 extension SpotifyAnalysisScreen {
+    
     func networkRetryHandler(Ids:Node<String>?){
         if let node = Ids {
             getArtistTopTracks(withIds: node)
@@ -494,7 +522,7 @@ struct SpotifyAnalysisScreen_Previews: PreviewProvider {
     static var previews: some View {
         ForEach([tracks], id: \.self) { tracks in
             NavigationView {
-                SpotifyAnalysisScreen(recommendedTracks: tracks)
+                SpotifyAnalysisScreen(recommendedTracks: tracks, PlaylistOptionsViewModel())
                     .listStyle(PlainListStyle())
             }
         }
