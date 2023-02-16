@@ -43,8 +43,17 @@ class SpotifyAnalysisListViewModel: ObservableObject {
     // the event listener
     private var eventListener:Event<Node<String>?>? = nil
     
-    func initialize(listener:Event<Node<String>?>){
-        self.eventListener = listener
+    // the get recommendations function callback
+    private var recommendationListener:Event<Void>? = nil
+    /**
+     * initialize listeners
+     * @param retryListener: The artist top items retry handler
+     * @param recommendationsListener: The callback function to get recommended tracks
+     */
+    func initialize(retryListener:Event<Node<String>?>, recommendationListener:Event<Void>){
+        self.eventListener = retryListener
+        self.recommendationListener = recommendationListener
+        
     }
     
 }
@@ -104,6 +113,8 @@ extension SpotifyAnalysisListViewModel{
                         }
                         let res = self?.filterForWriting(mood: selectedMood, genre: selectedGenre, analyzedTracks: self?.analyzedSongs)
                         if res! {
+                            // raise event handler to generate recommendations
+                            self?.recommendationListener?.raise(data: {print("generate recommendations")}())
                             return
                         }
                         else {
