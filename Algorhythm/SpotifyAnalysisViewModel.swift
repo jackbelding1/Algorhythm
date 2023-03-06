@@ -82,7 +82,7 @@ extension SpotifyAnalysisListViewModel {
         var filteredTracks: [SpotifyAnalysisViewModel] = []
         if mood != nil {
             for track in analyzedSongs {
-                if track.maxMood == mood {
+                if track.maxMoods.isInList(mood!) {
                     filteredTracks.append(track)
                 }
             }
@@ -144,7 +144,7 @@ extension SpotifyAnalysisListViewModel{
                           genre selectedGenre:String, analyzedTracks tracks:[SpotifyAnalysisViewModel]?) -> Bool{
         if let loc_tracks = tracks {
             for track in loc_tracks {
-                if track.maxMood == selectedMood {
+                if track.maxMoods.isInList(selectedMood) {
                     seedIds.append(track.id)
                     writeMoodToDataBase(mood: selectedMood, genre: selectedGenre, withIds: seedIds)
                     return true
@@ -192,15 +192,58 @@ class SpotifyAnalysisViewModel {
     var id: String {
         analyzedSpotifyTrack.asSpotifyTrack!.id
     }
-        
-    var maxMood:Moods
+    // the object for the top 3 moods of a track
+    var maxMoods:TrackMoods = TrackMoods()
     
     init(analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack) {
         self.analyzedSpotifyTrack = analyzedSpotifyTrack
-        self.maxMood = Moods.Energetic
         getMaxValue()
+        print(id)
     }
     
+}
+
+// the key value pair of mood to score value
+struct moodElement {
+    public var mood:SpotifyAnalysisViewModel.Moods
+    public var val:Double = 0
+    
+    init(mood: SpotifyAnalysisViewModel.Moods, val: Double) {
+        self.mood = mood
+        self.val = val
+    }
+}
+
+class TrackMoods {
+    // the amount of moods to keep track of
+    private var maxMoodLimit = 3
+
+    private var maxMoods:[moodElement] = []
+    
+    func isInList(_ mood:SpotifyAnalysisViewModel.Moods) -> Bool{
+        for el in maxMoods {
+            if el.mood == mood {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func updateMaxMoods(_ listEl:moodElement) -> Double {
+        // variable to return
+        var max = 0.0
+        // add the list item
+        maxMoods.append(listEl)
+        // set the max and clean up the list
+        if maxMoods.count >= maxMoodLimit {
+            max = maxMoods[maxMoodLimit - 1].val
+            if maxMoods.count > maxMoodLimit {
+                maxMoods = maxMoods.sorted { $0.val > $1.val }
+                maxMoods.removeLast()
+            }
+        }
+        return max
+    }
 }
 
 extension SpotifyAnalysisViewModel {
@@ -248,7 +291,7 @@ extension SpotifyAnalysisViewModel {
         case Sexy
     }
         
-    func getMaxValue() -> Double? {
+    func getMaxValue() {
         var max:Double? = 0.0
         
         for mood in Moods.allCases {
@@ -256,61 +299,52 @@ extension SpotifyAnalysisViewModel {
             case .Energetic:
                 if let val = energetic {
                     if max! < val {
-                        max! = val
-                        maxMood = mood
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             case .Aggressive:
                 if let val = aggressive {
                     if max! < val {
-                        max! = val
-                        maxMood = Moods.Aggressive
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             case .Calm:
                 if let val = calm {
                     if max! < val {
-                        max! = val
-                        maxMood = Moods.Calm
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             case .Romantic:
                 if let val = romantic {
                     if max! < val {
-                        max! = val
-                        maxMood = Moods.Romantic
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             case .Dark:
                 if let val = dark {
                     if max! < val {
-                        max! = val
-                        maxMood = Moods.Dark
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             case .Happy:
                 if let val = happy {
                     if max! < val {
-                        max! = val
-                        maxMood = Moods.Happy
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             case .Sad:
                 if let val = sad {
                     if max! < val {
-                        max! = val
-                        maxMood = Moods.Sad
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             case .Sexy:
                 if let val = sexy {
                     if max! < val {
-                        max! = val
-                        maxMood = Moods.Sexy
+                        max! = maxMoods.updateMaxMoods(moodElement(mood: mood ,val: val))
                     }
                 }
             }
         }
-        return max
     }
 }

@@ -13,7 +13,7 @@ import SpotifyExampleContent
 struct SpotifyAnalysisScreen: View{
     // the playlist options to be used in playlist generation
     private var playlistOptions:PlaylistOptionsViewModel
-        
+
     // the playlist creating result
     enum PlaylistState {
         case in_progress
@@ -66,6 +66,12 @@ struct SpotifyAnalysisScreen: View{
     
     // the offset of user artists to analyze
     @State private var artistOffset:Int = 0
+    
+    // the counter for the amount of retrys we make
+    @State private var retryCounter:Int = 1
+    
+    // the current time range
+    @State private var currentTimeRange:TimeRange = TimeRange.shortTerm
     
     // the created playlist uri
     @State private var createdPlaylistId:String = ""
@@ -241,7 +247,7 @@ extension SpotifyAnalysisScreen {
             //
         }
         if !analyzedSongListVM.loadMoodFromDatabase(mood: selectedMood!, genre: selectedGenre){
-            getUserTopArtists(withTimeRange: TimeRange.mediumTerm) // download mood seed from network
+            getUserTopArtists() // download mood seed from network
         }
         else {
             getRecommendations()
@@ -310,10 +316,10 @@ extension SpotifyAnalysisScreen {
 // Generate the seeds for the cache
 extension SpotifyAnalysisScreen {
     
-    func getUserTopArtists(withTimeRange range:TimeRange) {
+    func getUserTopArtists() {
         var artistIds:[String] = []
         self.getUserTopArtistsCancellable = self.spotify.api
-            .currentUserTopArtists(range, offset: artistOffset, limit: 50)
+            .currentUserTopArtists(currentTimeRange, offset: artistOffset, limit: 50)
             .receive(on: RunLoop.main)
             .sink(
                 receiveCompletion: self.getTopArtistsCompletion(_:),
@@ -324,6 +330,7 @@ extension SpotifyAnalysisScreen {
                     }
                     findArtistWithSelectedGenre(withIds: artistIds)
                 })
+        
     }
     
     func findArtistWithSelectedGenre(withIds artistIds:[String]) {
@@ -353,20 +360,31 @@ extension SpotifyAnalysisScreen {
                         }
                     }
                 }
+                // if we are at the end of the list, restart the loop by getting user top items with artistOffset
                 if artists.head == nil {
-                    if artistOffset > 500 {
-                        artistOffset += 50
-                        getUserTopArtists(withTimeRange: TimeRange.longTerm)
-
-                    }
-                    if artistOffset > 1000 {
-                        return
+                    if retryCounter > 10 {
+                        retryCounter = 1
+                        artistOffset = 0
+                        switch currentTimeRange {
+                        case .shortTerm:
+                            currentTimeRange = .mediumTerm
+                        case .mediumTerm:
+                            currentTimeRange = .longTerm
+                        case .longTerm:
+                            currentTimeRange = .shortTerm
+                            //
+                            // TODO: at this point, we must reach out to a top 100 billboard for
+                            // TODO: a mood seed. This function will be created later
+                            //
+                            return
+                        }
                     }
                     else {
+                        retryCounter += 1
                         artistOffset += 50
-                        getUserTopArtists(withTimeRange: TimeRange.mediumTerm)
                     }
-
+                    getUserTopArtists()
+                // otherwise, begin analyzing artist top tracks
                 } else {
                     getArtistTopTracks(withIds: artists.head)
                 }
