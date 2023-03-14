@@ -23,6 +23,252 @@ public struct SpotifyTrackEnqueueInput: GraphQLMapConvertible {
   }
 }
 
+/// Describes all possible genre tags.
+public enum AudioAnalysisV6GenreTags: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  /// Ambient
+  case ambient
+  /// Blues
+  case blues
+  /// Classical
+  case classical
+  /// Electronic/Dance
+  case electronicDance
+  /// Folk/Country
+  case folkCountry
+  /// Jazz
+  case jazz
+  /// Funk/Soul
+  case funkSoul
+  /// Latin
+  case latin
+  /// Metal
+  case metal
+  /// Pop
+  case pop
+  /// Rap/Hip-Hop
+  case rapHipHop
+  /// Reggae
+  case reggae
+  /// RnB
+  case rnb
+  /// Rock
+  case rock
+  /// Singer/Songwriter
+  case singerSongwriter
+  @available(*, deprecated, message: "country is now a subgenre. Please do not use this value anymore and instead refer to the corresponding subgenre values.")
+  case country
+  @available(*, deprecated, message: "indieAlternative is now a subgenre. Please do not use this value anymore and instead refer to the corresponding subgenre values.")
+  case indieAlternative
+  @available(*, deprecated, message: "punk is now a subgenre. Please do not use this value anymore and instead refer to the corresponding subgenre values.")
+  case punk
+  @available(*, deprecated, message: "folk is now a subgenre. Please do not use this value anymore and instead refer to the corresponding subgenre values.")
+  case folk
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "ambient": self = .ambient
+      case "blues": self = .blues
+      case "classical": self = .classical
+      case "electronicDance": self = .electronicDance
+      case "folkCountry": self = .folkCountry
+      case "jazz": self = .jazz
+      case "funkSoul": self = .funkSoul
+      case "latin": self = .latin
+      case "metal": self = .metal
+      case "pop": self = .pop
+      case "rapHipHop": self = .rapHipHop
+      case "reggae": self = .reggae
+      case "rnb": self = .rnb
+      case "rock": self = .rock
+      case "singerSongwriter": self = .singerSongwriter
+      case "country": self = .country
+      case "indieAlternative": self = .indieAlternative
+      case "punk": self = .punk
+      case "folk": self = .folk
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .ambient: return "ambient"
+      case .blues: return "blues"
+      case .classical: return "classical"
+      case .electronicDance: return "electronicDance"
+      case .folkCountry: return "folkCountry"
+      case .jazz: return "jazz"
+      case .funkSoul: return "funkSoul"
+      case .latin: return "latin"
+      case .metal: return "metal"
+      case .pop: return "pop"
+      case .rapHipHop: return "rapHipHop"
+      case .reggae: return "reggae"
+      case .rnb: return "rnb"
+      case .rock: return "rock"
+      case .singerSongwriter: return "singerSongwriter"
+      case .country: return "country"
+      case .indieAlternative: return "indieAlternative"
+      case .punk: return "punk"
+      case .folk: return "folk"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: AudioAnalysisV6GenreTags, rhs: AudioAnalysisV6GenreTags) -> Bool {
+    switch (lhs, rhs) {
+      case (.ambient, .ambient): return true
+      case (.blues, .blues): return true
+      case (.classical, .classical): return true
+      case (.electronicDance, .electronicDance): return true
+      case (.folkCountry, .folkCountry): return true
+      case (.jazz, .jazz): return true
+      case (.funkSoul, .funkSoul): return true
+      case (.latin, .latin): return true
+      case (.metal, .metal): return true
+      case (.pop, .pop): return true
+      case (.rapHipHop, .rapHipHop): return true
+      case (.reggae, .reggae): return true
+      case (.rnb, .rnb): return true
+      case (.rock, .rock): return true
+      case (.singerSongwriter, .singerSongwriter): return true
+      case (.country, .country): return true
+      case (.indieAlternative, .indieAlternative): return true
+      case (.punk, .punk): return true
+      case (.folk, .folk): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+
+  public static var allCases: [AudioAnalysisV6GenreTags] {
+    return [
+      .ambient,
+      .blues,
+      .classical,
+      .electronicDance,
+      .folkCountry,
+      .jazz,
+      .funkSoul,
+      .latin,
+      .metal,
+      .pop,
+      .rapHipHop,
+      .reggae,
+      .rnb,
+      .rock,
+      .singerSongwriter,
+      .country,
+      .indieAlternative,
+      .punk,
+      .folk,
+    ]
+  }
+}
+
+/// Describes all possible mood tags.
+public enum AudioAnalysisV6MoodTags: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  case aggressive
+  case calm
+  case chilled
+  case dark
+  case energetic
+  case epic
+  case happy
+  case romantic
+  case sad
+  case scary
+  case sexy
+  case ethereal
+  case uplifting
+  case ambiguous
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "aggressive": self = .aggressive
+      case "calm": self = .calm
+      case "chilled": self = .chilled
+      case "dark": self = .dark
+      case "energetic": self = .energetic
+      case "epic": self = .epic
+      case "happy": self = .happy
+      case "romantic": self = .romantic
+      case "sad": self = .sad
+      case "scary": self = .scary
+      case "sexy": self = .sexy
+      case "ethereal": self = .ethereal
+      case "uplifting": self = .uplifting
+      case "ambiguous": self = .ambiguous
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .aggressive: return "aggressive"
+      case .calm: return "calm"
+      case .chilled: return "chilled"
+      case .dark: return "dark"
+      case .energetic: return "energetic"
+      case .epic: return "epic"
+      case .happy: return "happy"
+      case .romantic: return "romantic"
+      case .sad: return "sad"
+      case .scary: return "scary"
+      case .sexy: return "sexy"
+      case .ethereal: return "ethereal"
+      case .uplifting: return "uplifting"
+      case .ambiguous: return "ambiguous"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: AudioAnalysisV6MoodTags, rhs: AudioAnalysisV6MoodTags) -> Bool {
+    switch (lhs, rhs) {
+      case (.aggressive, .aggressive): return true
+      case (.calm, .calm): return true
+      case (.chilled, .chilled): return true
+      case (.dark, .dark): return true
+      case (.energetic, .energetic): return true
+      case (.epic, .epic): return true
+      case (.happy, .happy): return true
+      case (.romantic, .romantic): return true
+      case (.sad, .sad): return true
+      case (.scary, .scary): return true
+      case (.sexy, .sexy): return true
+      case (.ethereal, .ethereal): return true
+      case (.uplifting, .uplifting): return true
+      case (.ambiguous, .ambiguous): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+
+  public static var allCases: [AudioAnalysisV6MoodTags] {
+    return [
+      .aggressive,
+      .calm,
+      .chilled,
+      .dark,
+      .energetic,
+      .epic,
+      .happy,
+      .romantic,
+      .sad,
+      .scary,
+      .sexy,
+      .ethereal,
+      .uplifting,
+      .ambiguous,
+    ]
+  }
+}
+
 public final class SpotifyTrackEnqueueMutationMutation: GraphQLMutation {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -300,6 +546,8 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                   sad
                   sexy
                 }
+                genreTags
+                moodTags
               }
             }
           }
@@ -605,6 +853,8 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                 return [
                   GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                   GraphQLField("mood", type: .nonNull(.object(Mood.selections))),
+                  GraphQLField("genreTags", type: .nonNull(.list(.nonNull(.scalar(AudioAnalysisV6GenreTags.self))))),
+                  GraphQLField("moodTags", type: .nonNull(.list(.nonNull(.scalar(AudioAnalysisV6MoodTags.self))))),
                 ]
               }
 
@@ -614,8 +864,8 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                 self.resultMap = unsafeResultMap
               }
 
-              public init(mood: Mood) {
-                self.init(unsafeResultMap: ["__typename": "AudioAnalysisV6Result", "mood": mood.resultMap])
+              public init(mood: Mood, genreTags: [AudioAnalysisV6GenreTags], moodTags: [AudioAnalysisV6MoodTags]) {
+                self.init(unsafeResultMap: ["__typename": "AudioAnalysisV6Result", "mood": mood.resultMap, "genreTags": genreTags, "moodTags": moodTags])
               }
 
               public var __typename: String {
@@ -634,6 +884,25 @@ public final class SpotifyTrackQueryQuery: GraphQLQuery {
                 }
                 set {
                   resultMap.updateValue(newValue.resultMap, forKey: "mood")
+                }
+              }
+
+              public var genreTags: [AudioAnalysisV6GenreTags] {
+                get {
+                  return resultMap["genreTags"]! as! [AudioAnalysisV6GenreTags]
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "genreTags")
+                }
+              }
+
+              /// List of mood tags the audio is classified with.
+              public var moodTags: [AudioAnalysisV6MoodTags] {
+                get {
+                  return resultMap["moodTags"]! as! [AudioAnalysisV6MoodTags]
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "moodTags")
                 }
               }
 

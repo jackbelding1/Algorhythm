@@ -32,10 +32,10 @@ struct MoodScreen: View {
     private var twoColumnGrid = [GridItem(.flexible(), spacing: 50), GridItem(.flexible(), spacing: 50)]
     
     // selected mood
-    @State private var selectedMood:SpotifyAnalysisViewModel.Moods? = nil
+    @State private var selectedMood:String? = nil
     
     // handle tapping of mood option
-    private func onTapped(mood:SpotifyAnalysisViewModel.Moods) {
+    private func onTapped(mood:String) {
         selectedMood = mood == selectedMood ?
         nil : mood
         print("selected \(mood)")
@@ -59,14 +59,14 @@ struct MoodScreen: View {
                 LazyHGrid(rows: twoColumnGrid, spacing: 10) {
                     ForEach((0...7), id: \.self) {i in
                         VStack {
-                            Button(action: {onTapped(mood: SpotifyAnalysisViewModel.Moods.allCases[i])}){
+                            Button(action: {onTapped(mood: captions[i].lowercased())}){
                                 Text(symbols[i])
                                     .font(.system(size: 50))
                                     .frame(width: 65, height: 85)
                                     .background(colors[i])
                                     .cornerRadius(40)
                             }
-                            .overlay(selectedMood == SpotifyAnalysisViewModel.Moods.allCases[i]
+                            .overlay(selectedMood == captions[i].lowercased()
                                      ? RoundedRectangle(cornerRadius: 5)
                                 .stroke(.green) : nil)
                             Text(captions[i])
