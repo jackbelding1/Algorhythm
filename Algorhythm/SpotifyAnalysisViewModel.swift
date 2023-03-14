@@ -24,7 +24,7 @@ struct NetworkCalls{
  *  The list of all the analyzed spotify songs. This is only for observing the results of the analysis
  * and will not be used in the production application
  */
-class SpotifyAnalysisListViewModel: ObservableObject {
+class SpotifyAnalysisListViewModel: ObservableObject {    
     // Network calls logger
     public var networkCalls:NetworkCalls = NetworkCalls()
     
@@ -99,7 +99,7 @@ extension SpotifyAnalysisListViewModel {
  * Filter seeds by mood
  */
 extension SpotifyAnalysisListViewModel{    
-    func findMoodGenreTrack(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+    func findMoodGenreTrack(mood selectedMood:String,
                             genre selectedGenre:String, tracks artistTracks:Node<String?>?, parentNode node:Node<String>?) {
         if let head = artistTracks {
             if let id = head.value {
@@ -135,16 +135,63 @@ extension SpotifyAnalysisListViewModel{
             eventListener?.raise(data: node?.next)
         }
     }
+    // function checks if the analyzed track's genre tags contains the selected genre
+    func trackIsSelectedGenre(_ track:SpotifyAnalysisViewModel, genre selectedGenre:String) -> Bool {
+        if let cyaniteGenreTags = track.genreTags {
+            for trackGenreTag in cyaniteGenreTags {
+                if cyanite2SpotfiyTags[trackGenreTag.rawValue]!.contains(selectedGenre){
+                    return true
+                }
+            }
+            return false
+        }
+        else {
+            return false
+        }
+    }
+    // temporary function to map moods that don't have a UI button
+    func mapMoods(_ mood:String) -> [String]{
+        var moods = [mood]
+        if mood == "uplifitng" {
+            moods.append("happy")
+        }
+        else if mood == "chilled" || mood == "ethereal" {
+            moods.append("calm")
+        }
+        else if mood == "epic" {
+            moods.append("energetic")
+        }
+        else if mood == "scary" {
+            moods.append("dark")
+        }
+        return moods
+    }
+    
+    // function checks if the analyzed track's mood tag contains the selected mood
+    func trackIsSelectedMood(_ track:SpotifyAnalysisViewModel,mood selectedMood:String) -> Bool {
+        if let cyaniteMoodTags = track.moodTags {
+            for trackMoodTag in cyaniteMoodTags {
+                if mapMoods(trackMoodTag.rawValue).contains(selectedMood) {
+                    return true
+                }
+            }
+            return false
+        }
+        else {
+            return false
+        }
+    }
     
     /**
      * Search through the provided tracks. When a track's max mood is the selected mood,
      * write to the data base and return
      */
-    func filterForWriting(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+    func filterForWriting(mood selectedMood:String,
                           genre selectedGenre:String, analyzedTracks tracks:[SpotifyAnalysisViewModel]?) -> Bool{
         if let loc_tracks = tracks {
             for track in loc_tracks {
-                if track.maxMoods.isInList(selectedMood) {
+                if trackIsSelectedMood(track, mood: selectedMood)
+                    && trackIsSelectedGenre(track, genre: selectedGenre) {
                     seedIds.append(track.id)
                     writeMoodToDataBase(mood: selectedMood, genre: selectedGenre, withIds: seedIds)
                     return true
@@ -156,28 +203,25 @@ extension SpotifyAnalysisListViewModel{
     
     func writePlaylistId(_ id:String) {algoDbManager.writePlaylistId(withId: id)}
     
-    func writeMoodToDataBase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+    func writeMoodToDataBase(mood selectedMood:String,
                          genre selectedGenre:String, withIds Ids:[String]) {
-        algoDbManager.writeIds(forGenre: selectedGenre, forMood: enumToString(selectedMood)!, ids: Ids)
+        algoDbManager.writeIds(forGenre: selectedGenre, forMood: selectedMood, ids: Ids)
     }
     
-    func loadMoodFromDatabase(mood selectedMood:SpotifyAnalysisViewModel.Moods,
+    func loadMoodFromDatabase(mood selectedMood:String,
                           genre selectedGenre:String) -> Bool {
         // try to load from the data manager. if ids are found, append to the
         // list and return true. if empty ids, return false
-        if let mood = enumToString(selectedMood){
-            let ids = algoDbManager.readIds(forGenre: selectedGenre, forMood: mood)
-            if ids.isEmpty {
-                return false
-            }
-            else {
-                for id in ids {
-                    seedIds.append(id)
-                }
-                return true
-            }
+        let ids = algoDbManager.readIds(forGenre: selectedGenre, forMood: selectedMood)
+        if ids.isEmpty {
+            return false
         }
-        return false
+        else {
+            for id in ids {
+                seedIds.append(id)
+            }
+            return true
+        }
     }
 }
 
@@ -186,6 +230,8 @@ extension SpotifyAnalysisListViewModel{
  *  used for each generation, and will potentially be saved into the mood cache
  */
 class SpotifyAnalysisViewModel {
+    
+    
     
     let analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack
     
@@ -247,6 +293,15 @@ class TrackMoods {
 }
 
 extension SpotifyAnalysisViewModel {
+    
+    // the genres associated with the track
+    var genreTags:[AudioAnalysisV6GenreTags]? {
+        analyzedSpotifyTrack.asSpotifyTrack?.audioAnalysisV6.asAudioAnalysisV6Finished?.result.genreTags
+    }
+    
+    var moodTags:[AudioAnalysisV6MoodTags]? {
+        analyzedSpotifyTrack.asSpotifyTrack?.audioAnalysisV6.asAudioAnalysisV6Finished?.result.moodTags
+    }
     
     var energetic:Double? {
         analyzedSpotifyTrack.asSpotifyTrack?.audioAnalysisV6.asAudioAnalysisV6Finished?.result.mood.energetic

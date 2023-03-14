@@ -54,7 +54,7 @@ struct SpotifyAnalysisScreen: View{
     @State private var alert: AlertItem? = nil
     
     // the mood to analyze
-    private var selectedMood:SpotifyAnalysisViewModel.Moods?
+    private var selectedMood:String?
     
     // the genre to generate the playlist from
     private var selectedGenre:String
@@ -77,7 +77,7 @@ struct SpotifyAnalysisScreen: View{
     @State private var createdPlaylistId:String = ""
 
     // initializer
-    init(mood:SpotifyAnalysisViewModel.Moods?, _ playlistOptionsVM:PlaylistOptionsViewModel) {
+    init(mood:String?, _ playlistOptionsVM:PlaylistOptionsViewModel) {
         playlistOptions = playlistOptionsVM
         self._recommendedTracks = State(initialValue: [])
         selectedMood = mood

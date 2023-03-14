@@ -2,6 +2,24 @@ import Foundation
 import SwiftUI
 import SpotifyWebAPI
 
+// mapping of cyanite genres to spotify genres
+let cyanite2SpotfiyTags:[String:[String]] = [
+    "electronicDance":["edm", "dance", "dubstep", "house"],
+    "rapHipHop":["rap"],
+    "folkCountry":["country"],
+    "rnb":["r-n-b"],
+    "pop":["pop", "indie-pop"],
+    "classical":["classical"],
+    "rock":["grunge", "rock", "punk-rock", "hard-rock"],
+    "reggae":["reggae", "reggaeton"],
+    "metal":["metal"],
+    "latin":["latin"],
+    "jazz":["jazz"],
+    "funkSoul":["funk"],
+    "ambient":["ambient"],
+    "blues":["blues"],
+    "singerSongwriter":["indie"]
+]
 
 /**
  * The URI string for artist
