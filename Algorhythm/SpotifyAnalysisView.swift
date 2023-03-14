@@ -25,6 +25,7 @@ struct SpotifyAnalysisScreen: View{
     
     // spotify object
     @EnvironmentObject var spotify: Spotify
+    @EnvironmentObject var appState: AppState
 
     // View model for mood analysis and data storage
     @StateObject private var analyzedSongListVM = SpotifyAnalysisListViewModel()
@@ -89,6 +90,20 @@ struct SpotifyAnalysisScreen: View{
         playlistOptions = playlistOptionsVM
         selectedMood = nil
         selectedGenre = "edm"
+    }
+    
+    var returnHomeButton : some View {
+        Button(action: { appState.rootViewId = UUID() }) {
+            Text("Return Home")
+                .foregroundColor(Color.black)
+                .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
+                .font(Font.headline.weight(.bold))
+                .lineLimit(1)
+        }
+            .background(Color.white)
+            .clipShape(Capsule())
+            .buttonStyle(PlainButtonStyle())
+            .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
     }
     
     var body: some View {
@@ -168,17 +183,7 @@ struct SpotifyAnalysisScreen: View{
                     .clipShape(Capsule())
                     .buttonStyle(PlainButtonStyle())
                     .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-                    NavigationLink(destination: HomeView()) {
-                        Text("Return Home")
-                            .foregroundColor(Color.black)
-                            .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
-                            .font(Font.headline.weight(.bold))
-                            .lineLimit(1)
-                    }
-                        .background(Color.white)
-                        .clipShape(Capsule())
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+                    returnHomeButton
                 case .failiure:
                     Spacer()
                     Group{
@@ -189,30 +194,7 @@ struct SpotifyAnalysisScreen: View{
                     }
                     Divider()
                     Spacer()
-                    Button(action: {
-                        print("hello")
-                    }){ Text("One more try")
-                        .foregroundColor(Color.black)
-                        .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
-                        .font(Font.headline.weight(.bold))
-                        .lineLimit(1)
-                    }
-                    .background(Color.white)
-                    .clipShape(Capsule())
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-                    NavigationLink(destination: HomeView()) {
-                        Text("Return Home")
-                            .foregroundColor(Color.black)
-                            .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
-                            .font(Font.headline.weight(.bold))
-                            .lineLimit(1)
-                    }
-                        .background(Color.white)
-                        .clipShape(Capsule())
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-                        .navigationBarHidden(true)
+                    returnHomeButton
                 }
             }
             Spacer()
@@ -371,6 +353,7 @@ extension SpotifyAnalysisScreen {
                             currentTimeRange = .longTerm
                         case .longTerm:
                             currentTimeRange = .shortTerm
+                            playlistCreationState = .failiure
                             //
                             // TODO: at this point, we must reach out to a top 100 billboard for
                             // TODO: a mood seed. This function will be created later

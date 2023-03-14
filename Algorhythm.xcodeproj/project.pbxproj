@@ -37,6 +37,7 @@
 		77DB3726293AD8490058DBC6 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 77DB3725293AD8490058DBC6 /* Realm */; };
 		77DB3728293AD8490058DBC6 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 77DB3727293AD8490058DBC6 /* RealmSwift */; };
 		77DB372A293BEA230058DBC6 /* AlgoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */; };
+		77E0DAD229C11037004F1DAD /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E0DAD129C11037004F1DAD /* AppState.swift */; };
 		77EB1E7A2978CB4600E4052C /* PlaylistOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EB1E792978CB4600E4052C /* PlaylistOptionsView.swift */; };
 		77EB1E7C2978CB6800E4052C /* PlaylistOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EB1E7B2978CB6800E4052C /* PlaylistOptionsViewModel.swift */; };
 		77F2B219295B724D009B22C6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F2B218295B724D009B22C6 /* SettingsView.swift */; };
@@ -70,6 +71,7 @@
 		77CE434329132BBB000019A8 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		77CE434B291333CA000019A8 /* GraphQL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GraphQL; sourceTree = "<group>"; };
 		77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoDataManager.swift; sourceTree = "<group>"; };
+		77E0DAD129C11037004F1DAD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = "Project Utilities/AppState.swift"; sourceTree = "<group>"; };
 		77EB1E792978CB4600E4052C /* PlaylistOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOptionsView.swift; sourceTree = "<group>"; };
 		77EB1E7B2978CB6800E4052C /* PlaylistOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOptionsViewModel.swift; sourceTree = "<group>"; };
 		77F2B218295B724D009B22C6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = ../SettingsView.swift; sourceTree = "<group>"; };
@@ -120,7 +122,6 @@
 			isa = PBXGroup;
 			children = (
 				771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */,
-				77CE43282913299C000019A8 /* AlgorhythmApp.swift */,
 				771D46D32914657E005F7781 /* Spotify.swift */,
 				77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */,
 				77EB1E7B2978CB6800E4052C /* PlaylistOptionsViewModel.swift */,
@@ -131,6 +132,7 @@
 		77CC2AF8295626B20018EF1B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				77E0DAD129C11037004F1DAD /* AppState.swift */,
 				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
 				776DB7DF29148E620055424F /* AlertItem.swift */,
 				776DB7E029148E620055424F /* ImageNames.swift */,
@@ -171,6 +173,7 @@
 		77CE43272913299C000019A8 /* Algorhythm */ = {
 			isa = PBXGroup;
 			children = (
+				77CE43282913299C000019A8 /* AlgorhythmApp.swift */,
 				77CC2AF8295626B20018EF1B /* Utils */,
 				77CC2AF7295626680018EF1B /* Models */,
 				77CC2AF6295624D90018EF1B /* Views */,
@@ -302,6 +305,7 @@
 				77CC2AFF29563E120018EF1B /* PlaylistCellView.swift in Sources */,
 				7765B2D029186AC600DB67AC /* MoodView.swift in Sources */,
 				77DB372A293BEA230058DBC6 /* AlgoDataManager.swift in Sources */,
+				77E0DAD229C11037004F1DAD /* AppState.swift in Sources */,
 				776DB7E129148E630055424F /* MiscellaneousUtilities.swift in Sources */,
 				77EB1E7C2978CB6800E4052C /* PlaylistOptionsViewModel.swift in Sources */,
 				77CC2AF52953EDB60018EF1B /* HomeView.swift in Sources */,
