@@ -11,6 +11,7 @@ import SpotifyWebAPI
 
 @main
 struct AlgorhythmApp: App {
+    @ObservedObject var appState = AppState()
     @StateObject var spotify = Spotify()
     @StateObject var sheetManager = SheetManager()
 
@@ -22,6 +23,7 @@ struct AlgorhythmApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(spotify)
+                .environmentObject(appState)
             
         }
     }

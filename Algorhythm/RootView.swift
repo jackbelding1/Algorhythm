@@ -5,9 +5,8 @@ import SpotifyWebAPI
 struct RootView: View {
     
     @EnvironmentObject var spotify: Spotify
-    
+    @EnvironmentObject var appState: AppState
     @State private var alert: AlertItem? = nil
-
     @State private var cancellables: Set<AnyCancellable> = []
     
     var body: some View {
@@ -15,6 +14,7 @@ struct RootView: View {
             if (self.spotify.isAuthorized) {
                 HomeView()
                     .environmentObject(spotify)
+                    .id(appState.rootViewId)
             }
             else {
                 VStack{
