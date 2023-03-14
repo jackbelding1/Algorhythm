@@ -94,7 +94,8 @@ struct SpotifyAnalysisScreen: View{
     var body: some View {
         VStack{
             if recommendedTracks.isEmpty &&
-                analyzedSongListVM.seedIds.isEmpty {
+                analyzedSongListVM.seedIds.isEmpty &&
+                (playlistCreationState != .failiure) {
                 HStack {
                     ProgressView()
                         .padding()
@@ -102,8 +103,6 @@ struct SpotifyAnalysisScreen: View{
                         .font(.title)
                         .foregroundColor(.secondary)
                 }
-                .onAppear(perform: {
-                })
             }
             else {
                 switch (playlistCreationState){
@@ -441,6 +440,7 @@ extension SpotifyAnalysisScreen {
         }
         else {
             print("no seeds matching mood found! try again!")
+            playlistCreationState = .failiure
         }
     }
 }
