@@ -285,6 +285,43 @@ extension SpotifyAnalysisScreen {
         }
     }
     
+    // function checks if the retry counter will satisfy a network rety
+    func getTopArtistRetry() {
+        // temporary cap at 200 cyanite calls
+        if analyzedSongListVM.networkCalls.cyanite > 200 {
+            currentTimeRange = .shortTerm
+            playlistCreationState = .failiure
+            //
+            // TODO: at this point, we must reach out to a top 100 billboard for
+            // TODO: a mood seed. This function will be created later
+            //
+            return
+        }
+        if retryCounter > 3 {
+            retryCounter = 1
+            artistOffset = 0
+            switch currentTimeRange {
+            case .shortTerm:
+                currentTimeRange = .mediumTerm
+            case .mediumTerm:
+                currentTimeRange = .longTerm
+            case .longTerm:
+                currentTimeRange = .shortTerm
+                playlistCreationState = .failiure
+                //
+                // TODO: at this point, we must reach out to a top 100 billboard for
+                // TODO: a mood seed. This function will be created later
+                //
+                return
+            }
+        }
+        else {
+            retryCounter += 1
+            artistOffset += 50
+        }
+        getUserTopArtists()
+    }
+    
     func writeTracks() {
         let ids = self.recommendedTracks.map { $0.id! }
         if !ids.isEmpty {
@@ -323,6 +360,7 @@ extension SpotifyAnalysisScreen {
             .sink(receiveCompletion:
                     self.getArtistsCompletion(_:),
                   receiveValue: { response in
+                analyzedSongListVM.networkCalls.spotify += 1
                 for artist in response {
                     if let genres = artist?.genres {
                         for genre in genres {
@@ -343,29 +381,7 @@ extension SpotifyAnalysisScreen {
                 }
                 // if we are at the end of the list, restart the loop by getting user top items with artistOffset
                 if artists.head == nil {
-                    if retryCounter > 10 {
-                        retryCounter = 1
-                        artistOffset = 0
-                        switch currentTimeRange {
-                        case .shortTerm:
-                            currentTimeRange = .mediumTerm
-                        case .mediumTerm:
-                            currentTimeRange = .longTerm
-                        case .longTerm:
-                            currentTimeRange = .shortTerm
-                            playlistCreationState = .failiure
-                            //
-                            // TODO: at this point, we must reach out to a top 100 billboard for
-                            // TODO: a mood seed. This function will be created later
-                            //
-                            return
-                        }
-                    }
-                    else {
-                        retryCounter += 1
-                        artistOffset += 50
-                    }
-                    getUserTopArtists()
+                    getTopArtistRetry()
                 // otherwise, begin analyzing artist top tracks
                 } else {
                     getArtistTopTracks(withIds: artists.head)
@@ -423,7 +439,7 @@ extension SpotifyAnalysisScreen {
         }
         else {
             print("no seeds matching mood found! try again!")
-            playlistCreationState = .failiure
+            getTopArtistRetry()
         }
     }
 }
