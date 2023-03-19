@@ -19,7 +19,7 @@
 		776DB7DA29148D7F0055424F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7D929148D7F0055424F /* LoginView.swift */; };
 		776DB7E129148E630055424F /* MiscellaneousUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */; };
 		776DB7E329148E630055424F /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7DF29148E620055424F /* AlertItem.swift */; };
-		776DB7E429148E630055424F /* ImageNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E029148E620055424F /* ImageNames.swift */; };
+		776DB7E429148E630055424F /* SpotifyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E029148E620055424F /* SpotifyImages.swift */; };
 		776DB7E629148EC10055424F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E529148EC10055424F /* RootView.swift */; };
 		77B75DCA291B08E00014CEF8 /* SpotifyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B75DC9291B08E00014CEF8 /* SpotifyAnalysisView.swift */; };
 		77BB442529200E3D00EF8E90 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BB442429200E3D00EF8E90 /* TrackView.swift */; };
@@ -57,7 +57,7 @@
 		776DB7D929148D7F0055424F /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscellaneousUtilities.swift; sourceTree = "<group>"; };
 		776DB7DF29148E620055424F /* AlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
-		776DB7E029148E620055424F /* ImageNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageNames.swift; sourceTree = "<group>"; };
+		776DB7E029148E620055424F /* SpotifyImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyImages.swift; sourceTree = "<group>"; };
 		776DB7E529148EC10055424F /* RootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		77B75DC9291B08E00014CEF8 /* SpotifyAnalysisView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisView.swift; sourceTree = "<group>"; };
 		77BB442429200E3D00EF8E90 /* TrackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 				77E0DAD129C11037004F1DAD /* AppState.swift */,
 				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
 				776DB7DF29148E620055424F /* AlertItem.swift */,
-				776DB7E029148E620055424F /* ImageNames.swift */,
+				776DB7E029148E620055424F /* SpotifyImages.swift */,
 				77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */,
 				771D46CE29133BBA005F7781 /* API.swift */,
 				776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */,
@@ -315,7 +315,7 @@
 				77CC2AF52953EDB60018EF1B /* HomeView.swift in Sources */,
 				77CC2AFD29562DF60018EF1B /* PlaylistsListView.swift in Sources */,
 				77F2B219295B724D009B22C6 /* SettingsView.swift in Sources */,
-				776DB7E429148E630055424F /* ImageNames.swift in Sources */,
+				776DB7E429148E630055424F /* SpotifyImages.swift in Sources */,
 				771D46D42914657E005F7781 /* Spotify.swift in Sources */,
 				771D46CB291337BF005F7781 /* SpotifyAnalysisViewModel.swift in Sources */,
 				771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */,
@@ -458,22 +458,22 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Algorhythm/Preview Content\"";
-				DEVELOPMENT_TEAM = 4QY57KKASP;
+				DEVELOPMENT_TEAM = G87PY825HS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Algorhythm/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.belding-apps.Algorhythm";
+				PRODUCT_BUNDLE_IDENTIFIER = "co.alpine-software.Algorhythm";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
@@ -490,22 +490,22 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Algorhythm/Preview Content\"";
-				DEVELOPMENT_TEAM = 4QY57KKASP;
+				DEVELOPMENT_TEAM = G87PY825HS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Algorhythm/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.belding-apps.Algorhythm";
+				PRODUCT_BUNDLE_IDENTIFIER = "co.alpine-software.Algorhythm";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;

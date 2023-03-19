@@ -40,7 +40,6 @@ struct LoginView: ViewModifier {
         ),
         startPoint: .leading, endPoint: .trailing
     )
-    
     var spotifyLogo: ImageName {
         colorScheme == .dark ? .spotifyLogoWhite
                 : .spotifyLogoBlack

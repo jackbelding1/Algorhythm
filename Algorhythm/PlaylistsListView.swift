@@ -65,13 +65,6 @@ struct PlaylistsListView: View {
                 }
             }
             else {
-                Text(
-                    """
-                    Tap on a playlist to open in spotify
-                    """
-                )
-                .font(.caption)
-                .foregroundColor(.secondary)
                 List {
                     ForEach(playlists, id: \.uri) { playlist in
                         PlaylistCellView(spotify: spotify, playlist: playlist)
@@ -80,6 +73,7 @@ struct PlaylistsListView: View {
                 }
                 .listStyle(PlainListStyle())
                 .accessibility(identifier: "Playlists List View")
+                .padding(.top, 20)
             }
         }
         .navigationBarItems(trailing: refreshButton)
@@ -102,6 +96,8 @@ struct PlaylistsListView: View {
             Image(systemName: "arrow.clockwise")
                 .font(.title)
                 .scaleEffect(0.8)
+                .frame(height: 30)
+
         }
         .disabled(isLoadingPlaylists)
         

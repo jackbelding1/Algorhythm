@@ -95,17 +95,22 @@ struct SpotifyAnalysisScreen: View{
     var returnHomeButton : some View {
         Button(action: { appState.rootViewId = UUID() }) {
             Text("Return Home")
-                .foregroundColor(Color.black)
-                .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
-                .font(Font.headline.weight(.bold))
+                .foregroundColor(Color.primary).colorInvert()
+                .padding(EdgeInsets(top: 30, leading: 50, bottom: 30, trailing: 50))
+                .font(.title2)
                 .lineLimit(1)
         }
-            .background(Color.white)
+            .background(Color.primary)
             .clipShape(Capsule())
             .buttonStyle(PlainButtonStyle())
-            .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
     }
     
+    @Environment(\.colorScheme) var colorScheme
+    var spotifyLogo: ImageName {
+        colorScheme == .dark ? .spotifyLogoBlack
+                : .spotifyLogoWhite
+    }
+        
     var body: some View {
         VStack{
             if recommendedTracks.isEmpty &&
@@ -136,13 +141,12 @@ struct SpotifyAnalysisScreen: View{
                         playlistCreationState = .in_progress
                     }) {
                         Text("Create")
-                            .foregroundColor(Color.black)
+                            .foregroundColor(Color.primary).colorInvert()
                             .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
-                            .font(Font.headline.weight(.bold))
                             .lineLimit(1)
                     }
                         .disabled($playlist.wrappedValue == "")
-                        .background(Color.white)
+                        .background(Color.primary)
                         .clipShape(Capsule())
                         .buttonStyle(PlainButtonStyle())
                         .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
@@ -173,17 +177,23 @@ struct SpotifyAnalysisScreen: View{
                             // redirect user to app store to install spotfiy
                             print("Spotify app not found!!!")
                         }
-                    }){ Text("Open Spotify")
-                        .foregroundColor(Color.black)
-                        .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
-                        .font(Font.headline.weight(.bold))
-                        .lineLimit(1)
+                        }){ HStack {
+                            Image(spotifyLogo)
+                                .interpolation(.high)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 30)
+                            Text("Open Spotify")
+                                .font(.title2)
+                                .foregroundColor(Color.primary).colorInvert()
+                                .padding()
+                        }
+                        .padding()
                     }
-                    .background(Color.white)
-                    .clipShape(Capsule())
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-                    returnHomeButton
+                .background(Color.primary)
+                .clipShape(Capsule())
+                .buttonStyle(PlainButtonStyle())
+                returnHomeButton
                 case .failiure:
                     Spacer()
                     Group{
@@ -198,9 +208,9 @@ struct SpotifyAnalysisScreen: View{
                 }
             }
             Spacer()
-            Button(action: {analyzedSongListVM.printNetworkCalls()}){
-                Text("Print network calls")
-            }
+//            Button(action: {analyzedSongListVM.printNetworkCalls()}){
+//                Text("Print network calls")
+//            }
         }
         .onAppear{
             generateRecommendationsHandler.addHandler(handler: {getRecommendations()})

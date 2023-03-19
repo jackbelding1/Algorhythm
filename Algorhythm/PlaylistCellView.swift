@@ -12,7 +12,12 @@ import SpotifyWebAPI
 struct PlaylistCellView: View {
     
     @ObservedObject var spotify: Spotify
-
+    @Environment(\.colorScheme) var colorScheme
+    var spotifyLogo: ImageName {
+        colorScheme == .dark ? .spotifyLogoWhite
+                : .spotifyLogoBlack
+    }
+    
     let playlist: Playlist<PlaylistItemsReference>
 
     /// The cover image for the playlist.
@@ -40,7 +45,18 @@ struct PlaylistCellView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 70, height: 70)
                         .padding(.trailing, 5)
-                    Text("\(playlist.name)")
+                    VStack(alignment: .leading){
+                        Text("\(playlist.name)")
+                        HStack {
+                            Image(spotifyLogo)
+                                .interpolation(.high)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 10)
+                            Text("Open Spotify")
+                                .font(.system(size: 10))
+                        }
+                    }
                     Spacer()
                 }
                 // Ensure the hit box extends across the entire width of the frame.

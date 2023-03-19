@@ -24,14 +24,7 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .navigation) {
                     Text("Your Playlists")
-                        .font(.title)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                            print("home")
-                    }, label: {
-                        Image(systemName: "magnifyingglass")
-                    })
+                        .font(.system(size: 20))
                 }
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button(action: {
@@ -54,6 +47,7 @@ struct HomeView: View {
                     })
                 }
             }
+            .padding(.bottom, 20)
         }
         .navigationBarBackButtonHidden(true)
         .navigationViewStyle(StackNavigationViewStyle())
