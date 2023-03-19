@@ -6,6 +6,7 @@ struct RootView: View {
     
     @EnvironmentObject var spotify: Spotify
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
     @State private var alert: AlertItem? = nil
     @State private var cancellables: Set<AnyCancellable> = []
     
@@ -19,6 +20,8 @@ struct RootView: View {
             else {
                 VStack{
                     Image("algorhythmlogo")
+                        .background(colorScheme == .dark ? Color.black : Color.white)
+
                     Text("Algorhythm")
                     Spacer()
                 }
