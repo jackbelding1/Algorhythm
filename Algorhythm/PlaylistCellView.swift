@@ -53,8 +53,13 @@ struct PlaylistCellView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 10)
-                            Text("Open Spotify")
-                                .font(.system(size: 10))
+                            // if app is installed
+                            if UIApplication.shared.canOpenURL(URL(string: "spotify://")!) {
+                                Text("Open Spotify")
+                                    .font(.system(size: 10))
+                            } else {
+                                Text("Get Spotify Free")
+                            }
                         }
                     }
                     Spacer()
