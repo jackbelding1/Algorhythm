@@ -51,6 +51,9 @@ struct SpotifyAnalysisScreen: View{
     
     @State private var addTracksCancellable: AnyCancellable? = nil
     
+    // The text for the link to spotify
+    @State private var spotifyButtonText = ""
+    
     // store an alert
     @State private var alert: AlertItem? = nil
     
@@ -167,15 +170,15 @@ struct SpotifyAnalysisScreen: View{
                     Divider()
                     Spacer()
                     Button(action: {
-                        print("created playlist with id: \(createdPlaylistId)")
-                        
                         let spotifyUrl = URL(string: "spotify://playlist/\(createdPlaylistId)")!
                         if UIApplication.shared.canOpenURL(spotifyUrl) {
+                            spotifyButtonText = "Open Spotify"
                             UIApplication.shared.open(spotifyUrl) // open the spotify app
                         }
                         else {
                             if let appStoreURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id324684580") {
                              UIApplication.shared.open(appStoreURL)
+                                spotifyButtonText = "Get Spotify Free"
                             }
                         }
                         }){ HStack {
@@ -184,10 +187,18 @@ struct SpotifyAnalysisScreen: View{
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 30)
-                            Text("Open Spotify")
-                                .font(.title2)
-                                .foregroundColor(Color.primary).colorInvert()
-                                .padding()
+                            if UIApplication.shared.canOpenURL(URL(string: "spotify://")!){
+                                Text("Open Spotify")
+                                    .font(.title2)
+                                    .foregroundColor(Color.primary).colorInvert()
+                                    .padding()
+                            } else {
+                                Text("Get Spotify Free")
+                                    .font(.system(size: 17))
+                                    .foregroundColor(Color.primary).colorInvert()
+                                    .padding()
+                            }
+
                         }
                         .padding()
                     }
