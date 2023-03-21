@@ -169,13 +169,14 @@ struct SpotifyAnalysisScreen: View{
                     Button(action: {
                         print("created playlist with id: \(createdPlaylistId)")
                         
-                        let spotifyUrl = URL(string: "https://open.spotify.com/playlist/\(createdPlaylistId)")!
+                        let spotifyUrl = URL(string: "spotify://playlist/\(createdPlaylistId)")!
                         if UIApplication.shared.canOpenURL(spotifyUrl) {
                             UIApplication.shared.open(spotifyUrl) // open the spotify app
                         }
                         else {
-                            // redirect user to app store to install spotfiy
-                            print("Spotify app not found!!!")
+                            if let appStoreURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id324684580") {
+                             UIApplication.shared.open(appStoreURL)
+                            }
                         }
                         }){ HStack {
                             Image(spotifyLogo)

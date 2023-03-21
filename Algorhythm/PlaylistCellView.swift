@@ -106,13 +106,14 @@ struct PlaylistCellView: View {
     }
     
     func openPlaylist() {
-        let spotifyUrl = URL(string: "https://open.spotify.com/playlist/\(playlist.id)")!
+        let spotifyUrl = URL(string: "spotify://playlist/\(playlist.id)")!
         if UIApplication.shared.canOpenURL(spotifyUrl) {
             UIApplication.shared.open(spotifyUrl) // open the spotify app
         }
         else {
-            // redirect user to app store to install spotfiy
-            print("Spotify app not found!!!")
+            if let appStoreURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id324684580") {
+             UIApplication.shared.open(appStoreURL)
+            }
         }
     }
     
