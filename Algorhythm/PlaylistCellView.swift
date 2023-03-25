@@ -54,12 +54,13 @@ struct PlaylistCellView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 10)
                             // if app is installed
-                            if UIApplication.shared.canOpenURL(URL(string: "spotify://")!) {
-                                Text("Open Spotify")
-                                    .font(.system(size: 10))
-                            } else {
-                                Text("Get Spotify Free")
-                            }
+//                            if UIApplication.shared.canOpenURL(URL(string: "spotify://")!) {
+//                                    .font(.system(size: 10))
+//                            } else {
+//                                Text("Get Spotify Free")
+//                            }
+                            Text("Open Spotify")
+
                         }
                     }
                     Spacer()
@@ -111,7 +112,7 @@ struct PlaylistCellView: View {
     }
     
     func openPlaylist() {
-        let spotifyUrl = URL(string: "spotify://playlist/\(playlist.id)")!
+        let spotifyUrl = URL(string: "https://open.spotify.com/playlist/\(playlist.id)")!
         if UIApplication.shared.canOpenURL(spotifyUrl) {
             UIApplication.shared.open(spotifyUrl) // open the spotify app
         }

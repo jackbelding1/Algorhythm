@@ -10,8 +10,8 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink(destination: SettingsView().environmentObject(spotify), label: {
-                        if let userImage = spotify.currentUser?.images![0] {
-                            AsyncImage(url: userImage.url, scale: 3.0)
+                        if let userImage = spotify.currentUser?.images, userImage.count != 0{
+                            AsyncImage(url: userImage[0].url, scale: 3.0)
                                   .frame(width: 20, height: 20)
                                   .foregroundColor(.white)
                                   .padding(20)
