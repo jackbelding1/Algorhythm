@@ -170,15 +170,13 @@ struct SpotifyAnalysisScreen: View{
                     Divider()
                     Spacer()
                     Button(action: {
-                        let spotifyUrl = URL(string: "spotify://playlist/\(createdPlaylistId)")!
+                        let spotifyUrl = URL(string: "https://open.spotify.com/playlist/\(createdPlaylistId)")!
                         if UIApplication.shared.canOpenURL(spotifyUrl) {
-                            spotifyButtonText = "Open Spotify"
                             UIApplication.shared.open(spotifyUrl) // open the spotify app
                         }
                         else {
                             if let appStoreURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id324684580") {
                              UIApplication.shared.open(appStoreURL)
-                                spotifyButtonText = "Get Spotify Free"
                             }
                         }
                         }){ HStack {
@@ -187,7 +185,7 @@ struct SpotifyAnalysisScreen: View{
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 30)
-                            if UIApplication.shared.canOpenURL(URL(string: "spotify://")!){
+                            if UIApplication.shared.canOpenURL(URL(string: "https://open.spotify.com/")!){
                                 Text("Open Spotify")
                                     .font(.title2)
                                     .foregroundColor(Color.primary).colorInvert()
@@ -260,7 +258,7 @@ extension SpotifyAnalysisScreen {
     func getRecommendations() {
         let trackURIs:[String] = analyzedSongListVM.seedIds.map {"spotify:track:\($0)" }
         self.getRecommendationsCancellable = self.spotify.api
-            .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 10)
+            .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 30)
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: self.getRecommendationsCompletion(_:),
                   receiveValue: {

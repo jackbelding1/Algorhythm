@@ -112,7 +112,6 @@ struct PlaylistCellView: View {
     }
     
     func openPlaylist() {
-        //https://open.spotify.com/playlist/\(playlist.id)
         let spotifyUrl = URL(string: "spotify://playlist/\(playlist.id)")!
         if UIApplication.shared.canOpenURL(spotifyUrl) {
             UIApplication.shared.open(spotifyUrl) // open the spotify app
