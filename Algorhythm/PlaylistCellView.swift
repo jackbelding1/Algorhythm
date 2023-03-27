@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import SpotifyWebAPI
 
+
 struct PlaylistCellView: View {
     
     @ObservedObject var spotify: Spotify
@@ -54,7 +55,7 @@ struct PlaylistCellView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 10)
                             // if app is installed
-                            if UIApplication.shared.canOpenURL(URL(string: "spotify://")!) {
+                            if UIApplication.shared.canOpenURL(URL(string: "spotify:open")!) {
                                 Text("Open Spotify")
                                     .font(.system(size: 10))
                             } else {
@@ -111,6 +112,7 @@ struct PlaylistCellView: View {
     }
     
     func openPlaylist() {
+        //https://open.spotify.com/playlist/\(playlist.id)
         let spotifyUrl = URL(string: "spotify://playlist/\(playlist.id)")!
         if UIApplication.shared.canOpenURL(spotifyUrl) {
             UIApplication.shared.open(spotifyUrl) // open the spotify app
