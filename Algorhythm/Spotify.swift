@@ -152,14 +152,12 @@ final class Spotify: ObservableObject {
             // Otherwise, an error will be thrown.
             state: self.authorizationState,
             scopes: [
-                .userReadPlaybackState,
                 .userTopRead,
-                .userModifyPlaybackState,
                 .playlistModifyPrivate,
                 .playlistModifyPublic,
+                .playlistReadCollaborative,
                 .userLibraryRead,
                 .userLibraryModify,
-                .userReadRecentlyPlayed,
                 .playlistReadPrivate
             ]
         )!
