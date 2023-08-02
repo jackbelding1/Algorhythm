@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7710FB5C2A4643F6002706DF /* AlgorhythmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */; };
+		7710FB692A4648E8002706DF /* AlgorhythmUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB682A4648E8002706DF /* AlgorhythmUITests.swift */; };
+		7710FB6B2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB6A2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift */; };
 		771D46CB291337BF005F7781 /* SpotifyAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */; };
 		771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CC29133B85005F7781 /* ApolloNetwork.swift */; };
 		771D46CF29133BBA005F7781 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CE29133BBA005F7781 /* API.swift */; };
@@ -44,8 +47,30 @@
 		77F2B219295B724D009B22C6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F2B218295B724D009B22C6 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7710FB5D2A4643F6002706DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 77CE431D2913299C000019A8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 77CE43242913299C000019A8;
+			remoteInfo = Algorhythm;
+		};
+		7710FB6C2A4648E8002706DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 77CE431D2913299C000019A8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 77CE43242913299C000019A8;
+			remoteInfo = Algorhythm;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		77062580294A4A2F002E3AC8 /* SpotifyAPI */ = {isa = PBXFileReference; lastKnownFileType = text; path = SpotifyAPI; sourceTree = SOURCE_ROOT; };
+		7710FB592A4643F6002706DF /* AlgorhythmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlgorhythmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorhythmTests.swift; sourceTree = "<group>"; };
+		7710FB662A4648E8002706DF /* AlgorhythmUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlgorhythmUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7710FB682A4648E8002706DF /* AlgorhythmUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorhythmUITests.swift; sourceTree = "<group>"; };
+		7710FB6A2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorhythmUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisViewModel.swift; sourceTree = "<group>"; };
 		771D46CC29133B85005F7781 /* ApolloNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApolloNetwork.swift; sourceTree = "<group>"; };
 		771D46CE29133BBA005F7781 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -80,6 +105,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7710FB562A4643F6002706DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7710FB632A4648E8002706DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		77CE43222913299C000019A8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -101,6 +140,23 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7710FB5A2A4643F6002706DF /* AlgorhythmTests */ = {
+			isa = PBXGroup;
+			children = (
+				7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */,
+			);
+			path = AlgorhythmTests;
+			sourceTree = "<group>";
+		};
+		7710FB672A4648E8002706DF /* AlgorhythmUITests */ = {
+			isa = PBXGroup;
+			children = (
+				7710FB682A4648E8002706DF /* AlgorhythmUITests.swift */,
+				7710FB6A2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift */,
+			);
+			path = AlgorhythmUITests;
 			sourceTree = "<group>";
 		};
 		77CC2AF6295624D90018EF1B /* Views */ = {
@@ -159,6 +215,8 @@
 			isa = PBXGroup;
 			children = (
 				77CE43272913299C000019A8 /* Algorhythm */,
+				7710FB5A2A4643F6002706DF /* AlgorhythmTests */,
+				7710FB672A4648E8002706DF /* AlgorhythmUITests */,
 				77CE43262913299C000019A8 /* Products */,
 				7706257C294A4875002E3AC8 /* Frameworks */,
 			);
@@ -168,6 +226,8 @@
 			isa = PBXGroup;
 			children = (
 				77CE43252913299C000019A8 /* Algorhythm.app */,
+				7710FB592A4643F6002706DF /* AlgorhythmTests.xctest */,
+				7710FB662A4648E8002706DF /* AlgorhythmUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -201,6 +261,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7710FB582A4643F6002706DF /* AlgorhythmTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7710FB612A4643F6002706DF /* Build configuration list for PBXNativeTarget "AlgorhythmTests" */;
+			buildPhases = (
+				7710FB552A4643F6002706DF /* Sources */,
+				7710FB562A4643F6002706DF /* Frameworks */,
+				7710FB572A4643F6002706DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7710FB5E2A4643F6002706DF /* PBXTargetDependency */,
+			);
+			name = AlgorhythmTests;
+			productName = AlgorhythmTests;
+			productReference = 7710FB592A4643F6002706DF /* AlgorhythmTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7710FB652A4648E8002706DF /* AlgorhythmUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7710FB6E2A4648E8002706DF /* Build configuration list for PBXNativeTarget "AlgorhythmUITests" */;
+			buildPhases = (
+				7710FB622A4648E8002706DF /* Sources */,
+				7710FB632A4648E8002706DF /* Frameworks */,
+				7710FB642A4648E8002706DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7710FB6D2A4648E8002706DF /* PBXTargetDependency */,
+			);
+			name = AlgorhythmUITests;
+			productName = AlgorhythmUITests;
+			productReference = 7710FB662A4648E8002706DF /* AlgorhythmUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		77CE43242913299C000019A8 /* Algorhythm */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77CE43382913299D000019A8 /* Build configuration list for PBXNativeTarget "Algorhythm" */;
@@ -234,9 +330,17 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1400;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1400;
 				TargetAttributes = {
+					7710FB582A4643F6002706DF = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 77CE43242913299C000019A8;
+					};
+					7710FB652A4648E8002706DF = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 77CE43242913299C000019A8;
+					};
 					77CE43242913299C000019A8 = {
 						CreatedOnToolsVersion = 14.0.1;
 					};
@@ -261,11 +365,27 @@
 			projectRoot = "";
 			targets = (
 				77CE43242913299C000019A8 /* Algorhythm */,
+				7710FB582A4643F6002706DF /* AlgorhythmTests */,
+				7710FB652A4648E8002706DF /* AlgorhythmUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7710FB572A4643F6002706DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7710FB642A4648E8002706DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		77CE43232913299C000019A8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -302,6 +422,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7710FB552A4643F6002706DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7710FB5C2A4643F6002706DF /* AlgorhythmTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7710FB622A4648E8002706DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7710FB692A4648E8002706DF /* AlgorhythmUITests.swift in Sources */,
+				7710FB6B2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		77CE43212913299C000019A8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,7 +472,94 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7710FB5E2A4643F6002706DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 77CE43242913299C000019A8 /* Algorhythm */;
+			targetProxy = 7710FB5D2A4643F6002706DF /* PBXContainerItemProxy */;
+		};
+		7710FB6D2A4648E8002706DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 77CE43242913299C000019A8 /* Algorhythm */;
+			targetProxy = 7710FB6C2A4648E8002706DF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		7710FB5F2A4643F6002706DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4QY57KKASP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "alpine-software.AlgorhythmTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Algorhythm.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Algorhythm";
+			};
+			name = Debug;
+		};
+		7710FB602A4643F6002706DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4QY57KKASP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "alpine-software.AlgorhythmTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Algorhythm.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Algorhythm";
+			};
+			name = Release;
+		};
+		7710FB6F2A4648E8002706DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4QY57KKASP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "alpine-software.AlgorhythmUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Algorhythm;
+			};
+			name = Debug;
+		};
+		7710FB702A4648E8002706DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4QY57KKASP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "alpine-software.AlgorhythmUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Algorhythm;
+			};
+			name = Release;
+		};
 		77CE43362913299D000019A8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -456,7 +680,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Algorhythm/Preview Content\"";
 				DEVELOPMENT_TEAM = G87PY825HS;
 				ENABLE_PREVIEWS = YES;
@@ -474,7 +698,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "co.alpine-software.Algorhythm";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -493,7 +717,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Algorhythm/Preview Content\"";
 				DEVELOPMENT_TEAM = G87PY825HS;
 				ENABLE_PREVIEWS = YES;
@@ -511,7 +735,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "co.alpine-software.Algorhythm";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -527,6 +751,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7710FB612A4643F6002706DF /* Build configuration list for PBXNativeTarget "AlgorhythmTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7710FB5F2A4643F6002706DF /* Debug */,
+				7710FB602A4643F6002706DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7710FB6E2A4648E8002706DF /* Build configuration list for PBXNativeTarget "AlgorhythmUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7710FB6F2A4648E8002706DF /* Debug */,
+				7710FB702A4648E8002706DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		77CE43202913299C000019A8 /* Build configuration list for PBXProject "Algorhythm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
