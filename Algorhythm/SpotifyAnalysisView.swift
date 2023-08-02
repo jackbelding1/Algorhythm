@@ -164,7 +164,7 @@ struct SpotifyAnalysisScreen: View{
                     Group{
                         Text("✅")
                             .font(.largeTitle)
-                        Text("Great Success!")
+                        Text("Success!")
                             .font(.largeTitle)
                     }
                     Divider()
