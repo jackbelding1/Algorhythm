@@ -101,7 +101,7 @@
 		77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		77EB1E792978CB4600E4052C /* PlaylistOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOptionsView.swift; sourceTree = "<group>"; };
 		77EB1E7B2978CB6800E4052C /* PlaylistOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOptionsViewModel.swift; sourceTree = "<group>"; };
-		77F2B218295B724D009B22C6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = ../SettingsView.swift; sourceTree = "<group>"; };
+		77F2B218295B724D009B22C6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,7 +159,7 @@
 			path = AlgorhythmUITests;
 			sourceTree = "<group>";
 		};
-		77CC2AF6295624D90018EF1B /* Views */ = {
+		777EC08F2A7AFC2E00C0B11B /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				77F2B218295B724D009B22C6 /* SettingsView.swift */,
@@ -173,7 +173,7 @@
 				7765B2CF29186AC600DB67AC /* MoodView.swift */,
 				77EB1E792978CB4600E4052C /* PlaylistOptionsView.swift */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		77CC2AF7295626680018EF1B /* Models */ = {
@@ -209,6 +209,7 @@
 				77CC2AFE29563E120018EF1B /* PlaylistCellView.swift */,
 			);
 			name = "Playlist Views";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		77CE431C2913299C000019A8 = {
@@ -235,11 +236,11 @@
 		77CE43272913299C000019A8 /* Algorhythm */ = {
 			isa = PBXGroup;
 			children = (
+				777EC08F2A7AFC2E00C0B11B /* Views */,
 				77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */,
 				77CE43282913299C000019A8 /* AlgorhythmApp.swift */,
 				77CC2AF8295626B20018EF1B /* Utils */,
 				77CC2AF7295626680018EF1B /* Models */,
-				77CC2AF6295624D90018EF1B /* Views */,
 				77062580294A4A2F002E3AC8 /* SpotifyAPI */,
 				776DB7D529147F8E0055424F /* Info.plist */,
 				77CE434B291333CA000019A8 /* GraphQL */,
