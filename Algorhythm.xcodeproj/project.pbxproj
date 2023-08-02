@@ -191,22 +191,22 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		77CC2AF7295626680018EF1B /* Models */ = {
+		777EC0912A7AFD2500C0B11B /* View Models */ = {
 			isa = PBXGroup;
 			children = (
 				771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */,
-				771D46D32914657E005F7781 /* Spotify.swift */,
-				77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */,
 				77EB1E7B2978CB6800E4052C /* PlaylistOptionsViewModel.swift */,
 			);
-			name = Models;
+			path = "View Models";
 			sourceTree = "<group>";
 		};
-		77CC2AF8295626B20018EF1B /* Utils */ = {
+		77CC2AF7295626680018EF1B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				771D46D32914657E005F7781 /* Spotify.swift */,
+				77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */,
 			);
-			name = Utils;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		77CC2AF9295628E10018EF1B /* Playlist Views */ = {
@@ -243,11 +243,11 @@
 		77CE43272913299C000019A8 /* Algorhythm */ = {
 			isa = PBXGroup;
 			children = (
+				777EC0912A7AFD2500C0B11B /* View Models */,
 				777EC0902A7AFCF600C0B11B /* Utilities */,
 				777EC08F2A7AFC2E00C0B11B /* Views */,
 				77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */,
 				77CE43282913299C000019A8 /* AlgorhythmApp.swift */,
-				77CC2AF8295626B20018EF1B /* Utils */,
 				77CC2AF7295626680018EF1B /* Models */,
 				77062580294A4A2F002E3AC8 /* SpotifyAPI */,
 				776DB7D529147F8E0055424F /* Info.plist */,
