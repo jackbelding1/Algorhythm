@@ -26,7 +26,7 @@
 		776DB7E629148EC10055424F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776DB7E529148EC10055424F /* RootView.swift */; };
 		77B75DCA291B08E00014CEF8 /* SpotifyAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B75DC9291B08E00014CEF8 /* SpotifyAnalysisView.swift */; };
 		77BB442529200E3D00EF8E90 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BB442429200E3D00EF8E90 /* TrackView.swift */; };
-		77BB442729200EE900EF8E90 /* SpotifyAPIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */; };
+		77CA67DA2A7C32AA002830E1 /* SpotifyAPIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CA67D92A7C32AA002830E1 /* SpotifyAPIExtensions.swift */; };
 		77CC2AF52953EDB60018EF1B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CC2AF42953EDB40018EF1B /* HomeView.swift */; };
 		77CC2AFD29562DF60018EF1B /* PlaylistsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CC2AFC29562DF60018EF1B /* PlaylistsListView.swift */; };
 		77CC2AFF29563E120018EF1B /* PlaylistCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CC2AFE29563E120018EF1B /* PlaylistCellView.swift */; };
@@ -78,7 +78,7 @@
 		77587146294A85B000BAB8EB /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		77587148294BB54600BAB8EB /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
 		7765B2CF29186AC600DB67AC /* MoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodView.swift; sourceTree = "<group>"; };
-		776DB7D529147F8E0055424F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		776DB7D529147F8E0055424F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		776DB7D929148D7F0055424F /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscellaneousUtilities.swift; sourceTree = "<group>"; };
 		776DB7DF29148E620055424F /* AlertItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		776DB7E529148EC10055424F /* RootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		77B75DC9291B08E00014CEF8 /* SpotifyAnalysisView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisView.swift; sourceTree = "<group>"; };
 		77BB442429200E3D00EF8E90 /* TrackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
-		77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAPIExtensions.swift; sourceTree = "<group>"; };
+		77CA67D92A7C32AA002830E1 /* SpotifyAPIExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyAPIExtensions.swift; path = ../../../../../.Trash/SpotifyAPIExtensions.swift; sourceTree = "<group>"; };
 		77CC2AF42953EDB40018EF1B /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		77CC2AFC29562DF60018EF1B /* PlaylistsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistsListView.swift; sourceTree = "<group>"; };
 		77CC2AFE29563E120018EF1B /* PlaylistCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCellView.swift; sourceTree = "<group>"; };
@@ -138,6 +138,7 @@
 		7706257C294A4875002E3AC8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				77062580294A4A2F002E3AC8 /* SpotifyAPI */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -162,8 +163,9 @@
 		777EC08F2A7AFC2E00C0B11B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				77CA67D62A7C2F1B002830E1 /* Playlist */,
+				77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */,
 				77F2B218295B724D009B22C6 /* SettingsView.swift */,
-				77CC2AF9295628E10018EF1B /* Playlist Views */,
 				77587146294A85B000BAB8EB /* PopupView.swift */,
 				776DB7D929148D7F0055424F /* LoginView.swift */,
 				776DB7E529148EC10055424F /* RootView.swift */,
@@ -179,11 +181,11 @@
 		777EC0902A7AFCF600C0B11B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				77CA67D92A7C32AA002830E1 /* SpotifyAPIExtensions.swift */,
 				77E0DAD129C11037004F1DAD /* AppState.swift */,
 				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
 				776DB7DF29148E620055424F /* AlertItem.swift */,
 				776DB7E029148E620055424F /* SpotifyImages.swift */,
-				77BB442629200EE900EF8E90 /* SpotifyAPIExtensions.swift */,
 				771D46CE29133BBA005F7781 /* API.swift */,
 				776DB7DD29148E620055424F /* MiscellaneousUtilities.swift */,
 				77587148294BB54600BAB8EB /* SheetManager.swift */,
@@ -200,23 +202,40 @@
 			path = "View Models";
 			sourceTree = "<group>";
 		};
-		77CC2AF7295626680018EF1B /* Models */ = {
+		77CA67D52A7C28DC002830E1 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				771D46D32914657E005F7781 /* Spotify.swift */,
 				77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */,
 			);
-			name = Models;
+			path = Repositories;
 			sourceTree = "<group>";
 		};
-		77CC2AF9295628E10018EF1B /* Playlist Views */ = {
+		77CA67D62A7C2F1B002830E1 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
 				77CC2AFC29562DF60018EF1B /* PlaylistsListView.swift */,
 				77CC2AFE29563E120018EF1B /* PlaylistCellView.swift */,
 			);
-			name = "Playlist Views";
-			path = ..;
+			path = Playlist;
+			sourceTree = "<group>";
+		};
+		77CA67D72A7C2F3B002830E1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				771D46D32914657E005F7781 /* Spotify.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		77CA67D82A7C2F5B002830E1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				776DB7D529147F8E0055424F /* Info.plist */,
+				77CE434B291333CA000019A8 /* GraphQL */,
+				77CE434329132BBB000019A8 /* schema.json */,
+				77CE432C2913299D000019A8 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		77CE431C2913299C000019A8 = {
@@ -243,17 +262,13 @@
 		77CE43272913299C000019A8 /* Algorhythm */ = {
 			isa = PBXGroup;
 			children = (
+				77CA67D82A7C2F5B002830E1 /* Resources */,
+				77CA67D72A7C2F3B002830E1 /* Models */,
+				77CA67D52A7C28DC002830E1 /* Repositories */,
 				777EC0912A7AFD2500C0B11B /* View Models */,
 				777EC0902A7AFCF600C0B11B /* Utilities */,
 				777EC08F2A7AFC2E00C0B11B /* Views */,
-				77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */,
 				77CE43282913299C000019A8 /* AlgorhythmApp.swift */,
-				77CC2AF7295626680018EF1B /* Models */,
-				77062580294A4A2F002E3AC8 /* SpotifyAPI */,
-				776DB7D529147F8E0055424F /* Info.plist */,
-				77CE434B291333CA000019A8 /* GraphQL */,
-				77CE434329132BBB000019A8 /* schema.json */,
-				77CE432C2913299D000019A8 /* Assets.xcassets */,
 				77CE432E2913299D000019A8 /* Preview Content */,
 			);
 			path = Algorhythm;
@@ -426,7 +441,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"schema.json\" ./GraphQL/API.swift\n";
+			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"Resources/schema.json\" ./Resources/GraphQL/API.swift\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -457,6 +472,7 @@
 				77DB372A293BEA230058DBC6 /* AlgoDataManager.swift in Sources */,
 				77E0DAD229C11037004F1DAD /* AppState.swift in Sources */,
 				776DB7E129148E630055424F /* MiscellaneousUtilities.swift in Sources */,
+				77CA67DA2A7C32AA002830E1 /* SpotifyAPIExtensions.swift in Sources */,
 				77EB1E7C2978CB6800E4052C /* PlaylistOptionsViewModel.swift in Sources */,
 				77CC2AF52953EDB60018EF1B /* HomeView.swift in Sources */,
 				77CC2AFD29562DF60018EF1B /* PlaylistsListView.swift in Sources */,
@@ -470,7 +486,6 @@
 				77587149294BB54700BAB8EB /* SheetManager.swift in Sources */,
 				77587147294A85B000BAB8EB /* PopupView.swift in Sources */,
 				771D46CF29133BBA005F7781 /* API.swift in Sources */,
-				77BB442729200EE900EF8E90 /* SpotifyAPIExtensions.swift in Sources */,
 				77EB1E7A2978CB4600E4052C /* PlaylistOptionsView.swift in Sources */,
 				776DB7DA29148D7F0055424F /* LoginView.swift in Sources */,
 				776DB7E329148E630055424F /* AlertItem.swift in Sources */,
@@ -619,6 +634,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Algorhythm/Algorhythm/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -673,6 +689,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Algorhythm/Algorhythm/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -694,7 +711,7 @@
 				DEVELOPMENT_TEAM = G87PY825HS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Algorhythm/Info.plist;
+				INFOPLIST_FILE = Algorhythm/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Algorhythm;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -731,7 +748,7 @@
 				DEVELOPMENT_TEAM = G87PY825HS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Algorhythm/Info.plist;
+				INFOPLIST_FILE = Algorhythm/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Algorhythm;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
