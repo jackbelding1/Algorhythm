@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PlaylistOptionsViewModel {
+class PlaylistOptionsViewModel: ObservableObject {
     // the realm database manager
     private let algoDBManager = AlgoDataManager()
     
