@@ -27,8 +27,8 @@ struct MoodSelectionView: View {
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $viewModel.isPresenting) {
-            ParentView(viewModel: viewModel.playlistOptions,
-            shouldLoadOptions: viewModel.savePreferences
+            PlaylistOptionsView(viewModel.playlistOptions,
+                                shouldLoadOptions: viewModel.savePreferences
         )}
     }
     

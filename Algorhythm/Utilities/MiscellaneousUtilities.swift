@@ -140,6 +140,7 @@ struct CheckboxField: View {
     let color: Color
     let textSize: Int
     let callback: (String, Bool)->()
+    var isMarked:Bool
     
     init(
         id: String,
@@ -158,12 +159,9 @@ struct CheckboxField: View {
         self.callback = callback
         self.isMarked = isMarked
     }
-    
-    @State var isMarked:Bool
-    
+        
     var body: some View {
         Button(action:{
-            self.isMarked.toggle()
             self.callback(self.id, self.isMarked)
         }) {
             HStack(alignment: .center, spacing: 10) {

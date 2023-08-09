@@ -85,7 +85,7 @@ struct SpotifyAnalysisScreen: View{
         playlistOptions = playlistOptionsVM
         self._recommendedTracks = State(initialValue: [])
         selectedMood = mood
-        selectedGenre = playlistOptions.getRandomGenre()
+        selectedGenre = "edm"
     }
     // preview initializer
     fileprivate init(recommendedTracks: [Track], _ playlistOptionsVM:PlaylistOptionsViewModel) {

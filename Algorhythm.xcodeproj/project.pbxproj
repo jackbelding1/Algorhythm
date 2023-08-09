@@ -182,7 +182,6 @@
 			children = (
 				77CA67D92A7C32AA002830E1 /* SpotifyAPIExtensions.swift */,
 				77E0DAD129C11037004F1DAD /* AppState.swift */,
-				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
 				776DB7DF29148E620055424F /* AlertItem.swift */,
 				776DB7E029148E620055424F /* SpotifyImages.swift */,
 				771D46CE29133BBA005F7781 /* API.swift */,
@@ -206,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */,
+				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";

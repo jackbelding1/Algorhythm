@@ -31,8 +31,4 @@ class MoodSelectionViewModel: ObservableObject {
         selectedMood = mood == selectedMood?.lowercased() ? nil : mood
         print("selected \(mood)")
     }
-    
-    func checkboxSelected(id: String, isMarked: Bool) {
-        savePreferences = isMarked
-    }
 }
