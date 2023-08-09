@@ -6,73 +6,83 @@
 //
 
 import Foundation
+import Combine
 
-class PlaylistOptionsViewModel {
-    // the realm database manager
+struct genrePreference {
+    let title:String
+    let key:String
+    var value:Bool
+}
+
+class PlaylistOptionsViewModel: ObservableObject {
+    
+    @Published var shouldSavePreferences: Bool = false
+    
+    //
+    // TODO: add dependency that retrieves the list of genrePreferences to be displayed
+    //
+    private let genres = [
+        ("edm", "EDM"),
+        ("country", "Country"),
+        ("rap", "Hip-Hop/Rap")
+    ]
+    
+    private var initialPreferenceState: [genrePreference] = []
+
+    @Published var genrePreferencesCollection: [genrePreference] = []
+
+    
+    public init() {
+        // create collection of genre preference options
+        for genre in genres {
+            let preference = genrePreference(title: genre.1, key: genre.0, value: false)
+            genrePreferencesCollection.append(preference)
+        }
+        shouldSavePreferences = UserDefaults.standard.bool(forKey: "shouldSavePreferences")
+    }
+    
+
     private let algoDBManager = AlgoDataManager()
     
-    // save function to be called from view
-    func savePlaylistOptions(){
-        algoDBManager.savePlaylistOptions(preferredGenres)
+    func savePlaylistOptions() {
+
     }
     
-    // load function to be called from view
-    func loadPlaylistOptions() {
-        guard let playlistOptions = algoDBManager.loadPlaylistOptions() else {
-            print("Error! Playlist options not found")
-            return
-        }
-        for playlistOption in playlistOptions {
-            preferredGenres[playlistOption.genre] = playlistOption.value
+    func savePreferenceState() {
+        initialPreferenceState = genrePreferencesCollection
+    }
+    
+    // called when user exits the view and does not tap update
+    func restorePreferences() {
+        genrePreferencesCollection = initialPreferenceState
+    }
+    
+    func handleTapUpdate() {
+        if shouldSavePreferences {
+            // write data from copy into real VM
+            // write data into realm db
+//            algoDBManager.savePlaylistOptions(<#T##preferences: [String : Bool]##[String : Bool]#>)
         }
     }
     
-    // function to get a random genre from the dictionary of preferred genres
-    func getRandomGenre() -> String {
-        var genres:[String] = []
-        for (genre, value) in preferredGenres {
-            if value {
-                genres.append(genre)
+    func updateSavePreferences(isMarked: Bool) {
+        shouldSavePreferences = !isMarked
+        UserDefaults.standard.set(shouldSavePreferences, forKey: "shouldSavePreferences")
+    }
+    
+    func updateGenreSelection(id: String, isMarked: Bool) {
+        for index in 0..<genrePreferencesCollection.count {
+            if genrePreferencesCollection[index].key == id {
+                // Update the value property for the matched element
+                genrePreferencesCollection[index].value = !isMarked
+                break
             }
         }
-        if genres.isEmpty {
-            //
-            // TODO: Return random genre
-            //
-            return "edm"
+    }
+
+    func clearGenreSelections() {
+        for index in 0..<genrePreferencesCollection.count {
+            genrePreferencesCollection[index].value = false
         }
-        let random = Int.random(in: 0..<genres.count)
-        return genres[random]
-        
-    }
-    
-    // reset the playlist options to default state
-    func defaultPlaylistOptions() {
-        algoDBManager.restorePlaylistOptionDefaults()
-    }
-    
-    // getter for genre preference dictionary
-    fileprivate func getGenrePreferences() -> [String:Bool] {
-        return self.preferredGenres
-    }
-    // dictionary to store the checkbox values of the user genre preferences
-    private var preferredGenres:[String:Bool] = [:]
-    // func to add value to dictionary preferredGenres
-    func editGenrePreference(forGenre genre:String, toValue val:Bool) {
-        preferredGenres[genre] = val
-    }
-    // func to retrieve genre preference value
-    func getPreference(withPreference preference:String) -> Bool {
-        if let val = preferredGenres[preference] {
-            return val
-        }
-        else {
-            print("\n\nerror! value not found with key \(preference)\n\n")
-            return false
-        }
-    }
-    
-    func makeCopy(from copy:PlaylistOptionsViewModel) {
-        self.preferredGenres = copy.getGenrePreferences()
     }
 }
