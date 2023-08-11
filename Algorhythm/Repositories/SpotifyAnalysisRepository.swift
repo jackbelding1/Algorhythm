@@ -14,7 +14,6 @@ class SpotifyAnalysisRepository {
     
     private var spotify: Spotify
     private var cancellables = Set<AnyCancellable>()
-    private var spotifyAnalysisViewModel: SpotifyAnalysisViewModel
     
     
     typealias RecommendationListener = Event<Void>
@@ -32,12 +31,11 @@ class SpotifyAnalysisRepository {
         case failure
     }
     
-    init(spotify: Spotify, spotifyAnalysisViewModel: SpotifyAnalysisViewModel) {
+    init(spotify: Spotify) {
         self.spotify = spotify
-        self.spotifyAnalysisViewModel = spotifyAnalysisViewModel
-        recommendationListener.addHandler(handler: { [self] in
-            getRecommendations(trackURIs: spotifyAnalysisViewModel.seedIds.map {"spotify:track:\($0)"}
-            )})
+//        recommendationListener.addHandler(handler: { [self] in
+//            getRecommendations(trackURIs: spotifyAnalysisViewModel.seedIds.map {"spotify:track:\($0)"}
+//            )})
 //        artistRetryListener.addHandler { [self] data in networkRetryHandler(Ids: data)}
     }
     
@@ -45,14 +43,14 @@ class SpotifyAnalysisRepository {
     // ...
     
     // Example:
-    func getRecommendations(trackURIs: [String]) {
+    func getRecommendations(trackURIs: [String], completion: @escaping (Subscribers.Completion<Error>) -> Void) {
         self.spotify.api
             .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 30)
             .receive(on: RunLoop.main)
             .sink(
-                receiveCompletion: getRecommendationsCompletion(_:),
+                receiveCompletion: completion,
                 receiveValue: { response in
-                    self.spotifyAnalysisViewModel.recommendedTracks = response.tracks
+//                    self.spotifyAnalysisViewModel.recommendedTracks = response.tracks
                 })
             .store(in: &cancellables) // Add this subscription to the collection
     }
@@ -74,7 +72,6 @@ class SpotifyAnalysisRepository {
             case .failure(_):
                 print("error")
             }
-            self?.spotifyAnalysisViewModel.networkCalls.cyanite += 1
         }
     }
 
@@ -102,62 +99,7 @@ class SpotifyAnalysisRepository {
     // Add other methods similar to the above
     // ...
     
-    func handleCompletion(
-        _ completion: Subscribers.Completion<Error>,
-        title: String,
-        updatePlaylistState: Bool = false,
-        updateLoadingPage: Bool = false
-    ) {
-        if case .failure(let error) = completion {
-            if updatePlaylistState {
-                spotifyAnalysisViewModel.playlistCreationState = .failure
-            }
-            print("\(title): \(error)")
-            spotifyAnalysisViewModel.alert = AlertItem(
-                title: title,
-                message: error.localizedDescription
-            )
-            if updateLoadingPage {
-                spotifyAnalysisViewModel.isLoadingPage = false
-            }
-        }
-    }
-    
-    func createPlaylistCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        handleCompletion(completion, title: "Couldn't create playlist", updatePlaylistState: true)
-    }
-    
-    func addTracksCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        handleCompletion(completion, title: "Couldn't add items", updatePlaylistState: true)
-    }
-    
-    func getRecommendationsCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        handleCompletion(completion, title: "Couldn't retrieve recommendations")
-    }
-    
-    func getTopArtistsCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        handleCompletion(completion, title: "Couldn't retrieve user top artists", updateLoadingPage: true)
-    }
-    
-    func getArtistsCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        handleCompletion(completion, title: "Couldn't retrieve artists", updateLoadingPage: true)
-    }
-    
-    func getArtistTopTracksCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ){
-        handleCompletion(completion, title: "Couldn't retrieve artist top tracks", updateLoadingPage: true)
-    }
+
     
 //    func networkRetryHandler(Ids:Node<String>?){
 //        if let node = Ids {

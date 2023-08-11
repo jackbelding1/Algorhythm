@@ -13,7 +13,7 @@ import SpotifyExampleContent
 struct SpotifyAnalysisScreen: View{
     // the playlist options to be used in playlist generation
     private var playlistOptions:PlaylistOptionsViewModel
-
+    
     // the playlist creating result
     enum PlaylistState {
         case inProgress
@@ -26,10 +26,8 @@ struct SpotifyAnalysisScreen: View{
     // spotify object
     @EnvironmentObject var spotify: Spotify
     @EnvironmentObject var appState: AppState
-
-    // View model for mood analysis and data storage
-    @StateObject private var spotifyAnalysisViewModel = SpotifyAnalysisViewModel(repository: SpotifyAnalysisRepository(spotify: spotify)
     
+    @StateObject private var spotifyAnalysisViewModel:SpotifyAnalysisViewModel
     // the playlist name to print. This will likely become an object
     @State private var playlist:String = ""
     
@@ -38,11 +36,11 @@ struct SpotifyAnalysisScreen: View{
     
     // the array recommended tracks generated
     @State private var recommendedTracks: [Track]
-
+    
     @State private var createPlaylistCancellable: AnyCancellable? = nil
     
     @State private var getRecommendationsCancellable: AnyCancellable? = nil
-
+    
     @State private var getUserTopArtistsCancellable: AnyCancellable? = nil
     
     @State private var getArtistsCancellable: AnyCancellable? = nil
@@ -79,16 +77,20 @@ struct SpotifyAnalysisScreen: View{
     
     // the created playlist uri
     @State private var createdPlaylistId:String = ""
-
+    
     // initializer
-    init(mood:String?, _ playlistOptionsVM:PlaylistOptionsViewModel) {
+    init(mood:String?, _ playlistOptionsVM:PlaylistOptionsViewModel,
+         withViewModel spotifyAnalysisViewModel:SpotifyAnalysisViewModel) {
+        _spotifyAnalysisViewModel = StateObject(wrappedValue: spotifyAnalysisViewModel)
         playlistOptions = playlistOptionsVM
         self._recommendedTracks = State(initialValue: [])
         selectedMood = mood
         selectedGenre = "edm"
     }
     // preview initializer
-    fileprivate init(recommendedTracks: [Track], _ playlistOptionsVM:PlaylistOptionsViewModel) {
+    fileprivate init(recommendedTracks: [Track], _ playlistOptionsVM:PlaylistOptionsViewModel,
+                     withViewModel spotifyAnalysisViewModel:SpotifyAnalysisViewModel) {
+        _spotifyAnalysisViewModel = StateObject(wrappedValue: spotifyAnalysisViewModel)
         self._recommendedTracks = State(initialValue: recommendedTracks)
         playlistOptions = playlistOptionsVM
         selectedMood = nil
@@ -103,15 +105,15 @@ struct SpotifyAnalysisScreen: View{
                 .font(.title2)
                 .lineLimit(1)
         }
-            .background(Color.primary)
-            .clipShape(Capsule())
-            .buttonStyle(PlainButtonStyle())
+        .background(Color.primary)
+        .clipShape(Capsule())
+        .buttonStyle(PlainButtonStyle())
     }
     
     @Environment(\.colorScheme) var colorScheme
     var spotifyLogo: ImageName {
         colorScheme == .dark ? .spotifyLogoBlack
-                : .spotifyLogoWhite
+        : .spotifyLogoWhite
     }
     
     private func waitingRequestView() -> some View {
@@ -133,11 +135,11 @@ struct SpotifyAnalysisScreen: View{
                     .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
                     .lineLimit(1)
             }
-                .disabled($playlist.wrappedValue == "")
-                .background(Color.primary)
-                .clipShape(Capsule())
-                .buttonStyle(PlainButtonStyle())
-                .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+            .disabled($playlist.wrappedValue == "")
+            .background(Color.primary)
+            .clipShape(Capsule())
+            .buttonStyle(PlainButtonStyle())
+            .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
         }
     }
     
@@ -167,7 +169,7 @@ struct SpotifyAnalysisScreen: View{
         .clipShape(Capsule())
         .buttonStyle(PlainButtonStyle())
     }
-
+    
     private func inProgressView() -> some View {
         VStack {
             ProgressView()
@@ -177,7 +179,7 @@ struct SpotifyAnalysisScreen: View{
                 .foregroundColor(.secondary)
         }
     }
-
+    
     private func successView() -> some View {
         VStack {
             Spacer()
@@ -193,7 +195,7 @@ struct SpotifyAnalysisScreen: View{
             returnHomeButton
         }
     }
-
+    
     private func failureView() -> some View {
         VStack {
             Spacer()
@@ -208,7 +210,7 @@ struct SpotifyAnalysisScreen: View{
             returnHomeButton
         }
     }
-        
+    
     var body: some View {
         VStack {
             if recommendedTracks.isEmpty && spotifyAnalysisViewModel.seedIds.isEmpty && (playlistCreationState != .failure) {
@@ -234,9 +236,6 @@ struct SpotifyAnalysisScreen: View{
             Spacer()
         }
         .onAppear{
-            generateRecommendationsHandler.addHandler(handler: {getRecommendations()})
-            artistRetryHandler.addHandler {data in networkRetryHandler(Ids: data)}
-            spotifyAnalysisViewModel.initialize(retryListener: artistRetryHandler, recommendationListener: generateRecommendationsHandler)
             getSeeds(genreIsSelected: false)
         }
         .padding()
@@ -305,8 +304,8 @@ extension SpotifyAnalysisScreen {
                 .createPlaylist(for: currentUser, playlistDetails)
                 .receive(on: RunLoop.main)
                 .sink(receiveCompletion: self.createPlaylistCompletion(_:),
-                    receiveValue: {
-                        response in
+                      receiveValue: {
+                    response in
                     playlistURI = response.uri
                     self.createdPlaylistId = response.id
                     self.spotifyAnalysisViewModel.writePlaylistId(response.id)
@@ -320,10 +319,10 @@ extension SpotifyAnalysisScreen {
                                 response in
                                 self.playlistCreationState = .success
                             }
-                        )
+                            )
                     }
                 }
-            )
+                )
         }
     }
     
@@ -424,12 +423,12 @@ extension SpotifyAnalysisScreen {
                 // if we are at the end of the list, restart the loop by getting user top items with artistOffset
                 if artists.head == nil {
                     getTopArtistRetry()
-                // otherwise, begin analyzing artist top tracks
+                    // otherwise, begin analyzing artist top tracks
                 } else {
                     getArtistTopTracks(withIds: artists.head)
                 }
             }
-        )
+            )
     }
     /**
      * function fetches the top tracks for the provided Ids and passes them to
@@ -462,10 +461,10 @@ extension SpotifyAnalysisScreen {
                     spotifyAnalysisViewModel.findMoodGenreTrack(
                         mood: mood, genre: selectedGenre,
                         tracks: tracks.head, parentNode: head)
-                        print("iteration done")
-                    }
+                    print("iteration done")
                 }
-            ))
+            }
+                     ))
         }
     }
 }
@@ -571,19 +570,19 @@ extension SpotifyAnalysisScreen {
     }
 }
 
-struct SpotifyAnalysisScreen_Previews: PreviewProvider {
-
-    static let tracks: [Track] = [
-        .because, .comeTogether, .faces, .illWind,
-        .odeToViceroy, .reckoner, .theEnd, .time
-    ]
-
-    static var previews: some View {
-        ForEach([tracks], id: \.self) { tracks in
-            NavigationView {
-                SpotifyAnalysisScreen(recommendedTracks: tracks, PlaylistOptionsViewModel())
-                    .listStyle(PlainListStyle())
-            }
-        }
-    }
-}
+//struct SpotifyAnalysisScreen_Previews: PreviewProvider {
+//
+//    static let tracks: [Track] = [
+//        .because, .comeTogether, .faces, .illWind,
+//        .odeToViceroy, .reckoner, .theEnd, .time
+//    ]
+//
+//    static var previews: some View {
+//        ForEach([tracks], id: \.self) { tracks in
+//            NavigationView {
+//                SpotifyAnalysisScreen(recommendedTracks: tracks, PlaylistOptionsViewModel())
+//                    .listStyle(PlainListStyle())
+//            }
+//        }
+//    }
+//}

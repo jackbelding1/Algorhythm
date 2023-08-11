@@ -50,8 +50,66 @@ class SpotifyAnalysisViewModel: ObservableObject {
     @Published var seedIds:[String] = []
 
     
-    init(repository: SpotifyAnalysisRepository) {
-        spotifyAnalysisRepository = repository
+    init(spotify: Spotify) {
+        spotifyAnalysisRepository = SpotifyAnalysisRepository(spotify: spotify)
+    }
+    
+    
+    func handleCompletion(
+        _ completion: Subscribers.Completion<Error>,
+        title: String,
+        updatePlaylistState: Bool = false,
+        updateLoadingPage: Bool = false
+    ) {
+        if case .failure(let error) = completion {
+            if updatePlaylistState {
+                playlistCreationState = .failure
+            }
+            print("\(title): \(error)")
+            alert = AlertItem(
+                title: title,
+                message: error.localizedDescription
+            )
+            if updateLoadingPage {
+                isLoadingPage = false
+            }
+        }
+    }
+    
+    func createPlaylistCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        handleCompletion(completion, title: "Couldn't create playlist", updatePlaylistState: true)
+    }
+    
+    func addTracksCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        handleCompletion(completion, title: "Couldn't add items", updatePlaylistState: true)
+    }
+    
+    func getRecommendationsCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        handleCompletion(completion, title: "Couldn't retrieve recommendations")
+    }
+    
+    func getTopArtistsCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        handleCompletion(completion, title: "Couldn't retrieve user top artists", updateLoadingPage: true)
+    }
+    
+    func getArtistsCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ) {
+        handleCompletion(completion, title: "Couldn't retrieve artists", updateLoadingPage: true)
+    }
+    
+    func getArtistTopTracksCompletion(
+        _ completion: Subscribers.Completion<Error>
+    ){
+        handleCompletion(completion, title: "Couldn't retrieve artist top tracks", updateLoadingPage: true)
     }
 }
 
