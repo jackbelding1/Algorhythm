@@ -16,19 +16,19 @@ struct SpotifyAnalysisScreen: View{
 
     // the playlist creating result
     enum PlaylistState {
-        case in_progress
-        case waiting_request
+        case inProgress
+        case waitingRequest
         case success
-        case failiure
+        case failure
     }
-    @State private var playlistCreationState:PlaylistState = .waiting_request
+    @State private var playlistCreationState:PlaylistState = .waitingRequest
     
     // spotify object
     @EnvironmentObject var spotify: Spotify
     @EnvironmentObject var appState: AppState
 
     // View model for mood analysis and data storage
-    @StateObject private var analyzedSongListVM = SpotifyAnalysisListViewModel()
+    @StateObject private var spotifyAnalysisViewModel = SpotifyAnalysisListViewModel()
     
     // the playlist name to print. This will likely become an object
     @State private var playlist:String = ""
@@ -113,12 +113,78 @@ struct SpotifyAnalysisScreen: View{
         colorScheme == .dark ? .spotifyLogoBlack
                 : .spotifyLogoWhite
     }
+    
+    private func waitingRequestView() -> some View {
+        VStack {
+            Text("Name your playlist!")
+                .font(.title)
+                .padding()
+            TextField(text: $playlist, prompt: Text("Type Here")){}
+                .font(.largeTitle)
+                .padding(EdgeInsets(top: 80, leading: 55, bottom: 1, trailing: 55))
+                .disableAutocorrection(true)
+            Divider()
+            Button(action: {
+                createPlaylistFromRecommendations(withPlaylistName: $playlist.wrappedValue)
+                playlistCreationState = .inProgress
+            }) {
+                Text("Create")
+                    .foregroundColor(Color.primary).colorInvert()
+                    .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
+                    .lineLimit(1)
+            }
+                .disabled($playlist.wrappedValue == "")
+                .background(Color.primary)
+                .clipShape(Capsule())
+                .buttonStyle(PlainButtonStyle())
+                .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
+        }
+    }
+
+    private func inProgressView() -> some View {
+        VStack {
+            ProgressView()
+                .padding()
+            Text("Creating playlist...")
+                .font(.title)
+                .foregroundColor(.secondary)
+        }
+    }
+
+    private func successView() -> some View {
+        VStack {
+            Spacer()
+            Group {
+                Text("✅")
+                    .font(.largeTitle)
+                Text("Success!")
+                    .font(.largeTitle)
+            }
+            Divider()
+            Spacer()
+            // Your Spotify button logic here
+            returnHomeButton
+        }
+    }
+
+    private func failureView() -> some View {
+        VStack {
+            Spacer()
+            Group {
+                Text("❌")
+                    .font(.largeTitle)
+                Text("Failed to create playlist")
+                    .font(.largeTitle)
+            }
+            Divider()
+            Spacer()
+            returnHomeButton
+        }
+    }
         
     var body: some View {
-        VStack{
-            if recommendedTracks.isEmpty &&
-                analyzedSongListVM.seedIds.isEmpty &&
-                (playlistCreationState != .failiure) {
+        VStack {
+            if recommendedTracks.isEmpty && spotifyAnalysisViewModel.seedIds.isEmpty && (playlistCreationState != .failure) {
                 HStack {
                     ProgressView()
                         .padding()
@@ -126,112 +192,32 @@ struct SpotifyAnalysisScreen: View{
                         .font(.title)
                         .foregroundColor(.secondary)
                 }
-            }
-            else {
-                switch (playlistCreationState){
-                case .waiting_request:
-                    Text("Name your playlist!")
-                        .font(.title)
-                        .padding()
-                    TextField(text: $playlist, prompt: Text("Type Here")){}
-                        .font(.largeTitle)
-                        .padding(EdgeInsets(top: 80, leading: 55, bottom: 1, trailing: 55))
-                        .disableAutocorrection(true)
-                    
-                    Divider()
-                    Button(action: {
-                        createPlaylistFromRecommendations(withPlaylistName: $playlist.wrappedValue)
-                        playlistCreationState = .in_progress
-                    }) {
-                        Text("Create")
-                            .foregroundColor(Color.primary).colorInvert()
-                            .padding(EdgeInsets(top: 20, leading: 40, bottom: 20, trailing: 40))
-                            .lineLimit(1)
-                    }
-                        .disabled($playlist.wrappedValue == "")
-                        .background(Color.primary)
-                        .clipShape(Capsule())
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
-                case .in_progress:
-                    ProgressView()
-                        .padding()
-                    Text("Creating playlist...")
-                        .font(.title)
-                        .foregroundColor(.secondary)
+            } else {
+                switch (playlistCreationState) {
+                case .waitingRequest:
+                    waitingRequestView()
+                case .inProgress:
+                    inProgressView()
                 case .success:
-                    Spacer()
-                    Group{
-                        Text("✅")
-                            .font(.largeTitle)
-                        Text("Success!")
-                            .font(.largeTitle)
-                    }
-                    Divider()
-                    Spacer()
-                    Button(action: {
-                        let spotifyUrl = URL(string: "https://open.spotify.com/playlist/\(createdPlaylistId)")!
-                        if UIApplication.shared.canOpenURL(spotifyUrl) {
-                            UIApplication.shared.open(spotifyUrl) // open the spotify app
-                        }
-                        else {
-                            if let appStoreURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id324684580") {
-                             UIApplication.shared.open(appStoreURL)
-                            }
-                        }
-                        }){ HStack {
-                            Image(spotifyLogo)
-                                .interpolation(.high)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 30)
-                            if UIApplication.shared.canOpenURL(URL(string: "https://open.spotify.com/")!){
-                                Text("Open Spotify")
-                                    .font(.title2)
-                                    .foregroundColor(Color.primary).colorInvert()
-                                    .padding()
-                            } else {
-                                Text("Get Spotify Free")
-                                    .font(.system(size: 17))
-                                    .foregroundColor(Color.primary).colorInvert()
-                                    .padding()
-                            }
-
-                        }
-                        .padding()
-                    }
-                .background(Color.primary)
-                .clipShape(Capsule())
-                .buttonStyle(PlainButtonStyle())
-                returnHomeButton
-                case .failiure:
-                    Spacer()
-                    Group{
-                        Text("❌")
-                            .font(.largeTitle)
-                        Text("Failed to create playlist")
-                            .font(.largeTitle)
-                    }
-                    Divider()
-                    Spacer()
-                    returnHomeButton
+                    successView()
+                case .failure:
+                    failureView()
                 }
             }
             Spacer()
-//            Button(action: {analyzedSongListVM.printNetworkCalls()}){
-//                Text("Print network calls")
-//            }
         }
         .onAppear{
             generateRecommendationsHandler.addHandler(handler: {getRecommendations()})
             artistRetryHandler.addHandler {data in networkRetryHandler(Ids: data)}
-            analyzedSongListVM.initialize(retryListener: artistRetryHandler, recommendationListener: generateRecommendationsHandler)
+            spotifyAnalysisViewModel.initialize(retryListener: artistRetryHandler, recommendationListener: generateRecommendationsHandler)
             getSeeds(genreIsSelected: false)
         }
         .padding()
         .navigationBarHidden(playlistCreationState == PlaylistState.success
-                             || playlistCreationState == PlaylistState.failiure)
+                             || playlistCreationState == PlaylistState.failure)
     }
+    
+    
 }
 
 extension SpotifyAnalysisScreen {
@@ -247,7 +233,7 @@ extension SpotifyAnalysisScreen {
             // TODO: generate normalized genre
             //
         }
-        if !analyzedSongListVM.loadMoodFromDatabase(mood: selectedMood!, genre: selectedGenre){
+        if !spotifyAnalysisViewModel.loadMoodFromDatabase(mood: selectedMood!, genre: selectedGenre){
             getUserTopArtists() // download mood seed from network
         }
         else {
@@ -256,7 +242,7 @@ extension SpotifyAnalysisScreen {
     }
     
     func getRecommendations() {
-        let trackURIs:[String] = analyzedSongListVM.seedIds.map {"spotify:track:\($0)" }
+        let trackURIs:[String] = spotifyAnalysisViewModel.seedIds.map {"spotify:track:\($0)" }
         self.getRecommendationsCancellable = self.spotify.api
             .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 30)
             .receive(on: RunLoop.main)
@@ -264,7 +250,7 @@ extension SpotifyAnalysisScreen {
                   receiveValue: {
                 response in
                 self.recommendedTracks = response.tracks
-                analyzedSongListVM.networkCalls.spotify += 1
+                spotifyAnalysisViewModel.networkCalls.spotify += 1
             })
         
     }
@@ -287,7 +273,7 @@ extension SpotifyAnalysisScreen {
                         response in
                     playlistURI = response.uri
                     self.createdPlaylistId = response.id
-                    self.analyzedSongListVM.writePlaylistId(response.id)
+                    self.spotifyAnalysisViewModel.writePlaylistId(response.id)
                     if !playlistURI.isEmpty {
                         let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id!)" }
                         self.addTracksCancellable = self.spotify.api
@@ -308,9 +294,9 @@ extension SpotifyAnalysisScreen {
     // function checks if the retry counter will satisfy a network rety
     func getTopArtistRetry() {
         // temporary cap at 200 cyanite calls
-        if analyzedSongListVM.networkCalls.cyanite > 200 {
+        if spotifyAnalysisViewModel.networkCalls.cyanite > 200 {
             currentTimeRange = .shortTerm
-            playlistCreationState = .failiure
+            playlistCreationState = .failure
             //
             // TODO: at this point, we must reach out to a top 100 billboard for
             // TODO: a mood seed. This function will be created later
@@ -327,7 +313,7 @@ extension SpotifyAnalysisScreen {
                 currentTimeRange = .longTerm
             case .longTerm:
                 currentTimeRange = .shortTerm
-                playlistCreationState = .failiure
+                playlistCreationState = .failure
                 //
                 // TODO: at this point, we must reach out to a top 100 billboard for
                 // TODO: a mood seed. This function will be created later
@@ -345,7 +331,7 @@ extension SpotifyAnalysisScreen {
     func writeTracks() {
         let ids = self.recommendedTracks.map { $0.id! }
         if !ids.isEmpty {
-            analyzedSongListVM.writeMoodToDataBase(
+            spotifyAnalysisViewModel.writeMoodToDataBase(
                 mood: selectedMood!, genre: selectedGenre, withIds: ids)
         }
     }
@@ -380,7 +366,7 @@ extension SpotifyAnalysisScreen {
             .sink(receiveCompletion:
                     self.getArtistsCompletion(_:),
                   receiveValue: { response in
-                analyzedSongListVM.networkCalls.spotify += 1
+                spotifyAnalysisViewModel.networkCalls.spotify += 1
                 for artist in response {
                     if let genres = artist?.genres {
                         for genre in genres {
@@ -437,7 +423,7 @@ extension SpotifyAnalysisScreen {
                             tracks.append(val.id)
                         }
                     }
-                    analyzedSongListVM.findMoodGenreTrack(
+                    spotifyAnalysisViewModel.findMoodGenreTrack(
                         mood: mood, genre: selectedGenre,
                         tracks: tracks.head, parentNode: head)
                         print("iteration done")
@@ -469,7 +455,7 @@ extension SpotifyAnalysisScreen {
         _ completion: Subscribers.Completion<Error>
     ) {
         if case .failure(let error) = completion {
-            self.playlistCreationState = .failiure
+            self.playlistCreationState = .failure
             let title = "Couldn't create playlist"
             print("\(title): \(error)")
             self.alert = AlertItem(
@@ -483,7 +469,7 @@ extension SpotifyAnalysisScreen {
         _ completion: Subscribers.Completion<Error>
     ) {
         if case .failure(let error) = completion {
-            self.playlistCreationState = .failiure
+            self.playlistCreationState = .failure
             let title = "Couldn't add items"
             print("\(title): \(error)")
             self.alert = AlertItem(
