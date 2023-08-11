@@ -14,6 +14,8 @@
 		771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CC29133B85005F7781 /* ApolloNetwork.swift */; };
 		771D46CF29133BBA005F7781 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CE29133BBA005F7781 /* API.swift */; };
 		771D46D42914657E005F7781 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46D32914657E005F7781 /* Spotify.swift */; };
+		77450C332A8445C400A44D34 /* SpotifyAnalysisRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77450C322A8445C400A44D34 /* SpotifyAnalysisRepository.swift */; };
+		77450C352A8449EB00A44D34 /* SpotifyAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77450C342A8449EB00A44D34 /* SpotifyAnalysis.swift */; };
 		77587143294A4BD100BAB8EB /* SpotifyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 77587142294A4BD100BAB8EB /* SpotifyAPI */; };
 		77587149294BB54700BAB8EB /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77587148294BB54600BAB8EB /* SheetManager.swift */; };
 		7765B2D029186AC600DB67AC /* MoodSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7765B2CF29186AC600DB67AC /* MoodSelectionView.swift */; };
@@ -75,6 +77,8 @@
 		771D46CC29133B85005F7781 /* ApolloNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApolloNetwork.swift; sourceTree = "<group>"; };
 		771D46CE29133BBA005F7781 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		771D46D32914657E005F7781 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		77450C322A8445C400A44D34 /* SpotifyAnalysisRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisRepository.swift; sourceTree = "<group>"; };
+		77450C342A8449EB00A44D34 /* SpotifyAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysis.swift; sourceTree = "<group>"; };
 		77587148294BB54600BAB8EB /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
 		7765B2CF29186AC600DB67AC /* MoodSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSelectionView.swift; sourceTree = "<group>"; };
 		776DB7D529147F8E0055424F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -206,6 +210,7 @@
 			children = (
 				77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */,
 				771D46CC29133B85005F7781 /* ApolloNetwork.swift */,
+				77450C322A8445C400A44D34 /* SpotifyAnalysisRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -223,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				771D46D32914657E005F7781 /* Spotify.swift */,
+				77450C342A8449EB00A44D34 /* SpotifyAnalysis.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -483,6 +489,7 @@
 				771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */,
 				77CE43292913299C000019A8 /* AlgorhythmApp.swift in Sources */,
 				77CA67DE2A7C45F4002830E1 /* MoodSelectionViewModel.swift in Sources */,
+				77450C352A8449EB00A44D34 /* SpotifyAnalysis.swift in Sources */,
 				77BB442529200E3D00EF8E90 /* TrackView.swift in Sources */,
 				77587149294BB54700BAB8EB /* SheetManager.swift in Sources */,
 				771D46CF29133BBA005F7781 /* API.swift in Sources */,
@@ -491,6 +498,7 @@
 				776DB7E329148E630055424F /* AlertItem.swift in Sources */,
 				776DB7E629148EC10055424F /* RootView.swift in Sources */,
 				77B75DCA291B08E00014CEF8 /* SpotifyAnalysisView.swift in Sources */,
+				77450C332A8445C400A44D34 /* SpotifyAnalysisRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
