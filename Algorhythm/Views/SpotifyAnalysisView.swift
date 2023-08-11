@@ -28,7 +28,7 @@ struct SpotifyAnalysisScreen: View{
     @EnvironmentObject var appState: AppState
 
     // View model for mood analysis and data storage
-    @StateObject private var spotifyAnalysisViewModel = SpotifyAnalysisListViewModel()
+    @StateObject private var spotifyAnalysisViewModel = SpotifyAnalysisViewModel(repository: SpotifyAnalysisRepository(spotify: spotify)
     
     // the playlist name to print. This will likely become an object
     @State private var playlist:String = ""
@@ -140,6 +140,33 @@ struct SpotifyAnalysisScreen: View{
                 .padding(EdgeInsets(top: 50, leading: 100, bottom: 1, trailing: 100))
         }
     }
+    
+    private var openSpotifyButton: some View {
+        Button(action: openSpotify) {
+            HStack {
+                Image(spotifyLogo)
+                    .interpolation(.high)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 30)
+                if UIApplication.shared.canOpenURL(URL(string: "https://open.spotify.com/")!) {
+                    Text("Open Spotify")
+                        .font(.title2)
+                        .foregroundColor(Color.primary).colorInvert()
+                        .padding()
+                } else {
+                    Text("Get Spotify Free")
+                        .font(.system(size: 17))
+                        .foregroundColor(Color.primary).colorInvert()
+                        .padding()
+                }
+            }
+            .padding()
+        }
+        .background(Color.primary)
+        .clipShape(Capsule())
+        .buttonStyle(PlainButtonStyle())
+    }
 
     private func inProgressView() -> some View {
         VStack {
@@ -162,7 +189,7 @@ struct SpotifyAnalysisScreen: View{
             }
             Divider()
             Spacer()
-            // Your Spotify button logic here
+            openSpotifyButton
             returnHomeButton
         }
     }
@@ -217,7 +244,16 @@ struct SpotifyAnalysisScreen: View{
                              || playlistCreationState == PlaylistState.failure)
     }
     
-    
+    private func openSpotify() {
+        let spotifyUrl = URL(string: "https://open.spotify.com/playlist/\(createdPlaylistId)")!
+        if UIApplication.shared.canOpenURL(spotifyUrl) {
+            UIApplication.shared.open(spotifyUrl) // open the Spotify app
+        } else {
+            if let appStoreURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id324684580") {
+                UIApplication.shared.open(appStoreURL) // download spotify from the appstore
+            }
+        }
+    }
 }
 
 extension SpotifyAnalysisScreen {

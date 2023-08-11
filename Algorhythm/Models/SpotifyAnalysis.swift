@@ -7,9 +7,7 @@
 
 import Foundation
 
-class SpotifyAnalysisViewModel {
-    
-    
+class SpotifyAnalysisModel {
     
     let analyzedSpotifyTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack
     
@@ -29,10 +27,10 @@ class SpotifyAnalysisViewModel {
 
 // the key value pair of mood to score value
 struct moodElement {
-    public var mood:SpotifyAnalysisViewModel.Moods
+    public var mood:SpotifyAnalysisModel.Moods
     public var val:Double = 0
     
-    init(mood: SpotifyAnalysisViewModel.Moods, val: Double) {
+    init(mood: SpotifyAnalysisModel.Moods, val: Double) {
         self.mood = mood
         self.val = val
     }
@@ -44,7 +42,7 @@ class TrackMoods {
 
     private var maxMoods:[moodElement] = []
     
-    func isInList(_ mood:SpotifyAnalysisViewModel.Moods) -> Bool{
+    func isInList(_ mood:SpotifyAnalysisModel.Moods) -> Bool{
         for el in maxMoods {
             if el.mood == mood {
                 return true
@@ -70,7 +68,7 @@ class TrackMoods {
     }
 }
 
-extension SpotifyAnalysisViewModel {
+extension SpotifyAnalysisModel {
     
     // the genres associated with the track
     var genreTags:[AudioAnalysisV6GenreTags]? {
