@@ -213,7 +213,8 @@ struct SpotifyAnalysisScreen: View{
     
     var body: some View {
         VStack {
-            if recommendedTracks.isEmpty && spotifyAnalysisViewModel.seedIds.isEmpty && (playlistCreationState != .failure) {
+            if spotifyAnalysisViewModel.recommendedTracksEmpty() &&
+                spotifyAnalysisViewModel.recommendationSeedIds.isEmpty && (playlistCreationState != .failure) {
                 HStack {
                     ProgressView()
                         .padding()
@@ -272,12 +273,13 @@ extension SpotifyAnalysisScreen {
             getUserTopArtists() // download mood seed from network
         }
         else {
-            getRecommendations()
+            spotifyAnalysisViewModel.getRecommendedTracks()
         }
     }
     
+    /** DEPRECATED   **/
     func getRecommendations() {
-        let trackURIs:[String] = spotifyAnalysisViewModel.seedIds.map {"spotify:track:\($0)" }
+        let trackURIs:[String] = spotifyAnalysisViewModel.recommendationSeedIds.map {"spotify:track:\($0)" }
         self.getRecommendationsCancellable = self.spotify.api
             .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 30)
             .receive(on: RunLoop.main)

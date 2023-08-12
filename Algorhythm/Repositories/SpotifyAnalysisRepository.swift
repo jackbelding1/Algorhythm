@@ -43,14 +43,18 @@ class SpotifyAnalysisRepository {
     // ...
     
     // Example:
-    func getRecommendations(trackURIs: [String], completion: @escaping (Subscribers.Completion<Error>) -> Void) {
+    func getRecommendations(trackURIs: [String], completion: @escaping (Result<[Track], Error>) -> Void) {
         self.spotify.api
             .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 30)
             .receive(on: RunLoop.main)
             .sink(
-                receiveCompletion: completion,
+                receiveCompletion: { receiveCompletion in
+                    if case .failure(let error) = receiveCompletion {
+                        completion(.failure(error))
+                    }
+                },
                 receiveValue: { response in
-//                    self.spotifyAnalysisViewModel.recommendedTracks = response.tracks
+                    completion(.success(response.tracks))
                 })
             .store(in: &cancellables) // Add this subscription to the collection
     }

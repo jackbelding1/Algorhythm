@@ -25,29 +25,32 @@ class SpotifyAnalysisViewModel: ObservableObject {
         case failure
     }
     
-    var recommendedTracks: [Track] = []
+    private var recommendedTracks: [Track] = []
+    
+    func recommendedTracksEmpty() -> Bool { return recommendedTracks.isEmpty }
+    
+    func getRecommendedTracks() { spotifyAnalysisRepository.getRecommendations(
+        trackURIs: recommendationSeedIds.map { "spotify:track:\($0)" },
+        completion: getRecommendationsCompletion(_:)
+    )}
     
     @Published var playlistCreationState: PlaylistCreationState = .waitingRequest
     
     @Published var alert: AlertItem? = nil
     @Published var isLoadingPage: Bool = false
     
-    // Network calls logger
+    // for debugging
     public var networkCalls:NetworkCalls = NetworkCalls()
     
     // the list of analyzed songs
     @Published var analyzedSongs: [SpotifyAnalysisModel] = []
     
-    // songs to analyze
-    private var songIds:[String:String] = [:]
-    
-    // the realm database manager
     private let algoDbManager = AlgoDataManager()
     
     private let spotifyAnalysisRepository: SpotifyAnalysisRepository
     
     // the list of seed ids for the selected mood and genre
-    @Published var seedIds:[String] = []
+    @Published var recommendationSeedIds:[String] = []
 
     
     init(spotify: Spotify) {
@@ -89,9 +92,21 @@ class SpotifyAnalysisViewModel: ObservableObject {
     }
     
     func getRecommendationsCompletion(
-        _ completion: Subscribers.Completion<Error>
+        _ result: Result<[Track], Error>
     ) {
-        handleCompletion(completion, title: "Couldn't retrieve recommendations")
+        switch result {
+            case .success(let tracks):
+                self.recommendedTracks = tracks // Assigning the tracks to the member variable
+
+            case .failure(let error):
+                playlistCreationState = .failure
+                print("Couldn't retrieve recommendations: \(error)")
+                alert = AlertItem(
+                    title: "Couldn't retrieve recommendations",
+                    message: error.localizedDescription
+                )
+                isLoadingPage = false
+            }
     }
     
     func getTopArtistsCompletion(
@@ -130,9 +145,7 @@ extension SpotifyAnalysisViewModel {
               ###########################################\n
               """)
     }
-    
-    func setSongIds(songIds Ids:[String:String]) { songIds = Ids }
-    
+        
     func getAnalyzedMoodSeeds(bymood mood:SpotifyAnalysisModel.Moods?) -> [String] {
         var filteredTracks: [SpotifyAnalysisModel] = []
         if mood != nil {
@@ -256,8 +269,8 @@ extension SpotifyAnalysisViewModel{
             for track in loc_tracks {
                 if trackIsSelectedMood(track, mood: selectedMood)
                     && trackIsSelectedGenre(track, genre: selectedGenre) {
-                    seedIds.append(track.id)
-                    writeMoodToDataBase(mood: selectedMood, genre: selectedGenre, withIds: seedIds)
+                    recommendationSeedIds.append(track.id)
+                    writeMoodToDataBase(mood: selectedMood, genre: selectedGenre, withIds: recommendationSeedIds)
                     return true
                 }
             }
@@ -282,7 +295,7 @@ extension SpotifyAnalysisViewModel{
         }
         else {
             for id in ids {
-                seedIds.append(id)
+                recommendationSeedIds.append(id)
             }
             return true
         }
