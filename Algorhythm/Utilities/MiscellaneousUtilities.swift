@@ -34,9 +34,9 @@ class artistURI: SpotifyURIConvertible {
 /**
  * convert spotify analysis view model mood to a string
  */
-func enumToString(_ toConvert:SpotifyAnalysisViewModel.Moods) -> String? {
+func enumToString(_ toConvert:SpotifyAnalysisModel.Moods) -> String? {
     
-    let mapping:[SpotifyAnalysisViewModel.Moods:String] = [
+    let mapping:[SpotifyAnalysisModel.Moods:String] = [
         .Energetic:"Energetic",
         .Aggressive:"Agressive",
         .Calm:"Calm",
@@ -47,7 +47,7 @@ func enumToString(_ toConvert:SpotifyAnalysisViewModel.Moods) -> String? {
         .Sad:"Sad"
     ]
     
-    for mood in SpotifyAnalysisViewModel.Moods.allCases {
+    for mood in SpotifyAnalysisModel.Moods.allCases {
         if toConvert == mood {
             return mapping[mood]!
         }

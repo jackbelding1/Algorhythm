@@ -85,10 +85,13 @@ struct MoodSelectionView: View {
     
     private struct MoodConfirmation: View {
         @ObservedObject var viewModel: MoodSelectionViewModel
+        @EnvironmentObject var spotify: Spotify
         
         var body: some View {
             if let selectedMood = viewModel.selectedMood {
-                NavigationLink(destination: SpotifyAnalysisScreen(mood: selectedMood, viewModel.playlistOptions)) {
+                NavigationLink(destination: SpotifyAnalysisScreen(
+                    mood: selectedMood, viewModel.playlistOptions,
+                    withViewModel: SpotifyAnalysisViewModel(spotify: spotify))) {
                     Image(systemName: "arrow.right.circle")
                         .frame(height: 200)
                     Text("Continue")
