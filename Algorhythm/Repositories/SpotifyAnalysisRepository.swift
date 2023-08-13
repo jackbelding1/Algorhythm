@@ -131,24 +131,6 @@ class SpotifyAnalysisRepository {
     // Add other methods similar to the above
     // ...
     
-
-    private func createLinkedList(ofArtists artists: [Artist?], matchingGenre selectedGenre: String) -> LinkedList<String> {
-        var linkedListOfArtists = LinkedList<String>()
-        var isFirstArtist = true
-        artists.forEach { artist in
-            if let genres = artist?.genres, genres.contains(selectedGenre), let artistId = artist?.id {
-                if isFirstArtist {
-                    linkedListOfArtists.initialize(withNode: Node(value: artistId))
-                    isFirstArtist = false
-                } else {
-                    linkedListOfArtists.append(artistId)
-                }
-            }
-        }
-        return linkedListOfArtists
-    }
-    
-    
 //    func networkRetryHandler(Ids:Node<String>?){
 //        if let node = Ids {
 //            getArtistTopTracks(withIds: node)

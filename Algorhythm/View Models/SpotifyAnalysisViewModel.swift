@@ -50,6 +50,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
     private let mood:String
     private let genre:String
     
+    func getAnalyzedSongsCount() -> Int { return analyzedSongs.count }
     
     init(spotify: Spotify, withMood mood:String, withGenre genre:String) {
         self.mood = mood
@@ -65,14 +66,14 @@ class SpotifyAnalysisViewModel: ObservableObject {
     func getUserTopArtists(timeRange: TimeRange, offset: Int, limit: Int) {
         spotifyAnalysisRepository.getUserTopArtists(
             timeRange: timeRange, offset: offset,
-            limit: limit, completion: getTopArtistsCompletion(_:))
-    }
+            limit: limit, completion: getTopArtistsCompletion(_:)
+        )}
     
     func getArtistTopTracks(withIds Ids:Node<String>?) {
         guard let head = Ids else { return }
         spotifyAnalysisRepository.getArtistTopTracks(
-            artistId: head.value, completion: getArtistTopTracksCompletion(_:))
-    }
+            artistId: head.value, completion: getArtistTopTracksCompletion(_:)
+        )}
     
     func handleCompletion(
         _ completion: Subscribers.Completion<Error>,
@@ -185,42 +186,6 @@ class SpotifyAnalysisViewModel: ObservableObject {
         return linkedListOfArtists
     }
 }
-
-/**
- * utility functions
- */
-extension SpotifyAnalysisViewModel {
-    
-    func getAnalyzedSongsCount() -> Int { return analyzedSongs.count }
-    
-    // print the contents of the network call logger
-    func printNetworkCalls() -> Void {
-        print("""
-              ###########################################\n
-              NETWORK CALLS LOGGER\n
-              cyanite: \(networkCalls.cyanite)\nspotify:\(networkCalls.spotify)
-              total: \(networkCalls.total)\n
-              ###########################################\n
-              """)
-    }
-    
-    func getAnalyzedMoodSeeds(bymood mood:SpotifyAnalysisModel.Moods?) -> [String] {
-        var filteredTracks: [SpotifyAnalysisModel] = []
-        if mood != nil {
-            for track in analyzedSongs {
-                if track.maxMoods.isInList(mood!) {
-                    filteredTracks.append(track)
-                }
-            }
-        }
-        let filteredTrackIds = filteredTracks.map { $0.id }
-        print("Found \(filteredTrackIds.count) items with the selected mood")
-        for trackid in filteredTrackIds{
-            print("id: \(trackid)")
-        }
-        return filteredTrackIds
-    }
-}
 /**
  * Filter seeds by mood
  */
@@ -257,9 +222,7 @@ extension SpotifyAnalysisViewModel{
                         print("error")
                     }
                 }
-                self.networkCalls.cyanite += 1
             }
-            
         }
         else {
             // we need to call get artist Top tracks again, with the parent head.
