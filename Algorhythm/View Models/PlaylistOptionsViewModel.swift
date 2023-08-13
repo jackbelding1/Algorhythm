@@ -40,9 +40,16 @@ class PlaylistOptionsViewModel: ObservableObject {
         }
         shouldSavePreferences = UserDefaults.standard.bool(forKey: "shouldSavePreferences")
     }
-    
 
     private let algoDBManager = AlgoDataManager()
+    
+    func getRandomGenreKey() -> String? {
+        let trueGenrePreferences = genrePreferencesCollection.filter { $0.value == true }
+        let selectedCollection = trueGenrePreferences.isEmpty ? genrePreferencesCollection : trueGenrePreferences
+        guard !selectedCollection.isEmpty else { return nil }
+        let randomIndex = Int.random(in: 0..<selectedCollection.count)
+        return selectedCollection[randomIndex].key
+    }
     
     func savePlaylistOptions() {
 

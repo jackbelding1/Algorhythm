@@ -55,10 +55,10 @@ struct SpotifyAnalysisScreen: View{
     // store an alert
     @State private var alert: AlertItem? = nil
     
-    // the mood to analyze
+    // the mood to analyze !!DEPRICATED!!
     private var selectedMood:String?
     
-    // the genre to generate the playlist from
+    // the genre to generate the playlist from !!DEPRICATED!!
     private var selectedGenre:String
     
     // the network retry listener
@@ -270,7 +270,11 @@ extension SpotifyAnalysisScreen {
             //
         }
         if !spotifyAnalysisViewModel.loadMoodFromDatabase(mood: selectedMood!, genre: selectedGenre){
-            getUserTopArtists() // download mood seed from network
+            spotifyAnalysisViewModel.getUserTopArtists(
+                timeRange: currentTimeRange,
+                offset: artistOffset,
+                limit: 50
+            ) // download mood seed from network
         }
         else {
             spotifyAnalysisViewModel.getRecommendedTracks()
@@ -289,7 +293,6 @@ extension SpotifyAnalysisScreen {
                 self.recommendedTracks = response.tracks
                 spotifyAnalysisViewModel.networkCalls.spotify += 1
             })
-        
     }
     
     func createPlaylistFromRecommendations(withPlaylistName name:String?) {
@@ -312,7 +315,7 @@ extension SpotifyAnalysisScreen {
                     self.createdPlaylistId = response.id
                     self.spotifyAnalysisViewModel.writePlaylistId(response.id)
                     if !playlistURI.isEmpty {
-                        let trackURIs:[String] = recommendedTracks.map {"spotify:track:\($0.id!)" }
+                        let trackURIs:[String] = spotifyAnalysisViewModel.recommendedTracks.map {"spotify:track:\($0.id!)" }
                         self.addTracksCancellable = self.spotify.api
                             .addToPlaylist(playlistURI, uris: trackURIs)
                             .receive(on: RunLoop.main)
@@ -362,15 +365,21 @@ extension SpotifyAnalysisScreen {
             retryCounter += 1
             artistOffset += 50
         }
-        getUserTopArtists()
+        spotifyAnalysisViewModel.getUserTopArtists(
+            timeRange: currentTimeRange,
+            offset: artistOffset,
+            limit: 50
+        )
     }
     
     func writeTracks() {
         let ids = self.recommendedTracks.map { $0.id! }
         if !ids.isEmpty {
             spotifyAnalysisViewModel.writeMoodToDataBase(
-                mood: selectedMood!, genre: selectedGenre, withIds: ids)
-        }
+                mood: selectedMood!,
+                genre: selectedGenre,
+                withIds: ids
+            )}
     }
 }
 
@@ -391,7 +400,6 @@ extension SpotifyAnalysisScreen {
                     }
                     findArtistWithSelectedGenre(withIds: artistIds)
                 })
-        
     }
     
     func findArtistWithSelectedGenre(withIds artistIds:[String]) {
@@ -429,8 +437,7 @@ extension SpotifyAnalysisScreen {
                 } else {
                     getArtistTopTracks(withIds: artists.head)
                 }
-            }
-            )
+            })
     }
     /**
      * function fetches the top tracks for the provided Ids and passes them to
@@ -438,6 +445,7 @@ extension SpotifyAnalysisScreen {
      * @param: Ids - The artist ids to analyze
      * @ return bool whether or not a track with the selected mood or genre was found
      * in the artist top tracks
+     *  !!! DEPRECATED !!!
      */
     func getArtistTopTracks(withIds Ids:Node<String>?){
         var tracks:LinkedList<String?> = LinkedList<String?>()
@@ -460,9 +468,9 @@ extension SpotifyAnalysisScreen {
                             tracks.append(val.id)
                         }
                     }
-                    spotifyAnalysisViewModel.findMoodGenreTrack(
-                        mood: mood, genre: selectedGenre,
-                        tracks: tracks.head, parentNode: head)
+//                    spotifyAnalysisViewModel.findMoodGenreTrack(
+//                        mood: mood, genre: selectedGenre,
+//                        tracks: tracks.head, parentNode: head)
                     print("iteration done")
                 }
             }

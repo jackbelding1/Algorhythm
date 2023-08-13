@@ -2,7 +2,9 @@ import SwiftUI
 
 struct MoodSelectionView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @StateObject private var viewModel = MoodSelectionViewModel()
+    @StateObject private var moodSelectionViewModel = MoodSelectionViewModel()
+    @StateObject private var playlistOptions = PlaylistOptionsViewModel()
+
     
     private let moodOptionsGrid = [GridItem(.flexible(), spacing: 50), GridItem(.flexible(), spacing: 50)]
     private let moodButtonSize = CGSize(width: 65, height: 85)
@@ -14,21 +16,21 @@ struct MoodSelectionView: View {
                 Spacer(minLength: 30)
                 MoodHeader()
                 MoodSelectionGrid(
-                    viewModel: viewModel, moodOptionsGrid: moodOptionsGrid,
+                    viewModel: moodSelectionViewModel, moodOptionsGrid: moodOptionsGrid,
                     moodButtonSize: moodButtonSize)
-                MoodConfirmation(viewModel: viewModel)
+                MoodConfirmation(viewModel: moodSelectionViewModel, playlistOptions: playlistOptions)
             }
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(
                 leading: DismissButton(navButtonSize: navButtonSize),
-                trailing: PreferencesButton(viewModel: viewModel,
+                trailing: PreferencesButton(viewModel: moodSelectionViewModel,
                                             navButtonSize: navButtonSize)
 )
         }
         .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $viewModel.isPresenting) {
-            PlaylistOptionsView(viewModel.playlistOptions,
-                                shouldLoadOptions: viewModel.savePreferences
+        .sheet(isPresented: $moodSelectionViewModel.isPresenting) {
+            PlaylistOptionsView(playlistOptions,
+                                shouldLoadOptions: moodSelectionViewModel.savePreferences
         )}
     }
     
@@ -85,13 +87,17 @@ struct MoodSelectionView: View {
     
     private struct MoodConfirmation: View {
         @ObservedObject var viewModel: MoodSelectionViewModel
+        @ObservedObject var playlistOptions:PlaylistOptionsViewModel
         @EnvironmentObject var spotify: Spotify
         
         var body: some View {
             if let selectedMood = viewModel.selectedMood {
                 NavigationLink(destination: SpotifyAnalysisScreen(
                     mood: selectedMood, viewModel.playlistOptions,
-                    withViewModel: SpotifyAnalysisViewModel(spotify: spotify))) {
+                    withViewModel: SpotifyAnalysisViewModel(
+                        spotify: spotify, withMood: selectedMood,
+                        withGenre: playlistOptions.getRandomGenreKey() ?? "edm"
+                    ))) {
                     Image(systemName: "arrow.right.circle")
                         .frame(height: 200)
                     Text("Continue")
