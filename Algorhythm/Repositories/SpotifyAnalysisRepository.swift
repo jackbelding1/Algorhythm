@@ -39,10 +39,23 @@ class SpotifyAnalysisRepository {
 //        artistRetryListener.addHandler { [self] data in networkRetryHandler(Ids: data)}
     }
     
-    // Your networking functions go here
-    // ...
-    
-    // Example:
+    func getUserTopArtists(timeRange: TimeRange, offset: Int, limit: Int, completion: @escaping (Result<[Artist], Error>) -> Void) {
+        spotify.api
+            .currentUserTopArtists(timeRange, offset: offset, limit: limit)
+            .receive(on: RunLoop.main)
+            .sink(
+                receiveCompletion: { completionResult in
+                    if case .failure(let error) = completionResult {
+                        completion(.failure(error))
+                    }
+                },
+                receiveValue: { response in
+                    completion(.success(response.items))
+                })
+            .store(in: &cancellables) // Store the subscription
+    }
+
+
     func getRecommendations(trackURIs: [String], completion: @escaping (Result<[Track], Error>) -> Void) {
         self.spotify.api
             .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 30)
@@ -58,6 +71,21 @@ class SpotifyAnalysisRepository {
                 })
             .store(in: &cancellables) // Add this subscription to the collection
     }
+    
+    func getArtistTopTracks(artistId: String, completion: @escaping (Result<[Track], Error>) -> Void) {
+            // Networking code to fetch artist's top tracks
+        spotify.api.artistTopTracks(artistURI(URI: artistId), country: "US")
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: { completionResult in
+                    if case .failure(let error) = completionResult {
+                        completion(.failure(error))
+                    }
+                },
+                receiveValue: { response in
+                    completion(.success(response))
+                })
+                .store(in: &cancellables) // Store the subscription
+        }
     
     func findMoodGenreTrack(mood selectedMood: String,
                             genre selectedGenre: String, tracks artistTracks: Node<String?>?, parentNode node: Node<String>?) {
@@ -104,6 +132,22 @@ class SpotifyAnalysisRepository {
     // ...
     
 
+    private func createLinkedList(ofArtists artists: [Artist?], matchingGenre selectedGenre: String) -> LinkedList<String> {
+        var linkedListOfArtists = LinkedList<String>()
+        var isFirstArtist = true
+        artists.forEach { artist in
+            if let genres = artist?.genres, genres.contains(selectedGenre), let artistId = artist?.id {
+                if isFirstArtist {
+                    linkedListOfArtists.initialize(withNode: Node(value: artistId))
+                    isFirstArtist = false
+                } else {
+                    linkedListOfArtists.append(artistId)
+                }
+            }
+        }
+        return linkedListOfArtists
+    }
+    
     
 //    func networkRetryHandler(Ids:Node<String>?){
 //        if let node = Ids {
