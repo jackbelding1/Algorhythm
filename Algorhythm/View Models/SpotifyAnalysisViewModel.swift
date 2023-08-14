@@ -64,6 +64,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
     )}
     
     func getUserTopArtists(timeRange: TimeRange, offset: Int, limit: Int) {
+        playlistCreationState = .inProgress
         spotifyAnalysisRepository.getUserTopArtists(
             timeRange: timeRange, offset: offset,
             limit: limit, completion: getTopArtistsCompletion(_:)
@@ -73,6 +74,24 @@ class SpotifyAnalysisViewModel: ObservableObject {
         guard let head = Ids else { return }
         spotifyAnalysisRepository.getArtistTopTracks(
             artistId: head.value, completion: getArtistTopTracksCompletion(_:)
+        )}
+    
+    func createPlaylist(withPlaylistName name: String?) {
+        var playlistDetails = PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "Thank you for using algorhythm!")
+        if let playlistName = name {
+            playlistDetails.name = playlistName
+        }
+
+        spotifyAnalysisRepository.createPlaylist(
+            playlistDetails: playlistDetails,
+            completion: createPlaylistCompletion(_:)
+        )}
+
+    private func addTracksToPlaylist(playlistURI: String) {
+        let trackURIs = recommendedTracks.map { "spotify:track:\($0.id!)" }
+        spotifyAnalysisRepository.addToPlaylist(
+            playlistURI: playlistURI, uris: trackURIs,
+            completion: addTracksCompletion(_:)
         )}
     
     func handleCompletion(
@@ -97,15 +116,32 @@ class SpotifyAnalysisViewModel: ObservableObject {
     }
     
     func createPlaylistCompletion(
-        _ completion: Subscribers.Completion<Error>
+        _ result: Result<Playlist<PlaylistItems>, Error>
     ) {
-        handleCompletion(completion, title: "Couldn't create playlist", updatePlaylistState: true)
+        switch result {
+        case .success(let playlist):
+            self.addTracksToPlaylist(playlistURI: playlist.uri)
+            writePlaylistId(playlist.id)
+        case .failure(let error):
+            print("Couldn't create playlists: \(error)")
+            alert = AlertItem(
+                title: "Couldn't create playlists",
+                message: error.localizedDescription
+            )
+            isLoadingPage = false
+        }
     }
     
     func addTracksCompletion(
-        _ completion: Subscribers.Completion<Error>
+        _ result: Result<Void, Error>
     ) {
-        handleCompletion(completion, title: "Couldn't add items", updatePlaylistState: true)
+        switch result {
+        case .success:
+            self.playlistCreationState = .success
+        case .failure(let error):
+            // Handle error
+            playlistCreationState = .failure
+        }
     }
     
     func getRecommendationsCompletion(
@@ -300,11 +336,10 @@ extension SpotifyAnalysisViewModel{
         algoDbManager.writeIds(forGenre: selectedGenre, forMood: selectedMood, ids: Ids)
     }
     
-    func loadMoodFromDatabase(mood selectedMood:String,
-                              genre selectedGenre:String) -> Bool {
+    func loadMoodFromDatabase() -> Bool {
         // try to load from the data manager. if ids are found, append to the
         // list and return true. if empty ids, return false
-        let ids = algoDbManager.readIds(forGenre: selectedGenre, forMood: selectedMood)
+        let ids = algoDbManager.readIds(forGenre: genre, forMood: mood)
         if ids.isEmpty {
             return false
         }
