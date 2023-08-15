@@ -120,8 +120,9 @@ class SpotifyAnalysisRepository {
             .store(in: &cancellables) // Store the subscription
     }
   
-    func findMoodGenreTrack(mood selectedMood: String,
-                            genre selectedGenre: String, tracks artistTracks: Node<String?>?, parentNode node: Node<String>?) {
+    func findMoodGenreTrack(
+        mood selectedMood: String, genre selectedGenre: String,
+        tracks artistTracks: Node<String?>?, parentNode node: Node<String>?) {
 
         guard let head = artistTracks, let trackID = head.value else {
             artistRetryListener.raise(data: node?.next)

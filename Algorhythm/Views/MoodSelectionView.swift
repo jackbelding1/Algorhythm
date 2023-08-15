@@ -92,11 +92,11 @@ struct MoodSelectionView: View {
         
         var body: some View {
             if let selectedMood = viewModel.selectedMood {
-                NavigationLink(destination: SpotifyAnalysisScreen(
-                    mood: selectedMood, viewModel.playlistOptions,
+                NavigationLink(destination:
+                    SpotifyAnalysisScreen(viewModel.playlistOptions,
                     withViewModel: SpotifyAnalysisViewModel(
-                        spotify: spotify, withMood: selectedMood,
-                        withGenre: playlistOptions.getRandomGenreKey() ?? "edm"
+                    spotify: spotify, withMood: selectedMood,
+                    withGenre: playlistOptions.getRandomGenreKey() ?? "edm"
                     ))) {
                     Image(systemName: "arrow.right.circle")
                         .frame(height: 200)
