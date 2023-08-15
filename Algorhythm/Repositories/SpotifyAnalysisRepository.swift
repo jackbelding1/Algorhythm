@@ -73,7 +73,6 @@ class SpotifyAnalysisRepository {
     }
     
     func getArtistTopTracks(artistId: String, completion: @escaping (Result<[Track], Error>) -> Void) {
-            // Networking code to fetch artist's top tracks
         spotify.api.artistTopTracks(artistURI(URI: artistId), country: "US")
                 .receive(on: RunLoop.main)
                 .sink(receiveCompletion: { completionResult in
@@ -87,8 +86,43 @@ class SpotifyAnalysisRepository {
                 .store(in: &cancellables) // Store the subscription
         }
     
-    func findMoodGenreTrack(mood selectedMood: String,
-                            genre selectedGenre: String, tracks artistTracks: Node<String?>?, parentNode node: Node<String>?) {
+    func createPlaylist(playlistDetails: PlaylistDetails, completion: @escaping (Result<Playlist<PlaylistItems>, Error>) -> Void) {
+        guard let userId = spotify.currentUser?.id else { return }
+        
+        spotify.api.createPlaylist(for: userId, playlistDetails)
+            .receive(on: RunLoop.main)
+            .sink(
+                receiveCompletion: { receiveCompletion in
+                    if case .failure(let error) = receiveCompletion {
+                        completion(.failure(error))
+                    }
+                },
+                receiveValue: { response in
+                    completion(.success(response))
+                }
+            )
+            .store(in: &cancellables) // Store the subscription
+    }
+
+    func addToPlaylist(playlistURI: String, uris: [String], completion: @escaping (Result<Void, Error>) -> Void) {
+        spotify.api.addToPlaylist(playlistURI, uris: uris)
+            .receive(on: RunLoop.main)
+            .sink(
+                receiveCompletion: { receiveCompletion in
+                    if case .failure(let error) = receiveCompletion {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                },
+                receiveValue: { _ in }
+            )
+            .store(in: &cancellables) // Store the subscription
+    }
+  
+    func findMoodGenreTrack(
+        mood selectedMood: String, genre selectedGenre: String,
+        tracks artistTracks: Node<String?>?, parentNode node: Node<String>?) {
 
         guard let head = artistTracks, let trackID = head.value else {
             artistRetryListener.raise(data: node?.next)

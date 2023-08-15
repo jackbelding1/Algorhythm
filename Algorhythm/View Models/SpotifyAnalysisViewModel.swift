@@ -19,8 +19,10 @@ struct NetworkCalls {
 class SpotifyAnalysisViewModel: ObservableObject {
     
     enum PlaylistCreationState {
+        case initializing
+        case inititializationFailure
         case inProgress
-        case waitingRequest
+        case enterPlaylistName
         case success
         case failure
     }
@@ -31,24 +33,24 @@ class SpotifyAnalysisViewModel: ObservableObject {
     
     func recommendedTracksEmpty() -> Bool { return recommendedTracks.isEmpty }
     
-    @Published var playlistCreationState: PlaylistCreationState = .waitingRequest
-    
+    @Published var playlistCreationState: PlaylistCreationState = .initializing
+    @Published var createdPlaylistId:String = ""
     @Published var alert: AlertItem? = nil
-    @Published var isLoadingPage: Bool = false
     
     // for debugging
     public var networkCalls:NetworkCalls = NetworkCalls()
     
-    // the list of analyzed songs
     @Published var analyzedSongs: [SpotifyAnalysisModel] = []
     
     private let algoDbManager = AlgoDataManager()
     
-    // the list of seed ids for the selected mood and genre
     @Published var recommendationSeedIds:[String] = []
     
     private let mood:String
     private let genre:String
+    private var artistOffset:Int = 0
+    private var currentTimeRange:TimeRange = TimeRange.shortTerm
+    private var retryCounter:Int = 1
     
     func getAnalyzedSongsCount() -> Int { return analyzedSongs.count }
     
@@ -56,14 +58,28 @@ class SpotifyAnalysisViewModel: ObservableObject {
         self.mood = mood
         self.genre = genre
         spotifyAnalysisRepository = SpotifyAnalysisRepository(spotify: spotify)
+        initialize()
     }
     
+    func initialize() {
+        if !loadMoodFromDatabase(){
+            getUserTopArtists(
+                timeRange: currentTimeRange,
+                offset: artistOffset,
+                limit: 50
+            ) // download mood seed from network
+        } else {
+            getRecommendedTracks()
+        }
+    }
+        
     func getRecommendedTracks() { spotifyAnalysisRepository.getRecommendations(
         trackURIs: recommendationSeedIds.map { "spotify:track:\($0)" },
         completion: getRecommendationsCompletion(_:)
     )}
     
     func getUserTopArtists(timeRange: TimeRange, offset: Int, limit: Int) {
+        playlistCreationState = .inProgress
         spotifyAnalysisRepository.getUserTopArtists(
             timeRange: timeRange, offset: offset,
             limit: limit, completion: getTopArtistsCompletion(_:)
@@ -75,37 +91,51 @@ class SpotifyAnalysisViewModel: ObservableObject {
             artistId: head.value, completion: getArtistTopTracksCompletion(_:)
         )}
     
-    func handleCompletion(
-        _ completion: Subscribers.Completion<Error>,
-        title: String,
-        updatePlaylistState: Bool = false,
-        updateLoadingPage: Bool = false
+    func createPlaylist(withPlaylistName name: String?) {
+        var playlistDetails = PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "Thank you for using algorhythm!")
+        if let playlistName = name {
+            playlistDetails.name = playlistName
+        }
+
+        spotifyAnalysisRepository.createPlaylist(
+            playlistDetails: playlistDetails,
+            completion: createPlaylistCompletion(_:)
+        )}
+
+    private func addTracksToPlaylist(playlistURI: String) {
+        let trackURIs = recommendedTracks.map { "spotify:track:\($0.id!)" }
+        spotifyAnalysisRepository.addToPlaylist(
+            playlistURI: playlistURI, uris: trackURIs,
+            completion: addTracksCompletion(_:)
+        )}
+    
+    func createPlaylistCompletion(
+        _ result: Result<Playlist<PlaylistItems>, Error>
     ) {
-        if case .failure(let error) = completion {
-            if updatePlaylistState {
-                playlistCreationState = .failure
-            }
-            print("\(title): \(error)")
+        switch result {
+        case .success(let playlist):
+            self.addTracksToPlaylist(playlistURI: playlist.uri)
+            writePlaylistId(playlist.id)
+            self.createdPlaylistId = playlist.id
+        case .failure(let error):
+            print("Couldn't create playlists: \(error)")
             alert = AlertItem(
-                title: title,
+                title: "Couldn't create playlists",
                 message: error.localizedDescription
             )
-            if updateLoadingPage {
-                isLoadingPage = false
-            }
         }
     }
     
-    func createPlaylistCompletion(
-        _ completion: Subscribers.Completion<Error>
-    ) {
-        handleCompletion(completion, title: "Couldn't create playlist", updatePlaylistState: true)
-    }
-    
     func addTracksCompletion(
-        _ completion: Subscribers.Completion<Error>
+        _ result: Result<Void, Error>
     ) {
-        handleCompletion(completion, title: "Couldn't add items", updatePlaylistState: true)
+        switch result {
+        case .success:
+            self.playlistCreationState = .success
+        case .failure(let error):
+            // Handle error
+            playlistCreationState = .failure
+        }
     }
     
     func getRecommendationsCompletion(
@@ -114,15 +144,14 @@ class SpotifyAnalysisViewModel: ObservableObject {
         switch result {
         case .success(let tracks):
             self.recommendedTracks = tracks // Assigning the tracks to the member variable
-            
+            self.playlistCreationState = .enterPlaylistName
         case .failure(let error):
-            playlistCreationState = .failure
+            playlistCreationState = .inititializationFailure
             print("Couldn't retrieve recommendations: \(error)")
             alert = AlertItem(
                 title: "Couldn't retrieve recommendations",
                 message: error.localizedDescription
             )
-            isLoadingPage = false
         }
     }
     
@@ -135,13 +164,12 @@ class SpotifyAnalysisViewModel: ObservableObject {
             self.getArtistTopTracks(withIds: linkedListOfArtists.head)
             
         case .failure(let error):
-            playlistCreationState = .failure
+            playlistCreationState = .inititializationFailure
             print("Couldn't retrieve user top artists: \(error)")
             alert = AlertItem(
                 title: "Couldn't retrieve user top artists",
                 message: error.localizedDescription
             )
-            isLoadingPage = false
         }
     }
     
@@ -154,19 +182,20 @@ class SpotifyAnalysisViewModel: ObservableObject {
         switch result {
         case .success(let response):
             let moodValue = self.mood // Directly accessing the mood
-                for track in response {
-                    if createList {
-                        let node = Node(value: track.id)
-                        tracks.initialize(withNode: node)
-                        createList = false
-                    } else {
-                        tracks.append(track.id)
-                    }
+            for track in response {
+                if createList {
+                    let node = Node(value: track.id)
+                    tracks.initialize(withNode: node)
+                    createList = false
+                } else {
+                    tracks.append(track.id)
                 }
+            }
             findMoodGenreTrack(tracks: tracks.head)
         case .failure(let error):
             // Handle the error
             print("Couldn't retrieve top tracks: \(error)")
+            playlistCreationState = .inititializationFailure
         }
     }
     
@@ -189,7 +218,49 @@ class SpotifyAnalysisViewModel: ObservableObject {
 /**
  * Filter seeds by mood
  */
-extension SpotifyAnalysisViewModel{    
+extension SpotifyAnalysisViewModel {
+    
+    // function checks if the retry counter will satisfy a network rety
+    func getTopArtistRetry() {
+        // temporary cap at 200 cyanite calls
+        if networkCalls.cyanite > 200 {
+            currentTimeRange = .shortTerm
+            playlistCreationState = .failure
+            //
+            // TODO: at this point, we must reach out to a top 100 billboard for
+            // TODO: a mood seed. This function will be created later
+            //
+            return
+        }
+        if retryCounter > 3 {
+            retryCounter = 1
+            artistOffset = 0
+            switch currentTimeRange {
+            case .shortTerm:
+                currentTimeRange = .mediumTerm
+            case .mediumTerm:
+                currentTimeRange = .longTerm
+            case .longTerm:
+                currentTimeRange = .shortTerm
+                playlistCreationState = .failure
+                //
+                // TODO: at this point, we must reach out to a top 100 billboard for
+                // TODO: a mood seed. This function will be created later
+                //
+                return
+            }
+        }
+        else {
+            retryCounter += 1
+            artistOffset += 50
+        }
+        getUserTopArtists(
+            timeRange: currentTimeRange,
+            offset: artistOffset,
+            limit: 50
+        )
+    }
+    
     func findMoodGenreTrack(tracks artistTracks:Node<String?>?) {
         if let head = artistTracks {
             if let id = head.value {
@@ -281,7 +352,7 @@ extension SpotifyAnalysisViewModel{
      * Search through the provided tracks. When a track's max mood is the selected mood,
      * write to the data base and return
      */
-    func filterForWriting() -> Bool{
+    func filterForWriting() -> Bool {
         for track in self.analyzedSongs {
             if trackIsSelectedMood(track, mood: self.mood)
                 && trackIsSelectedGenre(track, genre: self.genre) {
@@ -300,11 +371,10 @@ extension SpotifyAnalysisViewModel{
         algoDbManager.writeIds(forGenre: selectedGenre, forMood: selectedMood, ids: Ids)
     }
     
-    func loadMoodFromDatabase(mood selectedMood:String,
-                              genre selectedGenre:String) -> Bool {
+    func loadMoodFromDatabase() -> Bool {
         // try to load from the data manager. if ids are found, append to the
         // list and return true. if empty ids, return false
-        let ids = algoDbManager.readIds(forGenre: selectedGenre, forMood: selectedMood)
+        let ids = algoDbManager.readIds(forGenre: genre, forMood: mood)
         if ids.isEmpty {
             return false
         }
