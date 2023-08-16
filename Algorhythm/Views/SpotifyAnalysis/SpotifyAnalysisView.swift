@@ -173,7 +173,7 @@ struct SpotifyAnalysisScreen: View{
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 30)
-                    if UIApplication.shared.canOpenURL(URL(string: "https://open.spotify.com/")!) {
+                    if UIApplication.shared.canOpenURL(URL(string:"spotify:open")!) {
                         Text("Open Spotify")
                             .font(.title2)
                             .padding()

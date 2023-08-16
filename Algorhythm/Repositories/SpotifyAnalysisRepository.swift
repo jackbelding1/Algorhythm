@@ -22,15 +22,6 @@ class SpotifyAnalysisRepository {
     private var recommendationListener: RecommendationListener = RecommendationListener()
     private var artistRetryListener: ArtistRetryListener = ArtistRetryListener()
     
-    
-    // the playlist creating result
-    enum PlaylistState {
-        case inProgress
-        case waitingRequest
-        case success
-        case failure
-    }
-    
     init(spotify: Spotify) {
         self.spotify = spotify
 //        recommendationListener.addHandler(handler: { [self] in
@@ -85,41 +76,7 @@ class SpotifyAnalysisRepository {
                 })
                 .store(in: &cancellables) // Store the subscription
         }
-    
-    func createPlaylist(playlistDetails: PlaylistDetails, completion: @escaping (Result<Playlist<PlaylistItems>, Error>) -> Void) {
-        guard let userId = spotify.currentUser?.id else { return }
-        
-        spotify.api.createPlaylist(for: userId, playlistDetails)
-            .receive(on: RunLoop.main)
-            .sink(
-                receiveCompletion: { receiveCompletion in
-                    if case .failure(let error) = receiveCompletion {
-                        completion(.failure(error))
-                    }
-                },
-                receiveValue: { response in
-                    completion(.success(response))
-                }
-            )
-            .store(in: &cancellables) // Store the subscription
-    }
 
-    func addToPlaylist(playlistURI: String, uris: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-        spotify.api.addToPlaylist(playlistURI, uris: uris)
-            .receive(on: RunLoop.main)
-            .sink(
-                receiveCompletion: { receiveCompletion in
-                    if case .failure(let error) = receiveCompletion {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(()))
-                    }
-                },
-                receiveValue: { _ in }
-            )
-            .store(in: &cancellables) // Store the subscription
-    }
-  
     func findMoodGenreTrack(
         mood selectedMood: String, genre selectedGenre: String,
         tracks artistTracks: Node<String?>?, parentNode node: Node<String>?) {
