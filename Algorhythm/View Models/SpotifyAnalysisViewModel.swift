@@ -27,6 +27,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
         case failure
     }
     
+    private let spotifyPlaylistsRepository: SpotifyPlaylistsRepository
     private let spotifyAnalysisRepository: SpotifyAnalysisRepository
     // TEMPORARY - should be private
     public var recommendedTracks: [Track] = []
@@ -58,6 +59,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
         self.mood = mood
         self.genre = genre
         spotifyAnalysisRepository = SpotifyAnalysisRepository(spotify: spotify)
+        spotifyPlaylistsRepository = SpotifyPlaylistsRepository(spotify: spotify)
         initialize()
     }
     
@@ -97,14 +99,14 @@ class SpotifyAnalysisViewModel: ObservableObject {
             playlistDetails.name = playlistName
         }
 
-        spotifyAnalysisRepository.createPlaylist(
+        spotifyPlaylistsRepository.createPlaylist(
             playlistDetails: playlistDetails,
             completion: createPlaylistCompletion(_:)
         )}
 
     private func addTracksToPlaylist(playlistURI: String) {
         let trackURIs = recommendedTracks.map { "spotify:track:\($0.id!)" }
-        spotifyAnalysisRepository.addToPlaylist(
+        spotifyPlaylistsRepository.addToPlaylist(
             playlistURI: playlistURI, uris: trackURIs,
             completion: addTracksCompletion(_:)
         )}

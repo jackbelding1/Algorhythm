@@ -43,7 +43,7 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView{
-            PlaylistsListView()
+            PlaylistsListView(spotify: spotify)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         NavigationLink(destination: SettingsView().environmentObject(spotify)) {
