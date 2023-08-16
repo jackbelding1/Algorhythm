@@ -38,6 +38,7 @@ struct SpotifyAnalysisScreen: View{
         : .spotifyLogoBlack
     }
         
+    // MARK: - Initializers
     init(_ playlistOptionsVM:PlaylistOptionsViewModel,
          withViewModel spotifyAnalysisViewModel:SpotifyAnalysisViewModel) {
         _spotifyAnalysisViewModel = StateObject(wrappedValue: spotifyAnalysisViewModel)
@@ -49,7 +50,7 @@ struct SpotifyAnalysisScreen: View{
         _spotifyAnalysisViewModel = StateObject(wrappedValue: spotifyAnalysisViewModel)
         userPlaylistOptions = playlistOptionsVM
     }
-    
+    // MARK: - Body
     var body: some View {
         VStack {
             switch (spotifyAnalysisViewModel.playlistCreationState) {
@@ -187,6 +188,7 @@ struct SpotifyAnalysisScreen: View{
             )
         }
     }
+    // MARK: - Actions
     /// Opens the created playlist in the Spotify app if installed,
     /// or redirects to the App Store to download Spotify if not installed.
     private func openSpotify() {
