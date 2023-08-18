@@ -27,8 +27,8 @@ class SpotifyAnalysisViewModel: ObservableObject {
         case failure
     }
     
-    private let spotifyPlaylistsRepository: SpotifyPlaylistsRepository
-    private let spotifyAnalysisRepository: SpotifyAnalysisRepository
+    private let spotifyRepository: SpotifyRepository
+    
     // TEMPORARY - should be private
     public var recommendedTracks: [Track] = []
     
@@ -52,14 +52,13 @@ class SpotifyAnalysisViewModel: ObservableObject {
     private var artistOffset:Int = 0
     private var currentTimeRange:TimeRange = TimeRange.shortTerm
     private var retryCounter:Int = 1
-    
+        
     func getAnalyzedSongsCount() -> Int { return analyzedSongs.count }
     
     init(spotify: Spotify, withMood mood:String, withGenre genre:String) {
         self.mood = mood
         self.genre = genre
-        spotifyAnalysisRepository = SpotifyAnalysisRepository(spotify: spotify)
-        spotifyPlaylistsRepository = SpotifyPlaylistsRepository(spotify: spotify)
+        spotifyRepository = SpotifyRepository(spotify: spotify)
         initialize()
     }
     
@@ -75,38 +74,40 @@ class SpotifyAnalysisViewModel: ObservableObject {
         }
     }
         
-    func getRecommendedTracks() { spotifyAnalysisRepository.getRecommendations(
+    func getRecommendedTracks() { spotifyRepository.getRecommendations(
         trackURIs: recommendationSeedIds.map { "spotify:track:\($0)" },
         completion: getRecommendationsCompletion(_:)
     )}
     
     func getUserTopArtists(timeRange: TimeRange, offset: Int, limit: Int) {
         playlistCreationState = .inProgress
-        spotifyAnalysisRepository.getUserTopArtists(
+        spotifyRepository.getUserTopArtists(
             timeRange: timeRange, offset: offset,
             limit: limit, completion: getTopArtistsCompletion(_:)
         )}
     
     func getArtistTopTracks(withIds Ids:Node<String>?) {
         guard let head = Ids else { return }
-        spotifyAnalysisRepository.getArtistTopTracks(
+        spotifyRepository.getArtistTopTracks(
             artistId: head.value, completion: getArtistTopTracksCompletion(_:)
         )}
     
     func createPlaylist(withPlaylistName name: String?) {
-        var playlistDetails = PlaylistDetails(name: "algorhythm test", isPublic: false, isCollaborative: false, description: "Thank you for using algorhythm!")
-        if let playlistName = name {
-            playlistDetails.name = playlistName
-        }
+        var playlistDetails = PlaylistDetails(
+            name: name ?? "\(mood) + \(genre)",
+            isPublic: false,
+            isCollaborative: false,
+            description: "Thank you for using algorhythm!" // TODO: replace with user input
+        )
 
-        spotifyPlaylistsRepository.createPlaylist(
+        spotifyRepository.createPlaylist(
             playlistDetails: playlistDetails,
             completion: createPlaylistCompletion(_:)
         )}
 
     private func addTracksToPlaylist(playlistURI: String) {
         let trackURIs = recommendedTracks.map { "spotify:track:\($0.id!)" }
-        spotifyPlaylistsRepository.addToPlaylist(
+        spotifyRepository.addToPlaylist(
             playlistURI: playlistURI, uris: trackURIs,
             completion: addTracksCompletion(_:)
         )}
@@ -199,6 +200,12 @@ class SpotifyAnalysisViewModel: ObservableObject {
             print("Couldn't retrieve top tracks: \(error)")
             playlistCreationState = .inititializationFailure
         }
+    }
+    
+    /// Opens the created playlist in the Spotify app if installed,
+    /// or redirects to the App Store to download Spotify if not installed.
+    func openSpotify() {
+        spotifyRepository.openPlaylistURL(playlistId: createdPlaylistId)
     }
     
     private func createLinkedList(ofArtists artists: [Artist?], matchingGenre selectedGenre: String) -> LinkedList<String> {

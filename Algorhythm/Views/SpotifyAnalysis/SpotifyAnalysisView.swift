@@ -166,7 +166,7 @@ struct SpotifyAnalysisScreen: View{
     }
     
     private var openSpotifyButton: some View {
-        CustomButton(action: openSpotify) {
+        CustomButton(action: spotifyAnalysisViewModel.openSpotify) {
             AnyView(
                 HStack {
                     Image(spotifyLogo)
@@ -186,20 +186,6 @@ struct SpotifyAnalysisScreen: View{
                 }
                 .padding()
             )
-        }
-    }
-    // MARK: - Actions
-    /// Opens the created playlist in the Spotify app if installed,
-    /// or redirects to the App Store to download Spotify if not installed.
-    private func openSpotify() {
-        let spotifyUrl = URL(string:
-        "https://open.spotify.com/playlist/\(spotifyAnalysisViewModel.createdPlaylistId)")!
-        if UIApplication.shared.canOpenURL(spotifyUrl) {
-            UIApplication.shared.open(spotifyUrl) // open the Spotify app
-        } else {
-            if let appStoreURL = URL(string: "https://itunes.apple.com/us/app/apple-store/id324684580") {
-                UIApplication.shared.open(appStoreURL) // download spotify from the appstore
-            }
         }
     }
 }

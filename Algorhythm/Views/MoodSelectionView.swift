@@ -1,24 +1,33 @@
 import SwiftUI
 
+// MARK: - MoodSelectionView
 struct MoodSelectionView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @StateObject private var moodSelectionViewModel = MoodSelectionViewModel()
-    @StateObject private var playlistOptions = PlaylistOptionsViewModel()
-
     
+    // MARK: - Constants
     private let moodOptionsGrid = [GridItem(.flexible(), spacing: 50), GridItem(.flexible(), spacing: 50)]
     private let moodButtonSize = CGSize(width: 65, height: 85)
     private let navButtonSize = CGSize(width: 20.0, height: 20.0)
     
+    // MARK: - Variables
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @StateObject private var moodSelectionViewModel = MoodSelectionViewModel()
+    @StateObject private var playlistOptions = PlaylistOptionsViewModel()
+    
+    // MARK: - Body
     var body: some View {
         NavigationView {
             VStack(spacing: 20.0) {
                 Spacer(minLength: 30)
                 MoodHeader()
                 MoodSelectionGrid(
-                    viewModel: moodSelectionViewModel, moodOptionsGrid: moodOptionsGrid,
-                    moodButtonSize: moodButtonSize)
-                MoodConfirmation(viewModel: moodSelectionViewModel, playlistOptions: playlistOptions)
+                    viewModel: moodSelectionViewModel,
+                    moodOptionsGrid: moodOptionsGrid,
+                    moodButtonSize: moodButtonSize
+                )
+                MoodConfirmation(
+                    viewModel: moodSelectionViewModel,
+                    playlistOptions: playlistOptions
+                )
             }
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(
@@ -29,11 +38,13 @@ struct MoodSelectionView: View {
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $moodSelectionViewModel.isPresenting) {
-            PlaylistOptionsView(playlistOptions,
-                                shouldLoadOptions: moodSelectionViewModel.savePreferences
+            PlaylistOptionsView(
+                playlistOptions,
+                shouldLoadOptions: moodSelectionViewModel.savePreferences
         )}
     }
     
+    // MARK: - View Helpers
     private struct MoodHeader: View {
         var body: some View {
             Text("How are you feeling?")
@@ -108,6 +119,7 @@ struct MoodSelectionView: View {
         }
     }
     
+    // MARK: - Buttons
     private struct DismissButton: View {
         @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
         let navButtonSize: CGSize
@@ -128,13 +140,13 @@ struct MoodSelectionView: View {
     
     private struct PreferencesButton: View {
         @ObservedObject var viewModel: MoodSelectionViewModel
-            let navButtonSize: CGSize
+        let navButtonSize: CGSize
 
-            init(viewModel: MoodSelectionViewModel, navButtonSize: CGSize) {
-                self.viewModel = viewModel
-                self.navButtonSize = navButtonSize
-            }
-        
+        init(viewModel: MoodSelectionViewModel, navButtonSize: CGSize) {
+            self.viewModel = viewModel
+            self.navButtonSize = navButtonSize
+        }
+    
         var body: some View {
             Button(action: { viewModel.isPresenting = true }) {
                 Image(systemName: "gear")

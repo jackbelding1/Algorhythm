@@ -14,11 +14,11 @@ class SpotifyPlaylistsListViewModel: ObservableObject {
     @Published var couldntLoadPlaylists = false
     @Published var alert: AlertItem? = nil
 
-    private var repository: SpotifyPlaylistsRepository
+    private var repository: SpotifyRepository
     private var algoDbManager = AlgoDataManager()
 
     init(spotify: Spotify) {
-        repository = SpotifyPlaylistsRepository(spotify: spotify)
+        repository = SpotifyRepository(spotify: spotify)
     }
 
     func delete(at offsets: IndexSet) {

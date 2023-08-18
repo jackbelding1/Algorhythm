@@ -20,6 +20,7 @@ struct playlistURI: SpotifyURIConvertible {
 
 // MARK: - Playlists List View
 struct PlaylistsListView: View {
+    // MARK: - Variables
     @EnvironmentObject var spotify: Spotify
     @StateObject var viewModel: SpotifyPlaylistsListViewModel
     
@@ -103,7 +104,6 @@ struct PlaylistsListView: View {
 
         }
         .disabled(viewModel.isLoadingPlaylists)
-        
     }
 
     private func retrievePlaylists() {
