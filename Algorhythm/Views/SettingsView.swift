@@ -1,26 +1,17 @@
-//
-//  SettingsView.swift
-//  Algorhythm
-//
-//  Created by Jack Belding on 12/27/22.
-//
-
 import SwiftUI
 
+// MARK: - SettingsView
 struct SettingsView: View {
-    
+    // MARK: - Variables
     @EnvironmentObject var spotify: Spotify
     
+    // MARK: - Body
     var body: some View {
         logoutButton
     }
     
-    /// Removes the authorization information for the user.
-    var logoutButton: some View {
-        // Calling `spotify.api.authorizationManager.deauthorize` will cause
-        // `SpotifyAPI.authorizationManagerDidDeauthorize` to emit a signal,
-        // which will cause `Spotify.authorizationManagerDidDeauthorize()` to be
-        // called.
+    // MARK: - View Helpers
+    private var logoutButton: some View {
         Button(action: spotify.api.authorizationManager.deauthorize, label: {
             Text("Logout")
                 .foregroundColor(.white)
@@ -30,11 +21,11 @@ struct SettingsView: View {
                 )
                 .cornerRadius(10)
                 .shadow(radius: 3)
-            
         })
     }
 }
 
+// MARK: - SettingsView_Previews
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()

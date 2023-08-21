@@ -220,3 +220,48 @@ extension SpotifyRepository {
             .store(in: &cancellables)
     }
 }
+// MARK: - RootViewModel
+extension SpotifyRepository {
+    func handleURL(_ url: URL, showAlert: @escaping (AlertItem) -> Void) {
+        guard url.scheme == self.spotify.loginCallbackURL.scheme else {
+            print("not handling URL: unexpected scheme: '\(url)'")
+            showAlert(AlertItem(
+                title: "Cannot Handle Redirect",
+                message: "Unexpected URL"
+            ))
+            return
+        }
+
+        print("received redirect from Spotify: '\(url)'")
+        spotify.isRetrievingTokens = true
+
+        spotify.api.authorizationManager.requestAccessAndRefreshTokens(
+            redirectURIWithQuery: url,
+            state: spotify.authorizationState
+        )
+        .receive(on: RunLoop.main)
+        .sink(receiveCompletion: { [weak self] completion in
+            self?.spotify.isRetrievingTokens = false
+
+            if case .failure(let error) = completion {
+                print("couldn't retrieve access and refresh tokens:\n\(error)")
+                let alertTitle: String
+                let alertMessage: String
+                if let authError = error as? SpotifyAuthorizationError,
+                   authError.accessWasDenied {
+                    alertTitle = "You Denied The Authorization Request :("
+                    alertMessage = ""
+                } else {
+                    alertTitle = "Couldn't Authorization With Your Account"
+                    alertMessage = error.localizedDescription
+                }
+                showAlert(AlertItem(
+                    title: alertTitle, message: alertMessage
+                ))
+            }
+        })
+        .store(in: &cancellables)
+
+        self.spotify.authorizationState = String.randomURLSafe(length: 128)
+    }
+}

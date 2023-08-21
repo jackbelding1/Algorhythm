@@ -41,6 +41,7 @@
 		77CE433F29132B3A000019A8 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 77CE433E29132B3A000019A8 /* ApolloAPI */; };
 		77CE434429132BBB000019A8 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434329132BBB000019A8 /* schema.json */; };
 		77CE434C291333CB000019A8 /* GraphQL in Resources */ = {isa = PBXBuildFile; fileRef = 77CE434B291333CA000019A8 /* GraphQL */; };
+		77D31F432A924F7F00432779 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D31F422A924F7F00432779 /* RootViewModel.swift */; };
 		77DB3726293AD8490058DBC6 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 77DB3725293AD8490058DBC6 /* Realm */; };
 		77DB3728293AD8490058DBC6 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 77DB3727293AD8490058DBC6 /* RealmSwift */; };
 		77DB372A293BEA230058DBC6 /* AlgoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */; };
@@ -104,6 +105,7 @@
 		77CE432F2913299D000019A8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		77CE434329132BBB000019A8 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		77CE434B291333CA000019A8 /* GraphQL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GraphQL; sourceTree = "<group>"; };
+		77D31F422A924F7F00432779 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		77DB3729293BEA230058DBC6 /* AlgoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoDataManager.swift; sourceTree = "<group>"; };
 		77E0DAD129C11037004F1DAD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				77CA67DD2A7C45F4002830E1 /* MoodSelectionViewModel.swift */,
 				77450C3B2A8D2BE100A44D34 /* SpotifyPlaylistsListViewModel.swift */,
 				77450C4E2A8ED3EF00A44D34 /* PlaylistCellViewModel.swift */,
+				77D31F422A924F7F00432779 /* RootViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				77CA67DE2A7C45F4002830E1 /* MoodSelectionViewModel.swift in Sources */,
 				77450C352A8449EB00A44D34 /* SpotifyAnalysis.swift in Sources */,
 				77587149294BB54700BAB8EB /* SheetManager.swift in Sources */,
+				77D31F432A924F7F00432779 /* RootViewModel.swift in Sources */,
 				77EB1E7A2978CB4600E4052C /* PlaylistOptionsView.swift in Sources */,
 				776DB7DA29148D7F0055424F /* LoginView.swift in Sources */,
 				776DB7E329148E630055424F /* AlertItem.swift in Sources */,
