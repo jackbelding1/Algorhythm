@@ -21,7 +21,7 @@ struct AlgorhythmApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(RootViewModel(spotify: spotify))
                 .environmentObject(spotify)
                 .environmentObject(appState)
             
