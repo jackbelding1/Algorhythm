@@ -222,7 +222,7 @@ extension SpotifyRepository {
 }
 // MARK: - RootViewModel
 extension SpotifyRepository {
-    func handleURL(_ url: URL, showAlert: @escaping (AlertItem) -> Void) {
+    func handleAuthRedirectURL(_ url: URL, completionHandler: @escaping (Subscribers.Completion<Error>) -> Void, showAlert: @escaping (AlertItem) -> Void) {
         guard url.scheme == self.spotify.loginCallbackURL.scheme else {
             print("not handling URL: unexpected scheme: '\(url)'")
             showAlert(AlertItem(
@@ -231,10 +231,10 @@ extension SpotifyRepository {
             ))
             return
         }
-
+        
         print("received redirect from Spotify: '\(url)'")
         spotify.isRetrievingTokens = true
-
+        
         spotify.api.authorizationManager.requestAccessAndRefreshTokens(
             redirectURIWithQuery: url,
             state: spotify.authorizationState
@@ -242,26 +242,10 @@ extension SpotifyRepository {
         .receive(on: RunLoop.main)
         .sink(receiveCompletion: { [weak self] completion in
             self?.spotify.isRetrievingTokens = false
-
-            if case .failure(let error) = completion {
-                print("couldn't retrieve access and refresh tokens:\n\(error)")
-                let alertTitle: String
-                let alertMessage: String
-                if let authError = error as? SpotifyAuthorizationError,
-                   authError.accessWasDenied {
-                    alertTitle = "You Denied The Authorization Request :("
-                    alertMessage = ""
-                } else {
-                    alertTitle = "Couldn't Authorization With Your Account"
-                    alertMessage = error.localizedDescription
-                }
-                showAlert(AlertItem(
-                    title: alertTitle, message: alertMessage
-                ))
-            }
+            completionHandler(completion) // Calling the completion handler
         })
         .store(in: &cancellables)
-
+        
         self.spotify.authorizationState = String.randomURLSafe(length: 128)
     }
 }
