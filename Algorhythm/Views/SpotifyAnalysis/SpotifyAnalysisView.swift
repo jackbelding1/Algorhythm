@@ -21,16 +21,16 @@ struct SpotifyAnalysisScreen: View{
         case failure
     }
     // MARK: - Variables
-    @StateObject private var spotifyAnalysisViewModel:SpotifyAnalysisViewModel
+    @StateObject private var spotifyAnalysisViewModel: SpotifyAnalysisViewModel
     
-    private var userPlaylistOptions:PlaylistOptionsViewModel
+    private var userPlaylistOptions: NewPlaylistViewModel
     
     /// singleton spotify api object
     @EnvironmentObject var spotify: Spotify
     @EnvironmentObject var appState: AppState
     
 
-    @State private var playListName:String = ""
+    @State private var playListName: String = ""
     
     @Environment(\.colorScheme) var colorScheme
     var spotifyLogo: ImageName {
@@ -39,14 +39,14 @@ struct SpotifyAnalysisScreen: View{
     }
         
     // MARK: - Initializers
-    init(_ playlistOptionsVM:PlaylistOptionsViewModel,
-         withViewModel spotifyAnalysisViewModel:SpotifyAnalysisViewModel) {
+    init(_ playlistOptionsVM: NewPlaylistViewModel,
+         withViewModel spotifyAnalysisViewModel: SpotifyAnalysisViewModel) {
         _spotifyAnalysisViewModel = StateObject(wrappedValue: spotifyAnalysisViewModel)
         userPlaylistOptions = playlistOptionsVM
     }
     /// preview initializer
-    fileprivate init(recommendedTracks: [Track], _ playlistOptionsVM:PlaylistOptionsViewModel,
-                     withViewModel spotifyAnalysisViewModel:SpotifyAnalysisViewModel) {
+    fileprivate init(recommendedTracks: [Track], _ playlistOptionsVM: NewPlaylistViewModel,
+                     withViewModel spotifyAnalysisViewModel: SpotifyAnalysisViewModel) {
         _spotifyAnalysisViewModel = StateObject(wrappedValue: spotifyAnalysisViewModel)
         userPlaylistOptions = playlistOptionsVM
     }

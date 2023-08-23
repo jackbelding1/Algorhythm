@@ -2,9 +2,9 @@ import SwiftUI
 
 struct PlaylistOptionsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject private var playlistOptions: PlaylistOptionsViewModel
+    @StateObject private var playlistOptions: NewPlaylistViewModel
     
-    init(_ viewModel: PlaylistOptionsViewModel, shouldLoadOptions loadOptions: Bool) {
+    init(_ viewModel: NewPlaylistViewModel, shouldLoadOptions loadOptions: Bool) {
         _playlistOptions = StateObject(wrappedValue: viewModel)
     }
 
@@ -38,7 +38,7 @@ struct PlaylistOptionsView: View {
                                   size: 16,
                                   textSize: 14,
                                   callback: checkboxSelected,
-                                  isMarked: playlistOptions.shouldSavePreferences)
+                                  isMarked: playlistOptions.savePreferences)
                 }
                 
                 ToolbarItem(placement: .bottomBar) {
@@ -61,17 +61,14 @@ struct PlaylistOptionsView: View {
                 }
             }
         }
-        .onAppear(perform: {
-            playlistOptions.savePreferenceState()
-        })
     }
     
-    func updateAction() {
+    private func updateAction() {
         playlistOptions.handleTapUpdate()
         presentationMode.wrappedValue.dismiss()
     }
     
-    func dismissTapped() {
+    private func dismissTapped() {
         playlistOptions.restorePreferences()
         presentationMode.wrappedValue.dismiss()
     }

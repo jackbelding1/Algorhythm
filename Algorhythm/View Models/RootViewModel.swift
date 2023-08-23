@@ -26,12 +26,10 @@ class RootViewModel: ObservableObject {
             self?.alert = alertItem
         }
     }
-}
-
-// MARK: - Private Functions
-extension RootViewModel {
+    
+    // MARK: - Private Functions
     private func handleAuthCompletion(completion: Subscribers.Completion<Error>) {
-
+        
         if case .failure(let error) = completion {
             print("couldn't retrieve access and refresh tokens:\n\(error)")
             let alertTitle: String
@@ -48,6 +46,5 @@ extension RootViewModel {
                 title: alertTitle, message: alertMessage
             )
         }
-        
     }
 }

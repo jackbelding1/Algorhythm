@@ -20,7 +20,6 @@ import SwiftUI // TODO: REPLACE WITH DEPENDENCY INJECTION
 class PlaylistCellViewModel: ObservableObject {
     // MARK: - Variables
     private var playlist: Playlist<PlaylistItemsReference>
-    private var cancellables = Set<AnyCancellable>()
     private var repository: SpotifyRepository
     @Published var didRequestImage = false
 
