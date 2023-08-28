@@ -10,8 +10,7 @@ struct MoodSelectionView: View {
     
     // MARK: - Variables
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @StateObject private var moodSelectionViewModel = MoodSelectionViewModel()
-    @StateObject private var playlistOptions = PlaylistOptionsViewModel()
+    @StateObject private var newPlaylistViewModel = NewPlaylistViewModel()
     
     // MARK: - Body
     var body: some View {
@@ -20,28 +19,26 @@ struct MoodSelectionView: View {
                 Spacer(minLength: 30)
                 MoodHeader()
                 MoodSelectionGrid(
-                    viewModel: moodSelectionViewModel,
+                    viewModel: newPlaylistViewModel,
                     moodOptionsGrid: moodOptionsGrid,
                     moodButtonSize: moodButtonSize
                 )
                 MoodConfirmation(
-                    viewModel: moodSelectionViewModel,
-                    playlistOptions: playlistOptions
+                    viewModel: newPlaylistViewModel
                 )
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(
-                leading: DismissButton(navButtonSize: navButtonSize),
-                trailing: PreferencesButton(viewModel: moodSelectionViewModel,
-                                            navButtonSize: navButtonSize)
-)
         }
         .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $moodSelectionViewModel.isPresenting) {
+        .navigationBarItems(
+            leading: DismissButton(navButtonSize: navButtonSize),
+            trailing: PreferencesButton(viewModel: newPlaylistViewModel,
+                                        navButtonSize: navButtonSize)
+        )        .sheet(isPresented: $newPlaylistViewModel.isPresenting) {
             PlaylistOptionsView(
-                playlistOptions,
-                shouldLoadOptions: moodSelectionViewModel.savePreferences
-        )}
+                newPlaylistViewModel,
+                shouldLoadOptions: newPlaylistViewModel.savePreferences
+            )
+        }
     }
     
     // MARK: - View Helpers
@@ -62,17 +59,16 @@ struct MoodSelectionView: View {
     }
     
     private struct MoodSelectionGrid: View {
-        @ObservedObject var viewModel: MoodSelectionViewModel
-        
+        @ObservedObject var viewModel: NewPlaylistViewModel
         let moodOptionsGrid: [GridItem]
         let moodButtonSize: CGSize
 
-        init(viewModel: MoodSelectionViewModel, moodOptionsGrid: [GridItem], moodButtonSize: CGSize) {
+        init(viewModel: NewPlaylistViewModel, moodOptionsGrid: [GridItem], moodButtonSize: CGSize) {
             self.viewModel = viewModel
             self.moodOptionsGrid = moodOptionsGrid
             self.moodButtonSize = moodButtonSize
         }
-        
+
         var body: some View {
             LazyHGrid(rows: moodOptionsGrid, spacing: 10) {
                 ForEach(viewModel.moodOptions, id: \.caption) { moodOption in
@@ -97,17 +93,16 @@ struct MoodSelectionView: View {
     }
     
     private struct MoodConfirmation: View {
-        @ObservedObject var viewModel: MoodSelectionViewModel
-        @ObservedObject var playlistOptions:PlaylistOptionsViewModel
+        @ObservedObject var viewModel: NewPlaylistViewModel
         @EnvironmentObject var spotify: Spotify
-        
+
         var body: some View {
             if let selectedMood = viewModel.selectedMood {
                 NavigationLink(destination:
-                    SpotifyAnalysisScreen(viewModel.playlistOptions,
+                    SpotifyAnalysisScreen(viewModel,
                     withViewModel: SpotifyAnalysisViewModel(
                     spotify: spotify, withMood: selectedMood,
-                    withGenre: playlistOptions.getRandomGenreKey() ?? "edm"
+                    withGenre: viewModel.getRandomGenreKey() ?? "edm"
                     ))) {
                     Image(systemName: "arrow.right.circle")
                         .frame(height: 200)
@@ -139,10 +134,10 @@ struct MoodSelectionView: View {
     }
     
     private struct PreferencesButton: View {
-        @ObservedObject var viewModel: MoodSelectionViewModel
+        @ObservedObject var viewModel: NewPlaylistViewModel
         let navButtonSize: CGSize
 
-        init(viewModel: MoodSelectionViewModel, navButtonSize: CGSize) {
+        init(viewModel: NewPlaylistViewModel, navButtonSize: CGSize) {
             self.viewModel = viewModel
             self.navButtonSize = navButtonSize
         }

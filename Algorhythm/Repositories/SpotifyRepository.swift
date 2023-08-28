@@ -13,15 +13,16 @@ import SwiftUI // TODO: REPLACE WITH DEPENDENCY INJECTION
 
 
 class SpotifyRepository {
-    
+    // MARK: - Variables
     private var spotify: Spotify
     private var cancellables = Set<AnyCancellable>()
-
+    
+    // MARK: - Initializer
     init(spotify: Spotify) {
         self.spotify = spotify
     }
 
-    // Shared properties and methods (if any) can be defined here
+    // MARK: - Shared properties
     func openPlaylistURL(playlistId: String) -> URL? {
         let spotifyUrl = URL(string: "spotify://playlist/\(playlistId)")!
         if UIApplication.shared.canOpenURL(spotifyUrl) {
@@ -34,7 +35,7 @@ class SpotifyRepository {
 
 // MARK: - SpotifyAnalysisRepository
 extension SpotifyRepository {
-
+    
     func getUserTopArtists(timeRange: TimeRange, offset: Int, limit: Int, completion: @escaping (Result<[Artist], Error>) -> Void) {
         spotify.api
             .currentUserTopArtists(timeRange, offset: offset, limit: limit)
@@ -48,10 +49,10 @@ extension SpotifyRepository {
                 receiveValue: { response in
                     completion(.success(response.items))
                 })
-            .store(in: &cancellables) // Store the subscription
+            .store(in: &cancellables)
     }
-
-
+    
+    
     func getRecommendations(trackURIs: [String], completion: @escaping (Result<[Track], Error>) -> Void) {
         self.spotify.api
             .recommendations(TrackAttributes(seedTracks: trackURIs), limit: 30)
@@ -65,68 +66,41 @@ extension SpotifyRepository {
                 receiveValue: { response in
                     completion(.success(response.tracks))
                 })
-            .store(in: &cancellables) // Add this subscription to the collection
+            .store(in: &cancellables)
     }
     
     func getArtistTopTracks(artistId: String, completion: @escaping (Result<[Track], Error>) -> Void) {
         spotify.api.artistTopTracks(artistURI(URI: artistId), country: "US")
-                .receive(on: RunLoop.main)
-                .sink(receiveCompletion: { completionResult in
-                    if case .failure(let error) = completionResult {
-                        completion(.failure(error))
-                    }
-                },
-                receiveValue: { response in
-                    completion(.success(response))
-                })
-                .store(in: &cancellables) // Store the subscription
-        }
-
-    func findMoodGenreTrack(
-        mood selectedMood: String, genre selectedGenre: String,
-        tracks artistTracks: Node<String?>?, parentNode node: Node<String>?) {
-
-        guard let head = artistTracks, let trackID = head.value else {
-//            artistRetryListener.raise(data: node?.next)
-            return
-        }
-        
-        Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: trackID)) { [weak self] result in
-            switch result {
-            case .success(let graphQLResult):
-                if let analyzedTrack = graphQLResult.data?.spotifyTrack {
-//                    self.handleAnalyzedTrack(analyzedTrack, selectedMood: selectedMood, selectedGenre: selectedGenre, head: head)
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { completionResult in
+                if case .failure(let error) = completionResult {
+                    completion(.failure(error))
                 }
-            case .failure(_):
-                print("error")
-            }
-        }
+            },
+                  receiveValue: { response in
+                completion(.success(response))
+            })
+            .store(in: &cancellables)
     }
-
-//    private func handleAnalyzedTrack(_ analyzedTrack: GraphQLResultHandler<Query.Data>? = nil,
-//                                      selectedMood: String,
-//                                      selectedGenre: String,
-//                                      head: Node<String?>) {
-//
-//        if analyzedTrack.resultMap["__typename"] as? String == "SpotifyTrackError" {
-//            findMoodGenreTrack(mood: selectedMood, genre: selectedGenre, tracks: head.next, parentNode: head)
-//            return
-//        }
-//
-//        DispatchQueue.main.async {
-//            spotifyAnalysisViewModel.analyzedSongs.append(SpotifyAnalysisModel.init(analyzedSpotifyTrack: analyzedTrack))
-//        }
-//
-//        if spotifyAnalysisViewModel.filterForWriting(mood: selectedMood, genre: selectedGenre, analyzedTracks: spotifyAnalysisViewModel.analyzedSongs) == true {
-//            recommendationListener.raise(data: { print("generate recommendations") }())
-//        } else {
-//            findMoodGenreTrack(mood: selectedMood, genre: selectedGenre, tracks: head.next, parentNode: head)
-//        }
-//    }
 }
 
 // MARK: - SpotifyPlaylistsRepository
 extension SpotifyRepository {
+    
+    func analyzeSpotifyTrack(by id: String, completion: @escaping (Result<SpotifyTrackQueryQuery.Data.SpotifyTrack, Error>) -> Void) {
+            Network.shared.apollo.fetch(query: SpotifyTrackQueryQuery(id: id)) { result in
+                switch result {
+                case .success(let graphQLResult):
+                    if let analyzedTrack = graphQLResult.data?.spotifyTrack {
+                        completion(.success(analyzedTrack))
+                    } else {
+                        completion(.failure(NSError(domain: "", code: -1, userInfo: ["message": "Analyzed track data is nil"])))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
 
     func createPlaylist(playlistDetails: PlaylistDetails, completion: @escaping (Result<Playlist<PlaylistItems>, Error>) -> Void) {
         guard let userId = spotify.currentUser?.id else { return }
@@ -143,7 +117,7 @@ extension SpotifyRepository {
                     completion(.success(response))
                 }
             )
-            .store(in: &cancellables) // Store the subscription
+            .store(in: &cancellables)
     }
 
     func addToPlaylist(playlistURI: String, uris: [String], completion: @escaping (Result<Void, Error>) -> Void) {
@@ -159,7 +133,7 @@ extension SpotifyRepository {
                 },
                 receiveValue: { _ in }
             )
-            .store(in: &cancellables) // Store the subscription
+            .store(in: &cancellables)
     }
     
     func retrievePlaylists(idsToLoad: [String], completion: @escaping (Result<[Playlist<PlaylistItemsReference>], Error>) -> Void) {
@@ -222,7 +196,7 @@ extension SpotifyRepository {
 }
 // MARK: - RootViewModel
 extension SpotifyRepository {
-    func handleURL(_ url: URL, showAlert: @escaping (AlertItem) -> Void) {
+    func handleAuthRedirectURL(_ url: URL, completionHandler: @escaping (Subscribers.Completion<Error>) -> Void, showAlert: @escaping (AlertItem) -> Void) {
         guard url.scheme == self.spotify.loginCallbackURL.scheme else {
             print("not handling URL: unexpected scheme: '\(url)'")
             showAlert(AlertItem(
@@ -231,10 +205,10 @@ extension SpotifyRepository {
             ))
             return
         }
-
+        
         print("received redirect from Spotify: '\(url)'")
         spotify.isRetrievingTokens = true
-
+        
         spotify.api.authorizationManager.requestAccessAndRefreshTokens(
             redirectURIWithQuery: url,
             state: spotify.authorizationState
@@ -242,26 +216,10 @@ extension SpotifyRepository {
         .receive(on: RunLoop.main)
         .sink(receiveCompletion: { [weak self] completion in
             self?.spotify.isRetrievingTokens = false
-
-            if case .failure(let error) = completion {
-                print("couldn't retrieve access and refresh tokens:\n\(error)")
-                let alertTitle: String
-                let alertMessage: String
-                if let authError = error as? SpotifyAuthorizationError,
-                   authError.accessWasDenied {
-                    alertTitle = "You Denied The Authorization Request :("
-                    alertMessage = ""
-                } else {
-                    alertTitle = "Couldn't Authorization With Your Account"
-                    alertMessage = error.localizedDescription
-                }
-                showAlert(AlertItem(
-                    title: alertTitle, message: alertMessage
-                ))
-            }
+            completionHandler(completion) // Calling the completion handler
         })
         .store(in: &cancellables)
-
+        
         self.spotify.authorizationState = String.randomURLSafe(length: 128)
     }
 }

@@ -3,7 +3,7 @@ import SwiftUI
 import SpotifyWebAPI
 
 // mapping of cyanite genres to spotify genres
-let cyanite2SpotfiyTags:[String:[String]] = [
+let cyaniteToSpotfiyTags:[String:[String]] = [
     "electronicDance":["edm", "dance", "dubstep", "house"],
     "rapHipHop":["rap"],
     "folkCountry":["country"],

@@ -32,8 +32,8 @@ struct RootView: View {
             Alert(title: alert.title, message: alert.message)
         }
         .onOpenURL { url in
-                    viewModel.handleURL(url)
-            }
+            viewModel.handleAuthRedirectURL(url)
+        }
     }
     
     // MARK: - View Helpers
