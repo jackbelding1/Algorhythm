@@ -90,7 +90,6 @@ struct PlaylistCellView_Previews: PreviewProvider {
             PlaylistCellView(spotify: spotify, playlist: .rockClassics)
             PlaylistCellView(spotify: spotify, playlist: .menITrust)
         }
-        .environmentObject(spotify)
     }
     
 }
