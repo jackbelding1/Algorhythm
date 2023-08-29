@@ -17,7 +17,7 @@ class SpotifyPlaylistsListViewModel: ObservableObject {
     @Published var alert: AlertItem? = nil
 
     private var spotifyRepository: SpotifyRepository
-    private var algoDbManager = AlgoDataManager()
+    private var realmRepository = RealmRepository()
 
     // MARK: - Initializer
     init(spotify: Spotify) {
@@ -35,7 +35,7 @@ class SpotifyPlaylistsListViewModel: ObservableObject {
     func retrievePlaylists() {
         guard !ProcessInfo.processInfo.isPreviewing else { return }
 
-        let idsToLoad = algoDbManager.readCreatedPlaylists()
+        let idsToLoad = realmRepository.readCreatedPlaylists()
         isLoadingPlaylists = true
         playlists = []
 
@@ -46,7 +46,7 @@ class SpotifyPlaylistsListViewModel: ObservableObject {
 
     // MARK: - Private Methods
     private func deletePlaylistFromLocalStorage(playlistId: String) {
-        algoDbManager.deletePlaylist(withId: playlistId)
+        realmRepository.deletePlaylist(withId: playlistId)
     }
 
     private func deletePlaylistFromSpotify(playlistId: String) {

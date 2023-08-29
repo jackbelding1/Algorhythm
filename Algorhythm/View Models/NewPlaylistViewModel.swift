@@ -22,7 +22,7 @@ struct GenrePreference {
 // MARK: - NewPlaylistViewModel
 class NewPlaylistViewModel: ObservableObject {
     // MARK: - Variables
-    let algoDbManager = AlgoDataManager()
+    let realmRepository = RealmRepository()
     
     // MARK: - Variables
     private var initialPreferenceState: [GenrePreference] = []
@@ -95,7 +95,7 @@ class NewPlaylistViewModel: ObservableObject {
 
     // Removed bool return type and use exception
     private func loadOptionPreferences() throws {
-        if let preferences = algoDbManager.loadPlaylistOptions() {
+        if let preferences = realmRepository.loadPlaylistOptions() {
             processPreferences(preferences)
         } else {
             throw PreferenceError.loadFailed
@@ -120,7 +120,7 @@ class NewPlaylistViewModel: ObservableObject {
     }
     
     private func savePlaylistOptions() {
-        algoDbManager.savePlaylistOptions(
+        realmRepository.savePlaylistOptions(
             Dictionary(uniqueKeysWithValues:
                         genrePreferencesCollection.map {($0.key, $0.value)})
         )

@@ -36,7 +36,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
     public var recommendedTracks: [Track] = []
     public var networkCalls: NetworkCalls = NetworkCalls()
     private let spotifyRepository: SpotifyRepository
-    private let algoDbManager = AlgoDataManager()
+    private let realmRepository = RealmRepository()
     private let mood: String
     private let genre: String
     private var artistOffset: Int = 0
@@ -86,7 +86,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
     private func getSavedSeeds() {
         // try to load from the data manager. if ids are found, append to the
         // list and return true. if empty ids, return false
-        let ids = algoDbManager.readIds(forGenre: genre, forMood: mood)
+        let ids = realmRepository.readTrackIds(forGenre: genre, forMood: mood)
         for id in ids {
             recommendationSeedIds.append(id)
         }
@@ -269,7 +269,7 @@ extension SpotifyAnalysisViewModel {
             if let trackId = songIsSelectedMoodAndGenre() {
                 recommendationSeedIds.append(trackId)
                 getRecommendedTracks()
-                algoDbManager.writeIds(forGenre: genre, forMood: mood, ids: recommendationSeedIds) // save to disk
+                realmRepository.writeTrackIds(forGenre: genre, forMood: mood, ids: recommendationSeedIds) // save to disk
             } else {
                 analyzeSpotifyTrack(tracks: head.next)
             }
@@ -292,7 +292,7 @@ extension SpotifyAnalysisViewModel {
         switch result {
         case .success(let playlist):
             addTracksToPlaylist(playlistURI: playlist.uri)
-            algoDbManager.writePlaylistId(withId: playlist.id)
+            realmRepository.writePlaylist(withId: playlist.id)
             createdPlaylistId = playlist.id
         case .failure(let error):
             print("Couldn't create playlists: \(error)")
