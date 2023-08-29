@@ -26,22 +26,20 @@ class SpotifyAnalysisViewModel: ObservableObject {
         case success
         case failure
     }
-    
-    // MARK: - Variables
-    @Published var playlistCreationState: PlaylistCreationState = .initializing
-    @Published var createdPlaylistId: String = ""
-    @Published var alert: AlertItem? = nil
-    @Published var analyzedSongs: [SpotifyAnalysisModel] = []
-    @Published var recommendationSeedIds: [String] = []
-    public var recommendedTracks: [Track] = []
-    public var networkCalls: NetworkCalls = NetworkCalls()
+    // MARK: - Constants
     private let spotifyRepository: SpotifyRepository
     private let realmRepository = RealmRepository()
     private let mood: String
     private let genre: String
-    private var artistOffset: Int = 0
-    private var currentTimeRange: TimeRange = TimeRange.shortTerm
-    private var retryCounter: Int = 1
+    
+    // MARK: - Variables
+    @Published var playlistCreationState: PlaylistCreationState = .initializing
+    @Published var alert: AlertItem? = nil
+    private var createdPlaylistId: String = ""
+    private var analyzedSongs: [SpotifyAnalysisModel] = []
+    private var recommendationSeedIds: [String] = []
+    private var recommendedTracks: [Track] = []
+    private var networkCalls: NetworkCalls = NetworkCalls()
 
     // MARK: - Initializers
     init(spotify: Spotify, withMood mood: String, withGenre genre: String) {
@@ -75,8 +73,8 @@ class SpotifyAnalysisViewModel: ObservableObject {
         
         if recommendationSeedIds.isEmpty {
             getUserTopArtists(
-                timeRange: currentTimeRange,
-                offset: artistOffset,
+                timeRange: TimeRange.shortTerm,
+                offset: 0,
                 limit: 50) // download mood seed from network
         } else {
             getRecommendedTracks()
@@ -108,25 +106,14 @@ class SpotifyAnalysisViewModel: ObservableObject {
         return linkedListOfArtists
     }
     
-    // function checks if the analyzed track's genre tags contains the selected genre
-    private func trackIsSelectedGenre(_ track:SpotifyAnalysisModel) -> Bool {
-        if let cyaniteGenreTags = track.genreTags {
-            for trackGenreTag in cyaniteGenreTags {
-                if cyaniteToSpotfiyTags[trackGenreTag.rawValue]!.contains(genre) {
-                    return true
-                }
-            }
-            return false
-        }
-        else {
-            return false
+    private func trackIsSelectedGenre(_ track: SpotifyAnalysisModel) -> Bool {
+        guard let cyaniteGenreTags = track.genreTags else { return false }
+        
+        return cyaniteGenreTags.contains {
+            cyaniteToSpotfiyTags[$0.rawValue]?.contains(genre) == true
         }
     }
 
-    /// Maps a given mood to a related mood.
-    ///
-    /// - Parameter mood: The original mood as a string.
-    /// - Returns: An array containing the original mood and the mapped mood.
     private func mapMoods(_ mood: String) -> [String] {
         let moodMapping: [String: String] = [
             "uplifting": "happy",
@@ -137,77 +124,25 @@ class SpotifyAnalysisViewModel: ObservableObject {
         ]
         
         var moods = [mood]
-        
         if let mappedMood = moodMapping[mood] {
             moods.append(mappedMood)
         }
         
         return moods
     }
-    
-    // function checks if the analyzed track's mood tag contains the selected mood
-    private func trackIsSelectedMood(_ track:SpotifyAnalysisModel) -> Bool {
-        if let cyaniteMoodTags = track.moodTags {
-            for trackMoodTag in cyaniteMoodTags {
-                if mapMoods(trackMoodTag.rawValue).contains(mood) {
-                    return true
-                }
-            }
-            return false
-        }
-        else {
-            return false
+
+    private func trackIsSelectedMood(_ track: SpotifyAnalysisModel) -> Bool {
+        guard let cyaniteMoodTags = track.moodTags else { return false }
+        
+        return cyaniteMoodTags.contains {
+            mapMoods($0.rawValue).contains(mood)
         }
     }
 
     private func songIsSelectedMoodAndGenre() -> String? {
-        for track in self.analyzedSongs {
-            if trackIsSelectedMood(track) && trackIsSelectedGenre(track) {
-                return track.id
-            }
-        }
-        return nil
-    }
-    
-    // function checks if the retry counter will satisfy a network rety
-    private func getTopArtistRetry() {
-        // temporary cap at 200 cyanite calls
-        if networkCalls.cyanite > 200 {
-            currentTimeRange = .shortTerm
-            playlistCreationState = .failure
-            //
-            // TODO: at this point, we must reach out to a top 100 billboard for
-            // TODO: a mood seed. This function will be created later
-            //
-            return
-        }
-        if retryCounter > 3 {
-            retryCounter = 1
-            artistOffset = 0
-            switch currentTimeRange {
-            case .shortTerm:
-                currentTimeRange = .mediumTerm
-            case .mediumTerm:
-                currentTimeRange = .longTerm
-            case .longTerm:
-                currentTimeRange = .shortTerm
-                playlistCreationState = .failure
-                //
-                // TODO: at this point, we must reach out to a top 100 billboard for
-                // TODO: a mood seed. This function will be created later
-                //
-                return
-            }
-        }
-        else {
-            retryCounter += 1
-            artistOffset += 50
-        }
-        getUserTopArtists(
-            timeRange: currentTimeRange,
-            offset: artistOffset,
-            limit: 50
-        )
+        return analyzedSongs.first {
+            trackIsSelectedMood($0) && trackIsSelectedGenre($0)
+        }?.id
     }
 }
 
