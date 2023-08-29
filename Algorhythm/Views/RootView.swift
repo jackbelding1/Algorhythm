@@ -39,7 +39,6 @@ struct RootView: View {
     // MARK: - View Helpers
     private var authorizedView: some View {
         HomeView()
-            .environmentObject(spotify)
             .id(appState.rootViewId)
     }
 

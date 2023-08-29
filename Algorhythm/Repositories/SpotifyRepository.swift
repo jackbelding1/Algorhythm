@@ -11,6 +11,14 @@ import Combine
 import SpotifyWebAPI
 import SwiftUI // TODO: REPLACE WITH DEPENDENCY INJECTION
 
+// MARK: - Variables
+struct ArtistURI: SpotifyURIConvertible {
+    public let uri: String
+    
+    init(artistUri: String) {
+        self.uri = "spotify:artist:\(artistUri)"
+    }
+}
 
 class SpotifyRepository {
     // MARK: - Variables
@@ -68,9 +76,9 @@ extension SpotifyRepository {
                 })
             .store(in: &cancellables)
     }
-    
+
     func getArtistTopTracks(artistId: String, completion: @escaping (Result<[Track], Error>) -> Void) {
-        spotify.api.artistTopTracks(artistURI(URI: artistId), country: "US")
+        spotify.api.artistTopTracks(ArtistURI(artistUri: artistId), country: "US")
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { completionResult in
                 if case .failure(let error) = completionResult {

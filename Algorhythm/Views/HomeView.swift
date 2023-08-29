@@ -12,7 +12,7 @@ struct HomeView: View {
             PlaylistsListView(spotify: spotify)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        NavigationLink(destination: SettingsView().environmentObject(spotify)) {
+                        NavigationLink(destination: SettingsView()) {
                             currentUserImage
                         }
                     }
@@ -89,7 +89,6 @@ struct ExamplesListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             HomeView()
-                .environmentObject(spotify)
         }
     }
 }
