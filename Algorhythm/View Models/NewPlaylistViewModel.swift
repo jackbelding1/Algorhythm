@@ -86,6 +86,7 @@ class NewPlaylistViewModel: ObservableObject {
             do {
                 try loadOptionPreferences()
             } catch {
+                print("Error while loading option preferences: \(error)")
                 initDefaultOptions()
             }
         } else {
@@ -93,7 +94,7 @@ class NewPlaylistViewModel: ObservableObject {
         }
     }
 
-    // Removed bool return type and use exception
+    // Assuming that AnyPlaylistOptionsList conforms to Sequence or provides a way to iterate its elements
     private func loadOptionPreferences() throws {
         if let preferences = realmRepository.loadPlaylistOptions() {
             processPreferences(preferences)
@@ -101,8 +102,8 @@ class NewPlaylistViewModel: ObservableObject {
             throw PreferenceError.loadFailed
         }
     }
-    
-    private func processPreferences(_ preferences:RealmSwift.List<PlaylistOption>) {
+
+    private func processPreferences(_ preferences: RealmSwift.List<PlaylistOption>) {
         for preference in preferences {
             guard let title = genreKeyToTitle[preference.genre] else {
                 // Handle the case where the title is not found in the dictionary
@@ -111,6 +112,7 @@ class NewPlaylistViewModel: ObservableObject {
             genrePreferencesCollection.append(GenrePreference(title: title, key: preference.genre, value: preference.value))
         }
     }
+
     
     private func initDefaultOptions() {
         for genre in genreKeyToTitle {

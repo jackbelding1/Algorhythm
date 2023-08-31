@@ -24,18 +24,8 @@ query SpotifyTrackQuery($id: ID!) {
         audioAnalysisV6 {
          ... on AudioAnalysisV6Finished {
          result {
-         mood {
-            aggressive
-            energetic
-            dark
-            calm
-            happy
-            romantic
-            sad
-            sexy
-            }
-         genreTags
-         moodTags
+            genreTags
+            moodTags
           }
         }
       }
