@@ -7,12 +7,16 @@
 
 import Foundation
 import RealmSwift
-@testable import Algorhythm
 
 extension Array: AnyPlaylistOptionList where Element == PlaylistOption {
+    mutating func removeAll() {
+        self = []
+    }
+    
     mutating func add(_ option: PlaylistOption) {
         self.append(option)
     }
+    
     func remove(_ option: PlaylistOption) {
         // your removal logic here
     }
@@ -23,6 +27,7 @@ extension List: AnyPlaylistOptionList where Element == PlaylistOption {
     func add(_ option: PlaylistOption) {
         self.append(option)
     }
+
     func remove(_ option: PlaylistOption) {
         // your removal logic here
     }

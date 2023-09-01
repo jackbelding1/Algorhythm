@@ -22,7 +22,7 @@ extension RealmRepository {
         do {
             try realm.write {
                 if var currentOptions = existingOptions.first?.playlistOptions {
-//                    currentOptions.removeAll()
+                    currentOptions.removeAll()
                     for newOption in newOptions {
                         currentOptions.add(newOption)
                     }

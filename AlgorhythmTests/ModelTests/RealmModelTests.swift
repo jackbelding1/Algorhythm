@@ -86,11 +86,29 @@ class PlaylistOptionsCollectionTests: XCTestCase {
 
         mockList.playlistOptions.add(newOption)
 
-        // Assuming you add a 'count' method to your AnyPlaylistOptionList protocol
-//        XCTAssertEqual(mockList.playlistOptions.count, 1)
-
-        // Assuming you add a 'first' method to your AnyPlaylistOptionList protocol
+        XCTAssertEqual(mockList.playlistOptions.count, 1)
         XCTAssertEqual(mockList.playlistOptions.first()?.genre, "Rock")
         XCTAssertEqual(mockList.playlistOptions.first()?.value, true)
     }
+    
+    func testRemoveAllPlaylistOptions() {
+        let mockList = MockPlaylistOptionsList()
+
+        // Add multiple options to the list
+        let newOption1 = PlaylistOption(genre: "Rock", value: true)
+        let newOption2 = PlaylistOption(genre: "Pop", value: false)
+
+        mockList.playlistOptions.add(newOption1)
+        mockList.playlistOptions.add(newOption2)
+
+        // Verify that items have been added
+        XCTAssertEqual(mockList.playlistOptions.count, 2)
+
+        // Perform the action to remove all items
+        mockList.playlistOptions.removeAll()
+
+        // Verify that all items have been removed
+        XCTAssertEqual(mockList.playlistOptions.count, 0)
+    }
+
 }

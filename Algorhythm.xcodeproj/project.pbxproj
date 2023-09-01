@@ -14,7 +14,7 @@
 		770EC1E22A9FB0FB00F1C6B6 /* MockSpotifyTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770EC1E02A9FAD8400F1C6B6 /* MockSpotifyTrack.swift */; };
 		770EC1E62A9FB44C00F1C6B6 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770EC1E52A9FB44C00F1C6B6 /* API.swift */; };
 		770EC1E82A9FB62000F1C6B6 /* RealmModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770EC1E72A9FB62000F1C6B6 /* RealmModelTests.swift */; };
-		770EC1EB2A9FDC9E00F1C6B6 /* SpotifyAnalysis+TestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770EC1EA2A9FDC9E00F1C6B6 /* SpotifyAnalysis+TestExtensions.swift */; };
+		770EC1EB2A9FDC9E00F1C6B6 /* SpotifyAnalysis+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770EC1EA2A9FDC9E00F1C6B6 /* SpotifyAnalysis+Extensions.swift */; };
 		7710FB5C2A4643F6002706DF /* AlgorhythmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */; };
 		7710FB692A4648E8002706DF /* AlgorhythmUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB682A4648E8002706DF /* AlgorhythmUITests.swift */; };
 		7710FB6B2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB6A2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift */; };
@@ -87,7 +87,7 @@
 		770EC1E02A9FAD8400F1C6B6 /* MockSpotifyTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpotifyTrack.swift; sourceTree = "<group>"; };
 		770EC1E52A9FB44C00F1C6B6 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		770EC1E72A9FB62000F1C6B6 /* RealmModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModelTests.swift; sourceTree = "<group>"; };
-		770EC1EA2A9FDC9E00F1C6B6 /* SpotifyAnalysis+TestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpotifyAnalysis+TestExtensions.swift"; sourceTree = "<group>"; };
+		770EC1EA2A9FDC9E00F1C6B6 /* SpotifyAnalysis+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpotifyAnalysis+Extensions.swift"; sourceTree = "<group>"; };
 		7710FB592A4643F6002706DF /* AlgorhythmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlgorhythmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorhythmTests.swift; sourceTree = "<group>"; };
 		7710FB662A4648E8002706DF /* AlgorhythmUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlgorhythmUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,7 +194,7 @@
 		770EC1E92A9FD6AC00F1C6B6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				770EC1EA2A9FDC9E00F1C6B6 /* SpotifyAnalysis+TestExtensions.swift */,
+				770EC1EA2A9FDC9E00F1C6B6 /* SpotifyAnalysis+Extensions.swift */,
 				779A85242AA118E200B35419 /* RealmModels+Extensions.swift */,
 			);
 			path = Extensions;
@@ -203,7 +203,6 @@
 		7710FB5A2A4643F6002706DF /* AlgorhythmTests */ = {
 			isa = PBXGroup;
 			children = (
-				770EC1E92A9FD6AC00F1C6B6 /* Extensions */,
 				770EC1D82A9F9E6B00F1C6B6 /* ModelTests */,
 				7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */,
 			);
@@ -357,6 +356,7 @@
 		77CE43272913299C000019A8 /* Algorhythm */ = {
 			isa = PBXGroup;
 			children = (
+				770EC1E92A9FD6AC00F1C6B6 /* Extensions */,
 				779A85202AA1184400B35419 /* Protocols */,
 				77CA67D82A7C2F5B002830E1 /* Resources */,
 				77CA67D72A7C2F3B002830E1 /* Models */,
@@ -558,7 +558,7 @@
 				770EC1E22A9FB0FB00F1C6B6 /* MockSpotifyTrack.swift in Sources */,
 				7710FB5C2A4643F6002706DF /* AlgorhythmTests.swift in Sources */,
 				779A85282AA1236200B35419 /* RealmModelsProtocols.swift in Sources */,
-				770EC1EB2A9FDC9E00F1C6B6 /* SpotifyAnalysis+TestExtensions.swift in Sources */,
+				770EC1EB2A9FDC9E00F1C6B6 /* SpotifyAnalysis+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
