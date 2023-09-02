@@ -71,9 +71,7 @@ class PlaylistOptionsCollectionTests: XCTestCase {
         }
     }
     
-    override func tearDown() {
-        // Perform additional cleanup, if needed
-        
+    override func tearDown() {        
         // Invalidate the in-memory Realm
         realm.invalidate()
         
