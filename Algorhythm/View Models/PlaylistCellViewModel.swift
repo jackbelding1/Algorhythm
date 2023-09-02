@@ -20,7 +20,7 @@ import SwiftUI // TODO: REPLACE WITH DEPENDENCY INJECTION
 class PlaylistCellViewModel: ObservableObject {
     // MARK: - Variables
     private var playlist: Playlist<PlaylistItemsReference>
-    private var repository: SpotifyRepository
+    internal var repository: SpotifyRepositoryProtocol
     @Published var didRequestImage = false
 
     // MARK: - Initializer
