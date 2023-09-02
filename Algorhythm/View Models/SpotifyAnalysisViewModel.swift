@@ -84,7 +84,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
     private func getSavedSeeds() {
         // try to load from the data manager. if ids are found, append to the
         // list and return true. if empty ids, return false
-        let ids = realmRepository.readTrackIds(forGenre: genre, forMood: mood)
+        let ids = realmRepository.readTrackIds(withMood: mood, withGenre: genre)
         for id in ids {
             recommendationSeedIds.append(id)
         }
@@ -96,7 +96,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
         artists.forEach { artist in
             if let genres = artist?.genres, genres.contains(selectedGenre), let artistId = artist?.id {
                 if isFirstArtist {
-                    linkedListOfArtists.initialize(withNode: Node(value: artistId))
+                    linkedListOfArtists.initialize(with: Node(value: artistId))
                     isFirstArtist = false
                 } else {
                     linkedListOfArtists.append(artistId)
@@ -285,7 +285,7 @@ extension SpotifyAnalysisViewModel {
     
     private func getArtistTopTracksCompletion(
         _ result: (Result<[Track], Error>)
-    ){
+    ) {
         var tracks: LinkedList<String?> = LinkedList<String?>()
         var createList: Bool = true
         
@@ -295,7 +295,7 @@ extension SpotifyAnalysisViewModel {
             for track in response {
                 if createList {
                     let node = Node(value: track.id)
-                    tracks.initialize(withNode: node)
+                    tracks.initialize(with: node)
                     createList = false
                 } else {
                     tracks.append(track.id)

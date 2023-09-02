@@ -3,14 +3,14 @@ import Foundation
 
 // MARK: - Mood and Track ID Mapping
 final class MoodTrackMapping: Object {
-    convenience init(mood: String, trackIDs: [String]) {
+    convenience init(mood: String, trackID: String) {
         self.init()
         self.mood = mood
-        self.trackIDs.append(objectsIn: trackIDs)
+        self.trackID = trackID
     }
     
     @objc dynamic var mood: String = ""
-    let trackIDs = List<String>()
+    @objc dynamic var trackID: String = ""
 }
 
 // MARK: - Genre and Mood Mapping
@@ -29,11 +29,6 @@ final class IndividualPlaylist: Object {
     @objc dynamic var id: String = ""
 }
 
-// MARK: - Playlist Collection
-final class PlaylistCollection: Object {
-    let playlists = List<IndividualPlaylist>()
-}
-
 // MARK: - Individual Playlist Option
 final class PlaylistOption: Object {
     convenience init(genre: String, value: Bool) {
@@ -47,6 +42,15 @@ final class PlaylistOption: Object {
 }
 
 // MARK: - Playlist Options Collection
-final class PlaylistOptionsCollection: Object {
-    let playlistOptions = List<PlaylistOption>()
+// Realm object
+final class PlaylistOptionsList: Object, PlaylistOptionsListProtocol {
+    
+    var playlistOptions: AnyPlaylistOptionList { get {
+        return playlistOptionsRealm } set {
+            
+        }
+    }
+    private var playlistOptionsRealm: List<PlaylistOption> = List<PlaylistOption>()
+    // TODO: REMOVE
+    @objc var test: Int = 1
 }

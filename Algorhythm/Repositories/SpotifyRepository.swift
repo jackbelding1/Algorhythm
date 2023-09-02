@@ -20,7 +20,7 @@ struct ArtistURI: SpotifyURIConvertible {
     }
 }
 
-class SpotifyRepository {
+class SpotifyRepository: SpotifyRepositoryProtocol {
     // MARK: - Variables
     private var spotify: Spotify
     private var cancellables = Set<AnyCancellable>()

@@ -12,7 +12,7 @@ import SpotifyWebAPI
 // MARK: - RootViewModel
 class RootViewModel: ObservableObject {
     // MARK: - Variables
-    private var spotifyRepository: SpotifyRepository
+    internal var spotifyRepository: SpotifyRepositoryProtocol
     @Published var alert: AlertItem? = nil
     
     // MARK: - Initializer
@@ -28,7 +28,7 @@ class RootViewModel: ObservableObject {
     }
     
     // MARK: - Private Functions
-    private func handleAuthCompletion(completion: Subscribers.Completion<Error>) {
+    internal func handleAuthCompletion(completion: Subscribers.Completion<Error>) {
         
         if case .failure(let error) = completion {
             print("couldn't retrieve access and refresh tokens:\n\(error)")
