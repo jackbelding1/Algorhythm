@@ -23,6 +23,9 @@ class MockSpotifyRepository: SpotifyRepositoryProtocol {
     var expectHandleAuthRedirectURL: ((URL) -> Void)?
     var expectOpenPlaylistURL: ((String) -> URL?)?
     var expectLoadImage: ((Playlist<PlaylistItemsReference>, @escaping (Image?) -> Void) -> Void)?
+    var expectDeletePlaylist: ((String, @escaping (Result<Void, Error>) -> Void) -> Void)?
+    var expectRetrievePlaylists: (([String], (Result<[Playlist<PlaylistItemsReference>], Error>) -> Void) -> Void)?
+    
     
     // MARK: - Overridden Methods
     func handleAuthRedirectURL(_ url: URL, completionHandler: @escaping (Subscribers.Completion<Error>) -> Void, showAlert: @escaping (AlertItem) -> Void) {
@@ -64,11 +67,11 @@ class MockSpotifyRepository: SpotifyRepositoryProtocol {
     }
     
     func retrievePlaylists(idsToLoad: [String], completion: @escaping (Result<[SpotifyWebAPI.Playlist<SpotifyWebAPI.PlaylistItemsReference>], Error>) -> Void) {
-        fatalError("Not yet implemented")
+        expectRetrievePlaylists?(idsToLoad, completion)
     }
     
     func deletePlaylist(withId Id: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        fatalError("Not yet implemented")
+        expectDeletePlaylist?(Id, completion)
     }
     
     func loadImage(forPlaylist playlist: SpotifyWebAPI.Playlist<SpotifyWebAPI.PlaylistItemsReference>, completion: @escaping (Image?) -> Void) {

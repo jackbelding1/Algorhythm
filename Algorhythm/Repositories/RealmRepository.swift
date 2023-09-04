@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-class RealmRepository {
+class RealmRepository: RealmRepositoryProtocol {
     let realm = try! Realm()
     // MARK: - Variables
     

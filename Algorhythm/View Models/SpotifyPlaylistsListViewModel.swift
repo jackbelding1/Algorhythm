@@ -16,12 +16,13 @@ class SpotifyPlaylistsListViewModel: ObservableObject {
     @Published var couldntLoadPlaylists = false
     @Published var alert: AlertItem? = nil
 
-    private var spotifyRepository: SpotifyRepository
-    private var realmRepository = RealmRepository()
+    internal var spotifyRepository: SpotifyRepositoryProtocol
+    internal var realmRepository: RealmRepositoryProtocol
 
     // MARK: - Initializer
     init(spotify: Spotify) {
         spotifyRepository = SpotifyRepository(spotify: spotify)
+        realmRepository = RealmRepository()
     }
 
     // MARK: - Handlers
