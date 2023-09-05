@@ -64,6 +64,7 @@
 		77DB3728293AD8490058DBC6 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 77DB3727293AD8490058DBC6 /* RealmSwift */; };
 		77DB372A293BEA230058DBC6 /* RealmRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB3729293BEA230058DBC6 /* RealmRepository.swift */; };
 		77DF9D932AA669AF00A3A3B8 /* SpotifyRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DF9D922AA669AF00A3A3B8 /* SpotifyRepositoryTests.swift */; };
+		77DF9D952AA66B2600A3A3B8 /* NewPlaylistViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DF9D942AA66B2600A3A3B8 /* NewPlaylistViewModelTests.swift */; };
 		77E0DAD229C11037004F1DAD /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E0DAD129C11037004F1DAD /* AppState.swift */; };
 		77E0DAD429C26DD6004F1DAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */; };
 		77E3E39D2AA655D8005FC84D /* MockRealmRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E3E39C2AA655D8005FC84D /* MockRealmRepository.swift */; };
@@ -140,6 +141,7 @@
 		77D31F422A924F7F00432779 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		77DB3729293BEA230058DBC6 /* RealmRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmRepository.swift; sourceTree = "<group>"; };
 		77DF9D922AA669AF00A3A3B8 /* SpotifyRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyRepositoryTests.swift; sourceTree = "<group>"; };
+		77DF9D942AA66B2600A3A3B8 /* NewPlaylistViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaylistViewModelTests.swift; sourceTree = "<group>"; };
 		77E0DAD129C11037004F1DAD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		77E0DAD329C26DD6004F1DAD /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		77E3E39C2AA655D8005FC84D /* MockRealmRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRealmRepository.swift; sourceTree = "<group>"; };
@@ -220,10 +222,8 @@
 		7710FB5A2A4643F6002706DF /* AlgorhythmTests */ = {
 			isa = PBXGroup;
 			children = (
-				77DF9D912AA6697C00A3A3B8 /* Repositories */,
+				77DF9D992AA6833500A3A3B8 /* Tests */,
 				770EC1DF2A9FAD7A00F1C6B6 /* Mocks */,
-				77AABB062AA3864500285A40 /* ViewModelTests */,
-				770EC1D82A9F9E6B00F1C6B6 /* ModelTests */,
 				7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */,
 			);
 			path = AlgorhythmTests;
@@ -312,6 +312,7 @@
 				77AABB072AA386B500285A40 /* RootViewModelTest.swift */,
 				77AABB122AA3974600285A40 /* PlaylistCellViewModelTests.swift */,
 				778F8D752AA39DB8009012AD /* SpotifyPlaylistsListViewModelTests.swift */,
+				77DF9D942AA66B2600A3A3B8 /* NewPlaylistViewModelTests.swift */,
 			);
 			path = ViewModelTests;
 			sourceTree = "<group>";
@@ -436,12 +437,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		77DF9D912AA6697C00A3A3B8 /* Repositories */ = {
+		77DF9D912AA6697C00A3A3B8 /* RepositoryTests */ = {
 			isa = PBXGroup;
 			children = (
 				77DF9D922AA669AF00A3A3B8 /* SpotifyRepositoryTests.swift */,
 			);
-			path = Repositories;
+			path = RepositoryTests;
+			sourceTree = "<group>";
+		};
+		77DF9D992AA6833500A3A3B8 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				77DF9D912AA6697C00A3A3B8 /* RepositoryTests */,
+				77AABB062AA3864500285A40 /* ViewModelTests */,
+				770EC1D82A9F9E6B00F1C6B6 /* ModelTests */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -622,6 +633,7 @@
 				779A851C2A9FE91F00B35419 /* RealmModel.swift in Sources */,
 				77E3E39D2AA655D8005FC84D /* MockRealmRepository.swift in Sources */,
 				779A85252AA118E200B35419 /* RealmModels+Extensions.swift in Sources */,
+				77DF9D952AA66B2600A3A3B8 /* NewPlaylistViewModelTests.swift in Sources */,
 				779A85272AA1199C00B35419 /* RealmModelsMocks.swift in Sources */,
 				770EC1E82A9FB62000F1C6B6 /* RealmModelTests.swift in Sources */,
 				770EC1E22A9FB0FB00F1C6B6 /* MockSpotifyTrack.swift in Sources */,

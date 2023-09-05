@@ -6,33 +6,33 @@
 //
 
 import Foundation
-@testable import Algorhythm
 import RealmSwift
+@testable import Algorhythm
 
 class MockRealmRepository: RealmRepositoryProtocol {
     
-    func loadPlaylistOptions() -> RealmSwift.List<Algorhythm.PlaylistOption>? {
-        fatalError("method not implemented")
-    }
+    typealias PlaylistOption = Algorhythm.PlaylistOption
     
-    var mockPlaylistOptions: [String: Bool] = [:]
+    var mockPlaylistOptions: [String: Bool] = [
+        "edm": false,
+        "country": false,
+        "rap": false
+    ]
     var mockTrackIds: [String: [String]] = [:] // Key is "\(genre)_\(mood)"
     var mockPlaylists: [String] = []
-
+    var savePlaylistOptionsCalled = false
     var expectDeletePlaylist: ((String) -> Void)?
     var expectReadCreatedPlaylists: (() -> [String])?
     
     func savePlaylistOptions(_ preferences: [String: Bool]) {
-        mockPlaylistOptions = preferences
+        savePlaylistOptionsCalled = true
     }
     
-    func loadPlaylistOptions() -> List<PlaylistOption>? {
-        let list = List<PlaylistOption>()
-        for (key, value) in mockPlaylistOptions {
-            let option = PlaylistOption(genre: key, value: value)
-            list.add(option)
-        }
-        return list
+    //
+    // TODO: update signature to return a [String: Bool] object.
+    //
+    func loadPlaylistOptions() -> [String: Bool] {
+        return mockPlaylistOptions
     }
     
     func restorePlaylistOptionDefaults() {

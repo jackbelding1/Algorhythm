@@ -39,9 +39,18 @@ extension RealmRepository {
         }
     }
     
-    func loadPlaylistOptions() -> List<PlaylistOption>? {
-        return realm.objects(PlaylistOptionsList.self).first?.playlistOptions as? List<PlaylistOption>
+    func loadPlaylistOptions() -> [String: Bool] {
+        var optionsDict: [String: Bool] = [:]
+        
+        if let playlistOptionsList = realm.objects(PlaylistOptionsList.self).first {
+            for option in playlistOptionsList.playlistOptions.allElements() {
+                optionsDict[option.genre] = option.value
+            }
+        }
+        
+        return optionsDict
     }
+
     
     func restorePlaylistOptionDefaults() {
         let objectsToDelete = realm.objects(PlaylistOptionsList.self)

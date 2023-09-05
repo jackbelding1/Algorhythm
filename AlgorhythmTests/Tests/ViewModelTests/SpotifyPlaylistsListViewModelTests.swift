@@ -91,9 +91,10 @@ class SpotifyPlaylistsListViewModelTests: XCTestCase {
         viewModel.retrievePlaylists()
         
         // Then
-        XCTAssertEqual(viewModel.isLoadingPlaylists, true)
         XCTAssertTrue(viewModel.playlists.isEmpty)
         XCTAssertEqual(retrievedIds, expectedIds)
+        XCTAssertEqual(viewModel.isLoadingPlaylists, false)
+
     }
     
 }

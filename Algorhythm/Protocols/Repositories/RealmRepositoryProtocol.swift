@@ -11,7 +11,7 @@ import RealmSwift
 protocol RealmRepositoryProtocol {
     // Playlist Options Management
     func savePlaylistOptions(_ preferences: [String: Bool])
-    func loadPlaylistOptions() -> List<PlaylistOption>?
+    func loadPlaylistOptions() -> [String: Bool]
     func restorePlaylistOptionDefaults()
     
     // Mood and Genre Management
