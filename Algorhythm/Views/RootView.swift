@@ -23,8 +23,10 @@ struct RootView: View {
         VStack {
             if self.spotify.isAuthorized {
                 authorizedView
+                    .accessibility(identifier: "authorizedView")
             } else {
                 unauthorizedView
+                    .accessibility(identifier: "unauthorizedView")
             }
         }
         .modifier(LoginView())
@@ -40,28 +42,17 @@ struct RootView: View {
     private var authorizedView: some View {
         HomeView()
             .id(appState.rootViewId)
+            .accessibility(identifier: "homeView")
     }
 
     private var unauthorizedView: some View {
         VStack {
             Image("algorhythmlogo")
                 .background(colorScheme == .dark ? Color.black : Color.white)
+                .accessibility(identifier: "logoImage")
             Text("Algorhythm")
+                .accessibility(identifier: "titleLabel")
             Spacer()
         }
     }
 }
-//
-//struct RootView_Previews: PreviewProvider {
-//
-//    static let spotify: Spotify = {
-//        let spotify = Spotify()
-//        spotify.isAuthorized = true
-//        return spotify
-//    }()
-//
-//    static var previews: some View {
-//        RootView(RootViewModel(spotify: spotify)
-//            .environmentObject(spotify)
-//    }
-//}
