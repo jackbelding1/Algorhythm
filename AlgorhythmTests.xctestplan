@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "8EE2A20E-32E6-4C82-A265-ED3CC114F076",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Algorhythm.xcodeproj",
+        "identifier" : "7710FB582A4643F6002706DF",
+        "name" : "AlgorhythmTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Algorhythm.xcodeproj",
+        "identifier" : "7710FB652A4648E8002706DF",
+        "name" : "AlgorhythmUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

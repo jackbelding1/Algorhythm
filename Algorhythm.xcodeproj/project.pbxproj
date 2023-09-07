@@ -18,8 +18,12 @@
 		7710FB5C2A4643F6002706DF /* AlgorhythmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB5B2A4643F6002706DF /* AlgorhythmTests.swift */; };
 		7710FB692A4648E8002706DF /* AlgorhythmUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB682A4648E8002706DF /* AlgorhythmUITests.swift */; };
 		7710FB6B2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7710FB6A2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift */; };
+		771524512AAA30020044FCD8 /* RootViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717FBB12AAA1C3B00849ED8 /* RootViewTests.swift */; };
 		7717FBAD2AA9204800849ED8 /* SpotifyAnalysisModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717FBAC2AA9204800849ED8 /* SpotifyAnalysisModelProtocol.swift */; };
 		7717FBB02AA9208C00849ED8 /* MockSpotifyAnalysisModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717FBAF2AA9208C00849ED8 /* MockSpotifyAnalysisModel.swift */; };
+		7717FBB42AAA1CD300849ED8 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 7717FBB32AAA1CD300849ED8 /* Realm */; };
+		7717FBB62AAA1CD300849ED8 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7717FBB52AAA1CD300849ED8 /* RealmSwift */; };
+		7717FBB82AAA1CD700849ED8 /* SpotifyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 7717FBB72AAA1CD700849ED8 /* SpotifyAPI */; };
 		771D46CB291337BF005F7781 /* SpotifyAnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */; };
 		771D46CD29133B85005F7781 /* ApolloNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46CC29133B85005F7781 /* ApolloNetwork.swift */; };
 		771D46D42914657E005F7781 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771D46D32914657E005F7781 /* Spotify.swift */; };
@@ -108,6 +112,8 @@
 		7710FB6A2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorhythmUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		7717FBAC2AA9204800849ED8 /* SpotifyAnalysisModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisModelProtocol.swift; sourceTree = "<group>"; };
 		7717FBAF2AA9208C00849ED8 /* MockSpotifyAnalysisModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpotifyAnalysisModel.swift; sourceTree = "<group>"; };
+		7717FBB12AAA1C3B00849ED8 /* RootViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewTests.swift; sourceTree = "<group>"; };
+		7717FBC12AAA291600849ED8 /* AlgorhythmTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AlgorhythmTests.xctestplan; sourceTree = "<group>"; };
 		771D46CA291337BF005F7781 /* SpotifyAnalysisViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyAnalysisViewModel.swift; sourceTree = "<group>"; };
 		771D46CC29133B85005F7781 /* ApolloNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApolloNetwork.swift; sourceTree = "<group>"; };
 		771D46D32914657E005F7781 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
@@ -171,6 +177,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7717FBB62AAA1CD300849ED8 /* RealmSwift in Frameworks */,
+				7717FBB82AAA1CD700849ED8 /* SpotifyAPI in Frameworks */,
+				7717FBB42AAA1CD300849ED8 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +250,7 @@
 			children = (
 				7710FB682A4648E8002706DF /* AlgorhythmUITests.swift */,
 				7710FB6A2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift */,
+				7717FBB12AAA1C3B00849ED8 /* RootViewTests.swift */,
 			);
 			path = AlgorhythmUITests;
 			sourceTree = "<group>";
@@ -411,6 +421,7 @@
 		77CE431C2913299C000019A8 = {
 			isa = PBXGroup;
 			children = (
+				7717FBC12AAA291600849ED8 /* AlgorhythmTests.xctestplan */,
 				77CE43272913299C000019A8 /* Algorhythm */,
 				7710FB5A2A4643F6002706DF /* AlgorhythmTests */,
 				7710FB672A4648E8002706DF /* AlgorhythmUITests */,
@@ -512,6 +523,11 @@
 				7710FB6D2A4648E8002706DF /* PBXTargetDependency */,
 			);
 			name = AlgorhythmUITests;
+			packageProductDependencies = (
+				7717FBB32AAA1CD300849ED8 /* Realm */,
+				7717FBB52AAA1CD300849ED8 /* RealmSwift */,
+				7717FBB72AAA1CD700849ED8 /* SpotifyAPI */,
+			);
 			productName = AlgorhythmUITests;
 			productReference = 7710FB662A4648E8002706DF /* AlgorhythmUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -671,6 +687,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7710FB692A4648E8002706DF /* AlgorhythmUITests.swift in Sources */,
+				771524512AAA30020044FCD8 /* RootViewTests.swift in Sources */,
 				7710FB6B2A4648E8002706DF /* AlgorhythmUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -781,6 +798,7 @@
 				INFOPLIST_FILE = Algorhythm/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "alpine-software.AlgorhythmUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -800,6 +818,7 @@
 				INFOPLIST_FILE = Algorhythm/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "alpine-software.AlgorhythmUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1077,6 +1096,20 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 77DB3724293AD8490058DBC6 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = Realm;
+		};
+		7717FBB32AAA1CD300849ED8 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77DB3724293AD8490058DBC6 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		7717FBB52AAA1CD300849ED8 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77DB3724293AD8490058DBC6 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		7717FBB72AAA1CD700849ED8 /* SpotifyAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SpotifyAPI;
 		};
 		77587142294A4BD100BAB8EB /* SpotifyAPI */ = {
 			isa = XCSwiftPackageProductDependency;
