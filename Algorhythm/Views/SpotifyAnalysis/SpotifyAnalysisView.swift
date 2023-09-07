@@ -54,14 +54,6 @@ struct SpotifyAnalysisScreen: View{
     var body: some View {
         VStack {
             switch (spotifyAnalysisViewModel.playlistCreationState) {
-            case .initializing:
-                HStack {
-                    ProgressView()
-                        .padding()
-                    Text("Initializing...")
-                        .font(.title)
-                        .foregroundColor(.secondary)
-                }
             case .inititializationFailure:
                 failureView(withCaption: "Failed to initialize")
             case .enterPlaylistName:
@@ -79,6 +71,7 @@ struct SpotifyAnalysisScreen: View{
         .navigationBarHidden(
             spotifyAnalysisViewModel.playlistCreationState == .success ||
             spotifyAnalysisViewModel.playlistCreationState == .failure)
+        .onAppear(perform: spotifyAnalysisViewModel.generateRecommendations)
     }
    
     // MARK: - Subviews for Different States

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SpotifyAnalysisModel {
+class SpotifyAnalysisModel: SpotifyAnalysisModelProtocol {
     
     // MARK: - Properties
     

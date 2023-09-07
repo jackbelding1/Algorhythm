@@ -19,7 +19,6 @@ struct NetworkCalls {
 class SpotifyAnalysisViewModel: ObservableObject {
     // MARK: - Enums
     enum PlaylistCreationState {
-        case initializing
         case inititializationFailure
         case inProgress
         case enterPlaylistName
@@ -27,17 +26,16 @@ class SpotifyAnalysisViewModel: ObservableObject {
         case failure
     }
     // MARK: - Constants
-    private let spotifyRepository: SpotifyRepository
-    private let realmRepository = RealmRepository()
+    var spotifyRepository: SpotifyRepositoryProtocol
+    var realmRepository: RealmRepositoryProtocol
     private let mood: String
     private let genre: String
     
     // MARK: - Variables
-    @Published var playlistCreationState: PlaylistCreationState = .initializing
+    @Published var playlistCreationState: PlaylistCreationState = .inProgress
     @Published var alert: AlertItem? = nil
-    private var createdPlaylistId: String = ""
+    internal var createdPlaylistId: String = ""
     private var analyzedSongs: [SpotifyAnalysisModel] = []
-    private var recommendationSeedIds: [String] = []
     private var recommendedTracks: [Track] = []
     private var networkCalls: NetworkCalls = NetworkCalls()
 
@@ -46,7 +44,7 @@ class SpotifyAnalysisViewModel: ObservableObject {
         self.mood = mood
         self.genre = genre
         spotifyRepository = SpotifyRepository(spotify: spotify)
-        generateRecommendations()
+        realmRepository = RealmRepository()
     }
     
     // MARK: - Public Methods
@@ -67,9 +65,25 @@ class SpotifyAnalysisViewModel: ObservableObject {
         )
     }
     
-    // MARK: - Private Methods
-    private func generateRecommendations() {
-        getSavedSeeds()
+    func trackIsSelectedGenre(_ track: SpotifyAnalysisModelProtocol) -> Bool {
+        guard let cyaniteGenreTags = track.genreTags else { return false }
+        
+        return cyaniteGenreTags.contains {
+            cyaniteToSpotfiyTags[$0.rawValue]?.contains(genre) == true
+        }
+    }
+    
+    
+    func trackIsSelectedMood(_ track: SpotifyAnalysisModelProtocol) -> Bool {
+        guard let cyaniteMoodTags = track.moodTags else { return false }
+        
+        return cyaniteMoodTags.contains {
+            mapMoods($0.rawValue).contains(mood)
+        }
+    }
+    
+    func generateRecommendations() {
+        let recommendationSeedIds = getSavedSeeds()
         
         if recommendationSeedIds.isEmpty {
             getUserTopArtists(
@@ -77,17 +91,15 @@ class SpotifyAnalysisViewModel: ObservableObject {
                 offset: 0,
                 limit: 50) // download mood seed from network
         } else {
-            getRecommendedTracks()
+            getRecommendedTracks(seedIds: recommendationSeedIds)
         }
     }
-    
-    private func getSavedSeeds() {
-        // try to load from the data manager. if ids are found, append to the
-        // list and return true. if empty ids, return false
-        let ids = realmRepository.readTrackIds(withMood: mood, withGenre: genre)
-        for id in ids {
-            recommendationSeedIds.append(id)
-        }
+
+    // MARK: - Private Methods
+    private func getSavedSeeds() -> [String] {
+        // try to load from the data manager. if ids are found, return them.
+        // if empty ids, return an empty array
+        return realmRepository.readTrackIds(withMood: mood, withGenre: genre)
     }
     
     private func createLinkedList(ofArtists artists: [Artist?], matchingGenre selectedGenre: String) -> LinkedList<String> {
@@ -104,14 +116,6 @@ class SpotifyAnalysisViewModel: ObservableObject {
             }
         }
         return linkedListOfArtists
-    }
-    
-    private func trackIsSelectedGenre(_ track: SpotifyAnalysisModel) -> Bool {
-        guard let cyaniteGenreTags = track.genreTags else { return false }
-        
-        return cyaniteGenreTags.contains {
-            cyaniteToSpotfiyTags[$0.rawValue]?.contains(genre) == true
-        }
     }
 
     private func mapMoods(_ mood: String) -> [String] {
@@ -131,14 +135,6 @@ class SpotifyAnalysisViewModel: ObservableObject {
         return moods
     }
 
-    private func trackIsSelectedMood(_ track: SpotifyAnalysisModel) -> Bool {
-        guard let cyaniteMoodTags = track.moodTags else { return false }
-        
-        return cyaniteMoodTags.contains {
-            mapMoods($0.rawValue).contains(mood)
-        }
-    }
-
     private func songIsSelectedMoodAndGenre() -> String? {
         return analyzedSongs.first {
             trackIsSelectedMood($0) && trackIsSelectedGenre($0)
@@ -148,9 +144,11 @@ class SpotifyAnalysisViewModel: ObservableObject {
 
 // MARK: - Networking Methods
 extension SpotifyAnalysisViewModel {
-    private func getRecommendedTracks() { spotifyRepository.getRecommendations(
-        trackURIs: recommendationSeedIds.map { "spotify:track:\($0)" },
-        completion: getRecommendationsCompletion(_:))
+    private func getRecommendedTracks(seedIds: [String]) {
+        spotifyRepository.getRecommendations(
+            trackURIs: seedIds.map { "spotify:track:\($0)" },
+            completion: getRecommendationsCompletion(_:)
+        )
     }
     
     private func getUserTopArtists(timeRange: TimeRange, offset: Int, limit: Int) {
@@ -193,6 +191,8 @@ extension SpotifyAnalysisViewModel {
 extension SpotifyAnalysisViewModel {
     
     private func spotifyTrackAnalysisHandler(result: Result<SpotifyTrackQueryQuery.Data.SpotifyTrack, Error>, head: Node<String?>) {
+        var localSeedIds: [String] = []
+        
         switch result {
         case .success(let analyzedTrack):
             if isTrackError(analyzedTrack) {
@@ -202,9 +202,9 @@ extension SpotifyAnalysisViewModel {
             analyzedSongs.append(SpotifyAnalysisModel.init(analyzedSpotifyTrack: analyzedTrack))
             
             if let trackId = songIsSelectedMoodAndGenre() {
-                recommendationSeedIds.append(trackId)
-                getRecommendedTracks()
-                realmRepository.writeTrackIds(forGenre: genre, forMood: mood, ids: recommendationSeedIds) // save to disk
+                localSeedIds.append(trackId)
+                getRecommendedTracks(seedIds: localSeedIds)
+                realmRepository.writeTrackIds(forGenre: genre, forMood: mood, ids: localSeedIds) // save to disk
             } else {
                 analyzeSpotifyTrack(tracks: head.next)
             }
@@ -212,6 +212,7 @@ extension SpotifyAnalysisViewModel {
             print("Error occurred: \(error.localizedDescription)")
         }
     }
+
 
     private func isTrackError(_ analyzedTrack: SpotifyTrackQueryQuery.Data.SpotifyTrack) -> Bool {
         if let secondOptional = analyzedTrack.resultMap["__typename"] as? String, secondOptional == "SpotifyTrackError" {
