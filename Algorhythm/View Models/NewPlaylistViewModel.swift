@@ -13,7 +13,7 @@ struct MoodOption {
 }
 
 // MARK: - GenrePreference
-struct GenrePreference {
+struct GenrePreference: Equatable {
     let title: String
     let key: String
     var value: Bool
@@ -22,17 +22,15 @@ struct GenrePreference {
 // MARK: - NewPlaylistViewModel
 class NewPlaylistViewModel: ObservableObject {
     // MARK: - Variables
-    let realmRepository = RealmRepository()
-    
-    // MARK: - Variables
-    private var initialPreferenceState: [GenrePreference] = []
+    var realmRepository: RealmRepositoryProtocol = RealmRepository()
+    var initialPreferenceState: [GenrePreference] = []
     @Published var genrePreferencesCollection: [GenrePreference] = []
     @Published var didTapUpdate: Bool = false
     @Published var selectedMood: String?
     @Published var isPresenting: Bool = false
     @Published var savePreferences = false
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     public init() {
         savePreferences = UserDefaults.standard.bool(forKey: "shouldSavePreferences")
         initOptionPreferences()
@@ -58,7 +56,7 @@ class NewPlaylistViewModel: ObservableObject {
         }
     }
     func updateSavePreferences(isMarked: Bool) {
-        savePreferences = !isMarked
+        savePreferences = isMarked
         UserDefaults.standard.set(savePreferences, forKey: "shouldSavePreferences")
     }
     func updateGenreSelection(id: String, isMarked: Bool) {
@@ -80,39 +78,34 @@ class NewPlaylistViewModel: ObservableObject {
         print("selected \(mood)")
     }
     
-    // MARK: - Private Methods
-    private func initOptionPreferences() {
+    internal func initOptionPreferences() {
         if savePreferences {
-            do {
-                try loadOptionPreferences()
-            } catch {
-                print("Error while loading option preferences: \(error)")
-                initDefaultOptions()
-            }
+            loadAndProcessOptionPreferences()
         } else {
             initDefaultOptions()
         }
     }
 
-    // Assuming that AnyPlaylistOptionsList conforms to Sequence or provides a way to iterate its elements
-    private func loadOptionPreferences() throws {
-        if let preferences = realmRepository.loadPlaylistOptions() {
-            processPreferences(preferences)
+    // MARK: - Private Methods
+    private func loadAndProcessOptionPreferences() {
+        let preferences = realmRepository.loadPlaylistOptions()
+        // Check if preferences are empty
+        if preferences.isEmpty {
+            initDefaultOptions()
         } else {
-            throw PreferenceError.loadFailed
+            readPreferences(preferences)
         }
     }
-
-    private func processPreferences(_ preferences: RealmSwift.List<PlaylistOption>) {
-        for preference in preferences {
-            guard let title = genreKeyToTitle[preference.genre] else {
+    
+    private func readPreferences(_ preferences:[String: Bool]) {
+        for (key, value) in preferences {
+            guard let title = genreKeyToTitle[key] else {
                 // Handle the case where the title is not found in the dictionary
                 continue // Skip to the next iteration
             }
-            genrePreferencesCollection.append(GenrePreference(title: title, key: preference.genre, value: preference.value))
+            genrePreferencesCollection.append(GenrePreference(title: title, key: key, value: value))
         }
     }
-
     
     private func initDefaultOptions() {
         for genre in genreKeyToTitle {

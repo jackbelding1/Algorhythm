@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol PlaylistOptionsListProtocol {
     var playlistOptions: AnyPlaylistOptionList { get set }
@@ -21,4 +22,7 @@ protocol AnyPlaylistOptionList {
     // is required in the conforming types.
     var count: Int { get }
     mutating func removeAll()
+    
+    func allElements() -> [PlaylistOption]
+    
 }

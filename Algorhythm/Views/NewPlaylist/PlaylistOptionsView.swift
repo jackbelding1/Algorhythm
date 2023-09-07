@@ -75,9 +75,9 @@ struct PlaylistOptionsView: View {
     
     func checkboxSelected(id: String, isMarked: Bool) {
         if id == "savePreferences" {
-            playlistOptions.updateSavePreferences(isMarked: isMarked)
+            playlistOptions.updateSavePreferences(isMarked: !isMarked)
         } else {
-            playlistOptions.updateGenreSelection(id: id, isMarked: isMarked)
+            playlistOptions.updateGenreSelection(id: id, isMarked: !isMarked)
         }
     }
 }

@@ -21,6 +21,10 @@ extension Array: AnyPlaylistOptionList where Element == PlaylistOption {
         // your removal logic here
     }
     func first() -> PlaylistOption? { return self.first }
+    
+    func allElements() -> [PlaylistOption] {
+        return self
+    }
 }
 
 extension List: AnyPlaylistOptionList where Element == PlaylistOption {
@@ -32,5 +36,9 @@ extension List: AnyPlaylistOptionList where Element == PlaylistOption {
         // your removal logic here
     }
     func first() -> PlaylistOption? { return self.first }
+    
+    func allElements() -> [PlaylistOption] {
+        return Array(self)
+    }
 }
 
