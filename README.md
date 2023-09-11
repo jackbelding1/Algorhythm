@@ -1,6 +1,6 @@
 # Algorhythm 🎶
 
-![Algorhythm Demo](https://drive.google.com/uc?id=1LRjO8vpExepVytrsSV4-el7hpp2Qwpg6)
+![Algorhythm Demo](https://drive.google.com/uc?id=1I70HgWi2X7B1ckRMMoDOjE5rOiEmmiFe/view?usp=sharing)
 
 ## Philosophy 🌱
 
