@@ -14,9 +14,9 @@ import KeychainAccess
 
 final class Spotify: ObservableObject {
     
-    private static let clientId = "d26ec799519e4894ac80d3ec76ca5c27"
+    private static let clientId = "<your_client_id>"
     
-    private static let clientSecret = "4c14a04c4b284d77b1fb232049b5a406"
+    private static let clientSecret = "<your_client_secret>"
     
     /// The key in the keychain that is used to store the authorization
     /// information: "authorizationManager".
@@ -25,7 +25,7 @@ final class Spotify: ObservableObject {
     /// The URL that Spotify will redirect to after the user either authorizes
     /// or denies authorization for your application.
     let loginCallbackURL = URL(
-        string: "algorhythm-app://login-callback"
+        string: "<your_login_callback_url>"
     )!
     
     /// A cryptographically-secure random string used to ensure than an incoming

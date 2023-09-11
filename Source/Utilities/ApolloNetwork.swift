@@ -5,7 +5,7 @@ final class Network {
     // Singleton pattern
     static let shared = Network()
     
-    fileprivate let accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiSW50ZWdyYXRpb25BY2Nlc3NUb2tlbiIsInZlcnNpb24iOiIxLjAiLCJpbnRlZ3JhdGlvbklkIjozODUsInVzZXJJZCI6MTM2OTIsImFjY2Vzc1Rva2VuU2VjcmV0IjoiOTI3ZDY3NTRjYjNiYmUzMDIyNjdlOGE1ZGQxMjljZGZlYWU3ODFmN2E4NDk5NTJhMjE2OGJiOTY5OGYwMTAyMSIsImlhdCI6MTY2NzUxNTU3NX0.SfOYdyel-dab7ubG_3brp64gwE7sVtue9ODnnPPa_cE"
+    fileprivate let accessToken = "<your_token>"
     private let apiURL = "https://api.cyanite.ai/graphql"
     
     lazy var apollo: ApolloClient = {
