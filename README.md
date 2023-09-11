@@ -1,5 +1,7 @@
 # Algorhythm 🎶
 
+![Algorhythm Demo](https://drive.google.com/file/d/1LRjO8vpExepVytrsSV4-el7hpp2Qwpg6/view?usp=drive_link)
+
 ## Philosophy 🌱
 
 Algorhythm was designed with a single goal in mind: to empower users. By providing genre and mood analysis, Algorhythm revolutionizes the way you create Spotify playlists.
@@ -25,7 +27,11 @@ Install Algorhythm from the [App Store](https://apps.apple.com/us/app/algorhythm
 
 #### Cyanite API
 1. Create a new integration in the Cyanite dashboard.
-2. Replace `<your_token>` in `Source -> Utilities -> ApolloNetwork`.
+2. Add the access token in Source -> Utilities -> ApolloNetwork.
+
+```swift
+let accessToken = "<your_token>"
+```
 
 #### Spotify API
 1. Create a new integration in the Spotify Developer Dashboard.
