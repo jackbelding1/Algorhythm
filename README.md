@@ -50,9 +50,10 @@ Steps
 2. Install required dependencies.
 3. Build and run the project on a simulator or physical device.
 
-Contributing 🤝
+## Contributing 🤝
 
 Feel free to contribute by creating issues or submitting pull requests.
-License 📝
+
+## License 📝
 
 This project is licensed under the MIT License.
